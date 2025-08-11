@@ -1,0 +1,45 @@
+<mat-toolbar color="primary" class="toolbar">
+  <div class="brand" [routerLink]="['/']">{{ localizedTitle() }}</div>
+
+  <span class="spacer"></span>
+
+  <nav class="nav">
+    @for (m of menuItems(); track m.id) {
+      @if (!m.children?.length) {
+        <a mat-button [routerLink]="[m.path]">{{ m.i18nKey | translate }}</a>
+      } @else {
+        <button mat-button [matMenuTriggerFor]="parentMenu">{{ m.i18nKey | translate }}</button>
+        <mat-menu #parentMenu="matMenu">
+          @for (c of m.children; track c.id) {
+            @if (!c.children?.length) {
+              <button mat-menu-item [routerLink]="[c.path]">{{ c.i18nKey | translate }}</button>
+            } @else {
+              <button mat-menu-item [matMenuTriggerFor]="childMenu">{{ c.i18nKey | translate }}</button>
+              <mat-menu #childMenu="matMenu">
+                @for (gc of c.children; track gc.id) {
+                  <button mat-menu-item [routerLink]="[gc.path]">{{ gc.i18nKey | translate }}</button>
+                }
+              </mat-menu>
+            }
+          }
+        </mat-menu>
+      }
+    }
+  </nav>
+
+  <span class="spacer"></span>
+
+  <div class="actions">
+    <button mat-button (click)="toggleTheme()">{{ theme() === 'light' ? 'Dark' : 'Light' }}</button>
+    <select class="lang-select" [ngModel]="lang()" (ngModelChange)="switchLanguage($event)">
+      <option value="sk">SK</option>
+      <option value="en">EN</option>
+    </select>
+  </div>
+</mat-toolbar>
+
+<main class="layout-content">
+  <router-outlet />
+</main>
+
+

@@ -1,0 +1,54 @@
+{
+  "app": {
+    "title": "Windows Propagácia"
+  },
+  "menu": {
+    "home": "Úvod",
+    "about": "O nás",
+    "products": "Produkty",
+    "projects": "Realizácie",
+    "pricing": "Cenový dopyt",
+    "articles": "Články",
+    "contact": "Kontakt",
+    "about.company": "O spoločnosti",
+    "about.services": "Služby",
+    "about.how": "Ako vyrábame",
+    "about.certs": "Certifikáty a osvedčenia",
+    "products.windows": "Okná",
+    "products.windows.wood": "Drevené okná",
+    "products.windows.wood_al": "Drevohliníkové okná",
+    "products.windows.al": "Hliníkové okná",
+    "products.windows.historic": "Historické okná",
+    "products.doors": "Vchodové dvere",
+    "products.doors.wood": "Drevené dvere",
+    "products.doors.historic": "Historické dvere",
+    "products.doors.al": "Hliníkové dvere",
+    "products.doors.sliding": "Posuvné dvere",
+    "products.addons": "Doplnky",
+    "projects.wood": "Drevené okná",
+    "projects.wood_al": "Drevohliníkové okná",
+    "projects.al": "Hliníkové okná",
+    "projects.historic": "Historické okná",
+    "projects.doors": "Vchodové dvere",
+    "projects.sliding": "Posuvné steny",
+    "articles.faq": "Časté otázky",
+    "articles.choose": "Výber správnych okien a dverí",
+    "articles.maintenance": "Návod na údržbu a ošetrovanie"
+  },
+  "categories": {
+    "wood_windows": { "title": "Drevené okná", "desc": "Nezameniteľný, dokonalý domov s vôňou dreva" },
+    "al_windows": { "title": "Hliníkové okná", "desc": "Dokonalá svetelná pohoda s prepojením so záhradou" },
+    "doors": { "title": "Vchodové dvere", "desc": "Komfortné a bezpečné bývanie s osobitým akcentom" }
+  },
+  "nav": {
+    "theme": "Téma",
+    "light": "Svetlá",
+    "dark": "Tmavá"
+  },
+  "lang": {
+    "sk": "Slovenčina",
+    "en": "Angličtina"
+  }
+}
+
+

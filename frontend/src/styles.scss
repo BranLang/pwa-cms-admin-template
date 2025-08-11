@@ -1,0 +1,33 @@
+/* Global styles */
+
+/* Angular Material theming (M3) - must come first */
+@use '@angular/material' as mat;
+
+@include mat.core();
+
+$light-theme: mat.define-theme(());
+$dark-theme: mat.define-theme((
+  color: (
+    theme-type: dark
+  )
+));
+
+:root, .light-theme {
+  @include mat.all-component-themes($light-theme);
+}
+
+.dark-theme {
+  @include mat.all-component-themes($dark-theme);
+}
+
+html, body {
+  height: 100%;
+}
+body {
+  margin: 0;
+  font-family: Segoe UI, Roboto, Helvetica, Arial, sans-serif;
+}
+
+/* Swiper styles after theming */
+@import 'swiper/swiper-bundle.css';
+

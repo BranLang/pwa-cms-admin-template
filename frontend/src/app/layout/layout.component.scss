@@ -1,0 +1,35 @@
+.toolbar {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+.brand {
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.spacer {
+  flex: 1 1 auto;
+}
+
+.nav a[mat-button] {
+  text-transform: none;
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.lang-select {
+  height: 36px;
+  border-radius: 4px;
+}
+
+.layout-content {
+  padding: 1rem;
+}
+
+
