@@ -1,5 +1,5 @@
-import { ChangeDetectionStrategy, Component, inject, signal, computed, PLATFORM_ID } from '@angular/core';
-import { isPlatformBrowser } from '@angular/common';
+import { ChangeDetectionStrategy, Component, inject, signal, computed, PLATFORM_ID, Inject } from '@angular/core';
+import { DOCUMENT, isPlatformBrowser } from '@angular/common';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, RouterLink, RouterOutlet } from '@angular/router';
 import { MatToolbarModule } from '@angular/material/toolbar';
@@ -50,6 +50,14 @@ export class LayoutComponent {
   protected readonly languageService = inject(LanguageService);
   private readonly platformId = inject(PLATFORM_ID);
   private readonly translate = inject(TranslateService);
+  
+  constructor(@Inject(DOCUMENT) private document: Document) {
+    const initialSettings = this.route.snapshot.data['settings'] as SettingsResponse;
+    if (initialSettings) {
+      const initialTheme: ThemeId = initialSettings.theme === 'dark' ? 'magenta-violet' : 'cyan-orange';
+      this.setTheme(initialTheme);
+    }
+  }
 
   private readonly data$ = this.route.data;
   protected readonly settings = toSignal(this.data$.pipe(map(d => d['settings'] as SettingsResponse)));
@@ -57,10 +65,10 @@ export class LayoutComponent {
   
   protected readonly theme = signal<ThemeId>('cyan-orange');
   protected readonly availableThemes: Theme[] = [
-    { id: 'rose-red', name: 'Rose & Red', primary: '#B71C1C', swatch: { background: '#fffbff', primary: '#ffd9e1' } },
-    { id: 'azure-blue', name: 'Azure & Blue', primary: '#1565C0', swatch: { background: '#fdfbff', primary: '#d7e3ff' } },
-    { id: 'magenta-violet', name: 'Magenta & Violet', primary: '#6A1B9A', swatch: { background: '#1e1a1d', primary: '#810081' } },
-    { id: 'cyan-orange', name: 'Cyan & Orange', primary: '#006064', swatch: { background: '#191c1c', primary: '#004f4f' } }
+    { id: 'rose-red', name: 'Rose & Red', primary: '#d32f2f', swatch: { background: '#ffffff', primary: '#ffcdd2' } },
+    { id: 'azure-blue', name: 'Azure & Blue', primary: '#1976d2', swatch: { background: '#ffffff', primary: '#bbdefb' } },
+    { id: 'magenta-violet', name: 'Magenta & Violet', primary: '#7b1fa2', swatch: { background: '#ffffff', primary: '#e1bee7' } },
+    { id: 'cyan-orange', name: 'Cyan & Orange', primary: '#388e3c', swatch: { background: '#ffffff', primary: '#c8e6c9' } }
   ];
 
   protected readonly lang = this.languageService.language;
@@ -70,20 +78,13 @@ export class LayoutComponent {
     return s ? s.title[l] : '';
   });
 
-  constructor() {
-    const initialSettings = this.route.snapshot.data['settings'] as SettingsResponse;
-    if (initialSettings) {
-      const initialTheme: ThemeId = initialSettings.theme === 'dark' ? 'magenta-violet' : 'cyan-orange';
-      this.setTheme(initialTheme);
-    }
-  }
-
   protected switchLanguage(lang: 'sk' | 'en') {
     this.languageService.switchLanguage(lang);
     this.translate.use(lang);
   }
 
   protected setTheme(themeId: ThemeId) {
+    console.log('Setting theme to:', themeId);
     this.theme.set(themeId);
     this.applyTheme(themeId);
   }
@@ -92,13 +93,27 @@ export class LayoutComponent {
     if (!isPlatformBrowser(this.platformId)) {
       return;
     }
-    const body = document.body;
-    this.availableThemes.forEach(t => body.classList.remove(`${t.id}-theme`));
-    body.classList.add(`${themeId}-theme`);
+    const body = this.document.body;
+    const html = this.document.documentElement;
     
-    const theme = this.availableThemes.find(t => t.id === themeId);
-    if(theme) {
-      document.documentElement.style.setProperty('--primary-color', theme.primary);
+    // Remove all existing theme classes
+    this.availableThemes.forEach(t => {
+      body.classList.remove(`${t.id}-theme`);
+      html.classList.remove(`${t.id}-theme`);
+    });
+    
+    // Add new theme class
+    body.classList.add(`${themeId}-theme`);
+    html.classList.add(`${themeId}-theme`);
+    
+    // Force update CSS variables directly
+    const selectedTheme = this.availableThemes.find(t => t.id === themeId);
+    if (selectedTheme) {
+      html.style.setProperty('--mdc-theme-primary', selectedTheme.primary);
+      html.style.setProperty('--mat-toolbar-background-color', selectedTheme.primary);
+      html.style.setProperty('--md-sys-color-primary', selectedTheme.primary);
+      
+      console.log('Applied theme:', themeId, 'with color:', selectedTheme.primary);
     }
   }
 }

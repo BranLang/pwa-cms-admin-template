@@ -1,6 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 import { TranslateLoader, TranslateModule, TranslateService } from '@ngx-translate/core';
 import { Observable, of } from 'rxjs';
+import { provideZonelessChangeDetection } from '@angular/core';
 
 // Mock data mirroring the JSON structure
 const translations = {
@@ -55,6 +56,7 @@ describe('Translations', () => {
           loader: { provide: TranslateLoader, useClass: MockTranslateLoader },
         }),
       ],
+      providers: [provideZonelessChangeDetection()]
     }).compileComponents();
     translate = TestBed.inject(TranslateService);
     translate.setDefaultLang('sk');

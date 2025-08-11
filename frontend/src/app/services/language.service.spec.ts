@@ -1,41 +1,45 @@
-import { TestBed } from '@angular/core/testing';
+import { TestBed, ComponentFixture } from '@angular/core/testing';
 import { TranslateLoader, TranslateModule, TranslateService } from '@ngx-translate/core';
 import { of } from 'rxjs';
 import { LanguageService } from './language.service';
-import { provideZonelessChangeDetection } from '@angular/core';
+import { provideZonelessChangeDetection, Component } from '@angular/core';
+
+// Create a dummy component to host the service
+@Component({
+  template: '',
+  standalone: true,
+  providers: [LanguageService]
+})
+class TestHostComponent {}
 
 class FakeTranslateLoader implements TranslateLoader {
   private readonly translations = {
     sk: {
       categories: {
         windows: { title: 'Okná', desc: 'Vyberte si z našej širokej ponuky okien' },
-        doors: { title: 'Dvere', desc: 'Bezpečné a štýlové vchodové dvere' },
-        projects: { title: 'Realizácie', desc: 'Pozrite si naše referencie' }
       }
     },
     en: {
       categories: {
         windows: { title: 'Windows', desc: 'Choose from our wide range of windows' },
-        doors: { title: 'Doors', desc: 'Secure and stylish entrance doors' },
-        projects: { title: 'Projects', desc: 'See our references' }
       }
     }
   } as const;
 
   getTranslation(lang: string) {
-    // Simulate async loader
-    const data = (this.translations as any)[lang] ?? {};
-    return of(data);
+    return of((this.translations as any)[lang] ?? {});
   }
 }
 
 describe('LanguageService + translations', () => {
   let translate: TranslateService;
   let service: LanguageService;
+  let fixture: ComponentFixture<TestHostComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [
+        TestHostComponent,
         TranslateModule.forRoot({
           loader: { provide: TranslateLoader, useClass: FakeTranslateLoader },
           defaultLanguage: 'sk',
@@ -46,6 +50,7 @@ describe('LanguageService + translations', () => {
       providers: [provideZonelessChangeDetection(), LanguageService]
     }).compileComponents();
 
+    fixture = TestBed.createComponent(TestHostComponent);
     translate = TestBed.inject(TranslateService);
     service = TestBed.inject(LanguageService);
   });
@@ -57,6 +62,7 @@ describe('LanguageService + translations', () => {
 
   it('switches language to en and translates keys', async () => {
     service.switchLanguage('en');
+    await fixture.whenStable();
     const value = await translate.get('categories.windows.title').toPromise();
     expect(value).toBe('Windows');
   });

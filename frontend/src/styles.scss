@@ -1,24 +1,71 @@
 /* Global styles */
 
-/* Angular Material theming (M3) - must come first */
+/* Angular Material theming - Material Design 3 */
 @use '@angular/material' as mat;
 
 @include mat.core();
 
-/* Use default Material Design 3 themes to ensure compilation */
-$light-theme: mat.define-theme(());
-$dark-theme: mat.define-theme((
-  color: (
-    theme-type: dark
-  )
-));
-
-:root, .light-theme {
-  @include mat.all-component-themes($light-theme);
+/* Default theme */
+$default-theme: mat.define-theme(());
+:root {
+  @include mat.all-component-themes($default-theme);
 }
 
-.dark-theme {
-  @include mat.all-component-themes($dark-theme);
+/* Custom theme classes for theme picker */
+.rose-red-theme {
+  $rose-theme: mat.define-theme((
+    color: (
+      theme-type: light,
+      primary: (
+        main: #d32f2f,
+        lighter: #ffcdd2,
+        darker: #b71c1c
+      )
+    )
+  ));
+  @include mat.all-component-themes($rose-theme);
+}
+
+.azure-blue-theme {
+  $azure-theme: mat.define-theme((
+    color: (
+      theme-type: light,
+      primary: (
+        main: #1976d2,
+        lighter: #bbdefb,
+        darker: #1565c0
+      )
+    )
+  ));
+  @include mat.all-component-themes($azure-theme);
+}
+
+.magenta-violet-theme {
+  $magenta-theme: mat.define-theme((
+    color: (
+      theme-type: light,
+      primary: (
+        main: #7b1fa2,
+        lighter: #e1bee7,
+        darker: #6a1b9a
+      )
+    )
+  ));
+  @include mat.all-component-themes($magenta-theme);
+}
+
+.cyan-orange-theme {
+  $cyan-theme: mat.define-theme((
+    color: (
+      theme-type: light,
+      primary: (
+        main: #388e3c,
+        lighter: #c8e6c9,
+        darker: #2e7d32
+      )
+    )
+  ));
+  @include mat.all-component-themes($cyan-theme);
 }
 
 html, body {
@@ -26,9 +73,12 @@ html, body {
 }
 body {
   margin: 0;
-  font-family: Segoe UI, Roboto, Helvetica, Arial, sans-serif;
+  font-family: Roboto, "Helvetica Neue", Arial, sans-serif;
 }
 
 /* Swiper styles after theming */
 @import 'swiper/swiper-bundle.css';
+
+
+
 

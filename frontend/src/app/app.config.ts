@@ -53,7 +53,17 @@ export const appConfig: ApplicationConfig = {
       })
     ),
     { provide: ErrorHandler, useClass: GlobalErrorHandler },
-    // Eagerly instantiate TranslateService to load translations on startup
-    TranslateService
+    // Initialize translation service properly
+    {
+      provide: 'APP_INITIALIZER',
+      useFactory: (translateService: TranslateService) => {
+        return () => {
+          translateService.setDefaultLang('sk');
+          return translateService.use('sk').toPromise();
+        };
+      },
+      deps: [TranslateService],
+      multi: true
+    }
   ]
 };

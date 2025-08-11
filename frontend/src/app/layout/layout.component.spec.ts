@@ -3,6 +3,7 @@ import { LayoutComponent } from './layout.component';
 import { TranslateModule } from '@ngx-translate/core';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { provideRouter } from '@angular/router';
+import { provideZonelessChangeDetection } from '@angular/core';
 
 describe('LayoutComponent', () => {
   let component: LayoutComponent;
@@ -12,7 +13,7 @@ describe('LayoutComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [LayoutComponent, TranslateModule.forRoot(), NoopAnimationsModule],
-      providers: [provideRouter([])]
+      providers: [provideRouter([]), provideZonelessChangeDetection()]
     }).compileComponents();
 
     fixture = TestBed.createComponent(LayoutComponent);
@@ -25,16 +26,26 @@ describe('LayoutComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should have 4 theme options', () => {
-    const themeButtons = element.querySelectorAll('.theme-option');
+  it('should have 4 theme options after opening the menu', () => {
+    const themeMenuButton = element.querySelector('.theme-toggle') as HTMLElement;
+    themeMenuButton.click();
+    fixture.detectChanges();
+
+    const themeButtons = document.querySelectorAll('.theme-option');
     expect(themeButtons.length).toBe(4);
   });
 
   it('should switch theme when a theme option is clicked', () => {
     spyOn(component as any, 'setTheme');
-    const themeButton = element.querySelector('.theme-option') as HTMLElement;
+    
+    const themeMenuButton = element.querySelector('.theme-toggle') as HTMLElement;
+    themeMenuButton.click();
+    fixture.detectChanges();
+
+    const themeButton = document.querySelector('.theme-option') as HTMLElement;
     themeButton.click();
     fixture.detectChanges();
+    
     expect((component as any).setTheme).toHaveBeenCalledWith('rose-red');
   });
 
