@@ -31,19 +31,30 @@
 
   <div class="actions">
     <!-- Theme selector -->
-    <button mat-icon-button [matMenuTriggerFor]="themeMenu" class="theme-toggle" [attr.aria-label]="'nav.theme' | translate">
+    <button mat-icon-button
+            [matMenuTriggerFor]="themeMenu"
+            class="theme-toggle"
+            aria-label="Change theme">
       <mat-icon>format_color_fill</mat-icon>
     </button>
-    <mat-menu #themeMenu="matMenu" class="theme-menu">
-      @for(themeOption of availableThemes; track themeOption.name) {
-        <button mat-menu-item (click)="setTheme(themeOption.id)" class="theme-option">
-          <mat-icon class="theme-radio">
-            {{ theme() === themeOption.id ? 'radio_button_checked' : 'radio_button_unchecked' }}
-          </mat-icon>
-          <span class="theme-name">{{ themeOption.name }}</span>
-          <div class="theme-swatch" [style.background]="'linear-gradient(135deg, ' + themeOption.swatch.background + ' 50%, ' + themeOption.swatch.primary + ' 50%)'"></div>
-        </button>
-      }
+
+    <!-- Theme menu -->
+    <mat-menu #themeMenu="matMenu" [overlapTrigger]="false" class="theme-menu">
+      <button mat-menu-item
+              *ngFor="let opt of availableThemes; trackBy: trackById"
+              (click)="setTheme(opt.id)">
+        <mat-icon class="theme-radio"
+                  [fontIcon]="theme() === opt.id ? 'radio_button_checked' : 'radio_button_unchecked'">
+        </mat-icon>
+
+        <span class="theme-name">{{ opt.name }}</span>
+
+        <!-- Color swatch exactly like Angular Material website -->
+        <span class="theme-swatch"
+              [style.--swatch-bg]="opt.swatch.background"
+              [style.--swatch-primary]="opt.swatch.primary">
+        </span>
+      </button>
     </mat-menu>
 
     <!-- Language selector -->

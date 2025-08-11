@@ -6,7 +6,6 @@ import { ActivatedRoute } from '@angular/router';
 import { HomeResponse } from '../services/api.service';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-home',
@@ -19,25 +18,13 @@ import { TranslateService } from '@ngx-translate/core';
 })
 export class HomeComponent {
   private readonly route = inject(ActivatedRoute);
-  private readonly translateService = inject(TranslateService);
   private readonly languageService = inject(LanguageService);
   
   protected readonly data$: Observable<HomeResponse> = this.route.data.pipe(map(d => d['home']));
   protected readonly lang = this.languageService.language;
 
-  constructor() {
-    // Ensure translations are loaded
-    const currentLang = this.languageService.language();
-    this.translateService.use(currentLang);
-  }
-
   protected trackById(index: number, item: any): any {
     return item?.id ?? index;
-  }
-
-  protected getTranslation(key: string | undefined): string {
-    if (!key) return '';
-    return this.translateService.instant(key) || key;
   }
 }
 

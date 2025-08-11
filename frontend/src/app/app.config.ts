@@ -1,69 +1,56 @@
-import { ApplicationConfig, importProvidersFrom, provideZonelessChangeDetection, ErrorHandler, inject, PLATFORM_ID } from '@angular/core';
-import { provideRouter } from '@angular/router';
-import { provideClientHydration, withEventReplay } from '@angular/platform-browser';
-import { provideHttpClient, withFetch } from '@angular/common/http';
-import { provideAnimations } from '@angular/platform-browser/animations';
-import { HttpClientInMemoryWebApiModule } from 'angular-in-memory-web-api';
-import { TranslateLoader, TranslateModule, TranslateService } from '@ngx-translate/core';
-import { HttpClient } from '@angular/common/http';
-import { isPlatformBrowser } from '@angular/common';
-import { of } from 'rxjs';
-
+import { APP_INITIALIZER, ApplicationConfig, importProvidersFrom, provideZoneChangeDetection } from '@angular/core';
+import { provideRouter, withComponentInputBinding } from '@angular/router';
 import { routes } from './app.routes';
+import { provideHttpClient, withFetch, withInterceptors } from '@angular/common/http';
+import { provideClientHydration, withEventReplay } from '@angular/platform-browser';
+import { InMemoryWebApiModule } from 'angular-in-memory-web-api';
 import { MockDataService } from './mock/mock-data.service';
+import { TranslateLoader, TranslateModule, TranslateService } from '@ngx-translate/core';
+import { TranslateHttpLoader } from '@ngx-translate/http-loader';
+import { HttpClient } from '@angular/common/http';
+import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 
-// Custom error handler (optional, but good practice)
-export class GlobalErrorHandler implements ErrorHandler {
-  handleError(error: any): void {
-    console.error('Global Error:', error);
-  }
+export function HttpLoaderFactory(http: HttpClient) {
+  return new TranslateHttpLoader(http, './assets/i18n/', '.json');
 }
 
-// AoT-friendly loader
-export function httpTranslateLoaderFactory(http: HttpClient): TranslateLoader {
-  const platformId = inject(PLATFORM_ID);
-  const isBrowser = isPlatformBrowser(platformId);
-  return {
-    getTranslation: (lang: string) => isBrowser ? http.get(`/i18n/${lang}.json`) : of({})
-  } as TranslateLoader;
+export function appInitializerFactory(translate: TranslateService) {
+  return () => {
+    translate.setDefaultLang('sk');
+    return translate.use('sk').toPromise();
+  };
 }
 
 export const appConfig: ApplicationConfig = {
   providers: [
-    provideZonelessChangeDetection(),
-    provideRouter(routes),
+    provideZoneChangeDetection({ eventCoalescing: true }),
+    provideRouter(routes, withComponentInputBinding()),
+    provideHttpClient(withFetch(), withInterceptors([])),
     provideClientHydration(withEventReplay()),
-    provideAnimations(),
-    provideHttpClient(withFetch()),
     importProvidersFrom(
-      HttpClientInMemoryWebApiModule.forRoot(MockDataService, {
+      // The `environment` file is not used to simplify the setup.
+      // The In-Memory Web API is enabled by default for this template.
+      InMemoryWebApiModule.forRoot(MockDataService, {
+        delay: 100,
         passThruUnknownUrl: true,
-        delay: 250
       })
     ),
     importProvidersFrom(
       TranslateModule.forRoot({
         loader: {
           provide: TranslateLoader,
-          useFactory: httpTranslateLoaderFactory,
-          deps: [HttpClient]
+          useFactory: HttpLoaderFactory,
+          deps: [HttpClient],
         },
-        fallbackLang: 'sk',
-        isolate: false
+        defaultLanguage: 'sk',
       })
     ),
-    { provide: ErrorHandler, useClass: GlobalErrorHandler },
-    // Initialize translation service properly
     {
-      provide: 'APP_INITIALIZER',
-      useFactory: (translateService: TranslateService) => {
-        return () => {
-          translateService.setDefaultLang('sk');
-          return translateService.use('sk').toPromise();
-        };
-      },
+      provide: APP_INITIALIZER,
+      useFactory: appInitializerFactory,
       deps: [TranslateService],
-      multi: true
-    }
-  ]
+      multi: true,
+    },
+    provideAnimationsAsync(),
+  ],
 };

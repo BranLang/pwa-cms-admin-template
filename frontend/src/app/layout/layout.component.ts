@@ -14,16 +14,10 @@ import { LanguageService } from '../services/language.service';
 import { map } from 'rxjs';
 import { toSignal } from '@angular/core/rxjs-interop';
 
-type ThemeId = 'rose-red' | 'azure-blue' | 'magenta-violet' | 'cyan-orange';
-
-interface Theme {
-  id: ThemeId;
+export interface ThemeOption {
+  id: string;
   name: string;
-  primary: string;
-  swatch: {
-    background: string;
-    primary: string;
-  };
+  swatch: { background: string; primary: string };
 }
 
 @Component({
@@ -54,7 +48,7 @@ export class LayoutComponent {
   constructor(@Inject(DOCUMENT) private document: Document) {
     const initialSettings = this.route.snapshot.data['settings'] as SettingsResponse;
     if (initialSettings) {
-      const initialTheme: ThemeId = initialSettings.theme === 'dark' ? 'magenta-violet' : 'cyan-orange';
+      const initialTheme: string = initialSettings.theme === 'dark' ? 'magenta-theme' : 'cyan-orange-theme';
       this.setTheme(initialTheme);
     }
   }
@@ -63,12 +57,10 @@ export class LayoutComponent {
   protected readonly settings = toSignal(this.data$.pipe(map(d => d['settings'] as SettingsResponse)));
   protected readonly menuItems = toSignal(this.data$.pipe(map(d => d['menu'] as MenuItemResponse[])));
   
-  protected readonly theme = signal<ThemeId>('cyan-orange');
-  protected readonly availableThemes: Theme[] = [
-    { id: 'rose-red', name: 'Rose & Red', primary: '#d32f2f', swatch: { background: '#ffffff', primary: '#ffcdd2' } },
-    { id: 'azure-blue', name: 'Azure & Blue', primary: '#1976d2', swatch: { background: '#ffffff', primary: '#bbdefb' } },
-    { id: 'magenta-violet', name: 'Magenta & Violet', primary: '#7b1fa2', swatch: { background: '#ffffff', primary: '#e1bee7' } },
-    { id: 'cyan-orange', name: 'Cyan & Orange', primary: '#388e3c', swatch: { background: '#ffffff', primary: '#c8e6c9' } }
+  protected readonly theme = signal<string>('cyan-orange-theme');
+  protected readonly availableThemes: ThemeOption[] = [
+    { id: 'cyan-orange-theme', name: 'Cyan & Orange', swatch: { background: '#E0F7FA', primary: '#0097A7' } },
+    { id: 'magenta-theme', name: 'Magenta & Violet', swatch: { background: '#F3E5F5', primary: '#7B1FA2' } },
   ];
 
   protected readonly lang = this.languageService.language;
@@ -83,39 +75,24 @@ export class LayoutComponent {
     this.translate.use(lang);
   }
 
-  protected setTheme(themeId: ThemeId) {
-    console.log('Setting theme to:', themeId);
-    this.theme.set(themeId);
-    this.applyTheme(themeId);
-  }
-
-  private applyTheme(themeId: ThemeId) {
+  protected setTheme(themeId: string) {
     if (!isPlatformBrowser(this.platformId)) {
       return;
     }
-    const body = this.document.body;
-    const html = this.document.documentElement;
     
-    // Remove all existing theme classes
+    this.theme.set(themeId);
+    const body = this.document.body;
+    
+    // Remove all theme classes
     this.availableThemes.forEach(t => {
-      body.classList.remove(`${t.id}-theme`);
-      html.classList.remove(`${t.id}-theme`);
+      body.classList.remove(t.id);
     });
     
-    // Add new theme class
-    body.classList.add(`${themeId}-theme`);
-    html.classList.add(`${themeId}-theme`);
-    
-    // Force update CSS variables directly
-    const selectedTheme = this.availableThemes.find(t => t.id === themeId);
-    if (selectedTheme) {
-      html.style.setProperty('--mdc-theme-primary', selectedTheme.primary);
-      html.style.setProperty('--mat-toolbar-background-color', selectedTheme.primary);
-      html.style.setProperty('--md-sys-color-primary', selectedTheme.primary);
-      
-      console.log('Applied theme:', themeId, 'with color:', selectedTheme.primary);
-    }
+    // Add the new theme class
+    body.classList.add(themeId);
   }
+
+  protected trackById = (_: number, o: ThemeOption) => o.id;
 }
 
 

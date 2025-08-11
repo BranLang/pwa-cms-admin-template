@@ -1,71 +1,90 @@
 /* Global styles */
 
 /* Angular Material theming - Material Design 3 */
-@use '@angular/material' as mat;
+@import '~@angular/material/theming';
 
-@include mat.core();
+@include mat-core();
 
-/* Default theme */
-$default-theme: mat.define-theme(());
-:root {
-  @include mat.all-component-themes($default-theme);
-}
+// Define custom palettes
+$cyan-orange-palette: (
+  50: #e0f7fa,
+  100: #b2ebf2,
+  200: #80deea,
+  300: #4dd0e1,
+  400: #26c6da,
+  500: #00bcd4,
+  600: #00acc1,
+  700: #0097a7,
+  800: #00838f,
+  900: #006064,
+  contrast: (
+    50: #000000,
+    100: #000000,
+    200: #000000,
+    300: #000000,
+    400: #000000,
+    500: #000000,
+    600: #ffffff,
+    700: #ffffff,
+    800: #ffffff,
+    900: #ffffff,
+  )
+);
 
-/* Custom theme classes for theme picker */
-.rose-red-theme {
-  $rose-theme: mat.define-theme((
+$magenta-violet-palette: (
+  50: #f3e5f5,
+  100: #e1bee7,
+  200: #ce93d8,
+  300: #ba68c8,
+  400: #ab47bc,
+  500: #9c27b0,
+  600: #8e24aa,
+  700: #7b1fa2,
+  800: #6a1b9a,
+  900: #4a148c,
+  contrast: (
+    50: #000000,
+    100: #000000,
+    200: #000000,
+    300: #ffffff,
+    400: #ffffff,
+    500: #ffffff,
+    600: #ffffff,
+    700: #ffffff,
+    800: #ffffff,
+    900: #ffffff,
+  )
+);
+
+// Define themes
+$cyan-orange-theme: mat-light-theme(
+  (
     color: (
-      theme-type: light,
-      primary: (
-        main: #d32f2f,
-        lighter: #ffcdd2,
-        darker: #b71c1c
-      )
-    )
-  ));
-  @include mat.all-component-themes($rose-theme);
-}
+      primary: mat-palette($cyan-orange-palette, 700),
+      accent: mat-palette($mat-orange, A200, A100, A400),
+    ),
+    typography: mat-typography-config(),
+    density: 0,
+  )
+);
 
-.azure-blue-theme {
-  $azure-theme: mat.define-theme((
+$magenta-dark-theme: mat-dark-theme(
+  (
     color: (
-      theme-type: light,
-      primary: (
-        main: #1976d2,
-        lighter: #bbdefb,
-        darker: #1565c0
-      )
-    )
-  ));
-  @include mat.all-component-themes($azure-theme);
-}
+      primary: mat-palette($magenta-violet-palette, 200),
+      accent: mat-palette($mat-purple, A100),
+    ),
+    typography: mat-typography-config(),
+    density: 0,
+  )
+);
 
-.magenta-violet-theme {
-  $magenta-theme: mat.define-theme((
-    color: (
-      theme-type: light,
-      primary: (
-        main: #7b1fa2,
-        lighter: #e1bee7,
-        darker: #6a1b9a
-      )
-    )
-  ));
-  @include mat.all-component-themes($magenta-theme);
-}
+// Apply default theme
+@include angular-material-theme($cyan-orange-theme);
 
-.cyan-orange-theme {
-  $cyan-theme: mat.define-theme((
-    color: (
-      theme-type: light,
-      primary: (
-        main: #388e3c,
-        lighter: #c8e6c9,
-        darker: #2e7d32
-      )
-    )
-  ));
-  @include mat.all-component-themes($cyan-theme);
+// Apply dark theme when the class is present
+.magenta-theme {
+  @include angular-material-color($magenta-dark-theme);
 }
 
 html, body {
@@ -74,7 +93,19 @@ html, body {
 body {
   margin: 0;
   font-family: Roboto, "Helvetica Neue", Arial, sans-serif;
+  transition: background-color 0.3s ease;
 }
+
+.mat-toolbar.mat-primary {
+  background: var(--mat-toolbar-container-background-color);
+}
+.mat-mdc-button.mat-primary,
+.mat-mdc-icon-button.mat-primary,
+.mat-mdc-raised-button.mat-primary {
+  --mdc-protected-button-container-color: var(--mdc-theme-primary);
+  --mdc-protected-button-label-text-color: #fff;
+}
+
 
 /* Swiper styles after theming */
 @import 'swiper/swiper-bundle.css';
