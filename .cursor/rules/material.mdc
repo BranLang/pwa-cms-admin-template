@@ -1,0 +1,68 @@
+---
+description: Google Material Design guardrails for Angular Material (Angular 20). Enforce official components, theming, accessibility, and layout rules.
+globs: ["src/**/*.{ts,html,scss,css}","projects/**/*.{ts,html,scss,css}"]
+---
+
+# Source of truth
+- Use only components, directives, and APIs documented on **material.angular.dev** and **Angular CDK** docs.
+- Do **not** use legacy or deprecated prefixes/classes (e.g., `mat-legacy-*`).
+- Do **not** invent classes/selectors; if it isn’t in the docs or this repo, don’t write it.
+
+# Architecture & usage
+- Prefer **Angular Material components** over custom widgets for standard UI (buttons, inputs, lists, tables, dialogs, menus, snackbars, tooltips, tabs, stepper, sidenav, toolbar).
+- Use **CDK** for behavior (overlay, drag-drop, portal, a11y, scrolling, virtual scroll, layout breakpoints) instead of ad-hoc DOM logic or third-party libs.
+- Component wrappers around Material are allowed only for **theming** or **composition**; keep wrappers thin (no re-exporting every input).
+
+# Theming & tokens
+- Maintain a single theme entrypoint (e.g., `src/styles/theme.scss`) as the **only place** to define palettes, typography, density, and shape.
+- Implement **at least two schemes**: `light` and `dark`. Toggle with an attribute on `<html>` or `<body>` (e.g., `[data-theme="dark"]`); **no full page reload** for theme switch.
+- Prefer **design tokens / CSS variables** (when available in your version) or the **official Sass theming API**. Do **not** hardcode colors on Material internals.
+- Do **not** style `.mat-*` internals directly. Use component inputs, theme tokens, or exposed CSS parts/vars. If a change requires deep selectors, reconsider the design.
+- **Elevation:** use provided utilities (e.g., `mat-elevation-zN`) or tokenized shadows; never hardcode box-shadow values.
+- **Density:** apply Material density scale consistently (coarse/comfortable/compact). Do not mix arbitrary paddings per component.
+
+# Layout & spacing
+- Use responsive layout via **flexbox** or **CSS grid** with relative units (`rem`, `em`, `%`, `vh`, `vw`). Avoid `px` unless there’s no alternative.
+- Spacing increments should be **consistent** (e.g., multiples of `0.25rem`); no bespoke pixels scattered across components.
+- Use **MatToolbar + MatSidenav** patterns for app shell; content scrolls inside `<mat-sidenav-content>`. Avoid custom fixed headers unless necessary.
+
+# Typography & icons
+- Use Material typography levels (title, body, label, etc.) from the theme. Do **not** set random font sizes; stick to the scale.
+- Use `<mat-icon>` with **Material Symbols** (or registered SVGs). Prefer `svgIcon`/`fontIcon` over inline `<svg>` unless you register it via `MatIconRegistry`.
+- Every actionable icon **must** have an accessible name (e.g., `aria-label` on the host button).
+
+# Components (dos & don’ts)
+- **Buttons:** use `mat-flat-button`, `mat-raised-button`, `mat-stroked-button`, `mat-icon-button`, `mat-fab` appropriately; one primary action per view.
+- **Form fields:** wrap controls in `<mat-form-field>`; use a single appearance across the app (`fill` or `outline`). Provide label, hint, and error states. No floating placeholders.
+- **Tables/lists:** for large data, use **`cdk-virtual-scroll-viewport`**. Sticky headers via Material/ CDK, not custom JS.
+- **Dialogs/menus/tooltips:** use `MatDialog`, `MatMenu`, `MatTooltip`. Don’t hand-roll overlays; use **CDK Overlay** if Material component doesn’t cover the case.
+- **Snackbars:** concise text + optional action; auto-dismiss; don’t use for long content.
+
+# Motion
+- Respect user preference: implement `@media (prefers-reduced-motion: reduce)` to reduce transitions and disable ripples where appropriate.
+- Keep transitions **purposeful** (state change, hierarchy). No gratuitous animations.
+
+# Accessibility (non-negotiable)
+- All interactive elements must be reachable via **keyboard** and have a discernible name.
+- Maintain **color contrast** (target WCAG 2.1 AA). If a chosen palette fails contrast, adjust tokens—not ad-hoc CSS overrides.
+- Manage focus with **FocusTrap/FocusKeyManager** (CDK) for overlays/dialogs. Return focus to the trigger on close.
+- Provide **ARIA** roles only when not implicit. Don’t duplicate roles already provided by Material components.
+
+# Internationalization & directionality
+- All user-visible strings go through the app’s i18n/translation layer.
+- Support **RTL**: ensure layouts, icons with direction, and navigation adapt when `dir="rtl"` is applied.
+
+# Performance
+- Prefer **OnPush** change detection on all components. Avoid heavy content in tooltips/menus/dialogs.
+- Use **`NgOptimizedImage`** for static images.
+- Lazy-load feature routes; avoid loading heavy modules in the shell.
+
+# Testing & verification
+- For each UI change, provide a quick visual acceptance note (component + state screenshot or Storybook story if used).
+- Do not merge if `eslint`, `typecheck`, or `ng build` fails, or if contrast checks fail.
+
+# Forbidden patterns (reject in review)
+- Direct styling of `.mat-*` internals or MDC class names.
+- `mat-legacy-*` components, legacy ripple APIs, or deprecated adapters.
+- Custom overlays where a Material/CDK component exists.
+- Pixel-perfect overrides that fight the theme (random `px` paddings/margins, custom shadows, ad-hoc colors).

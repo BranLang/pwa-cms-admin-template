@@ -1,0 +1,38 @@
+# Agent Operating Procedure
+
+**Goal:** Implement tasks in a modern Angular 20 + NestJS repo with zero hallucinations.
+
+## 0. Environment sanity
+- Paste outputs of: `node -v`, `npm -v`, `ng version`, `nest --version || true`.
+- Confirm Angular 20 + NestJS versions in `package.json`.
+
+## 1. Planning
+- Write a short plan: files to add/change, CLI commands, acceptance criteria.
+- Keep file edits minimal and localized.
+
+## 2. Scaffolding
+- Use Angular CLI for components, routes, and Material navigation.
+- Use Nest CLI for controllers/services/resources.
+- Never hand-create files that a schematic can generate.
+
+## 3. Angular specifics
+- Standalone everywhere (implicit), signals/state with `input()`/`output()`.
+- Built-in control flow (`@if/@for`), OnPush.
+- No `ngClass`/`ngStyle` or host decorators; use host metadata and native class/style bindings.
+- Images via `NgOptimizedImage`.
+- Material only from official components. Theme via tokens.
+
+## 4. NestJS specifics
+- Prefix `/api`. Health at `/api/health`.
+- DTOs + validators. Global ValidationPipe.
+- Services contain logic; controllers stay thin.
+
+## 5. Verification loop (after every change batch)
+- Run: `npm run lint && npm run typecheck && npm run build:fast || ng build`.
+- Start apps: `ng serve` and `npm run start:dev`. Fix all errors **before** adding features.
+- Do not invent symbols/paths. If something is missing, scaffold it.
+
+## 6. Done criteria
+- The feature works in the browser.
+- Lint/typecheck/build green.
+- No forbidden patterns (see `.cursorrules`).

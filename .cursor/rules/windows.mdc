@@ -1,0 +1,45 @@
+---
+description: Windows guardrails for Angular 20 + NestJS in VS Code/Cursor
+globs: ["**/*"]
+---
+
+# When running commands
+- Use **PowerShell** syntax by default. If you must set env vars, use **cross-env** in npm scripts.
+- Always run local CLIs via **npx** (ensures repo versions): `npx ng`, `npx nest`, `npx eslint`, etc.
+- Never use `rm -rf`, `cp`, or `export`. Use:
+  - `npx rimraf` instead of `rm -rf`
+  - `npx shx cp -r` instead of `cp -r`
+  - `cross-env VAR=value` instead of `export VAR=value`
+- If file watching fails (network drive/WSL/antivirus), run Angular with polling:
+  - `cross-env CHOKIDAR_USEPOLLING=1 ng serve`
+  - Prefer working on a **local NTFS path** (avoid OneDrive/Dropbox/network shares).
+
+# Line endings & git
+- Do not introduce CRLF churn. Assume repo enforces LF. If lint errors mention CRLF, normalize files rather than disabling rules.
+- If you clone to a deep path, watch for Windows long paths. Keep repo at a short path (e.g., `C:\dev\app`) and enable longpaths:
+  - `git config core.longpaths true`
+
+# Execution policy & scripts
+- If any script execution is blocked, instruct the user (don’t fail silently):
+  - **Message to user:** “PowerShell blocked scripts. Run: `Set-ExecutionPolicy -Scope CurrentUser -ExecutionPolicy RemoteSigned` then retry.”
+
+# Paths & certificates
+- Use **forward slashes** in config and code (`C:/path/to/file.crt`) or build paths with `path.join(...)`; never hardcode backslashes in JSON.
+- For custom CAs on Windows, prefer `NODE_EXTRA_CA_CERTS` via cross-env:
+  - `cross-env NODE_EXTRA_CA_CERTS=certs/rootCA.crt npx nest start --watch`
+
+# Node-gyp/native deps
+- Prefer **pure JS** libs when possible (`bcryptjs` over `bcrypt`, `@grpc/grpc-js` over `grpc`).
+- If a native module is required (e.g., `sqlite3`/`better-sqlite3`), and build fails, prompt to install Build Tools:
+  - “Install VS Build Tools (C++), Python 3.11+, then retry.”
+- For TypeORM + SQLite, prefer `better-sqlite3` (often ships prebuilt). Fall back to Postgres in Docker if native builds fail.
+
+# Angular/Nest specifics (Windows nuances)
+- Always run: `npx ng version` / `npx nest --version` to confirm versions.
+- Use polling when the project lives in WSL or a mounted drive (see above).
+- Browser auto-open may be blocked by Windows; don’t rely on it—print the URL instead.
+
+# Do not
+- Do not add `px`-only CSS—use relative units (repo rule).
+- Do not invent bash-only commands.
+- Do not modify user global settings; print clear one-liners the user can run.

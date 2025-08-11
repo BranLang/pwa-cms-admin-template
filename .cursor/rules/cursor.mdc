@@ -1,5 +1,90 @@
 ---
-description:
-globs:
-alwaysApply: false
+description: Hard guardrails for Angular 20 + NestJS projects. Agents must follow these steps and constraints exactly.
+globs: ["**/*"]
 ---
+
+# Operating Procedure (must follow in order)
+
+1. **Identify stack & versions (no edits yet).**
+   - Run and paste outputs: `node -v`, `npm -v`, `ng version`, `nx --version || true`, `nest --version || true`.
+   - Confirm Angular **20**, Angular Material, and NestJS versions found in `package.json`.
+
+2. **Plan before editing.**
+   - Propose a *minimal* plan (files to add/modify, CLI commands to run, acceptance criteria).
+   - Wait for approval _or_ proceed if the task explicitly says “execute”.
+
+3. **Scaffold only via CLIs. Never hand-wire boilerplate.**
+   - Angular: use `ng g` and `ng add` (e.g., `ng g c features/home`, `ng g @angular/material:navigation core/shell`).
+   - NestJS: use `nest g resource ...` or `nest g controller/service ...`.
+
+4. **Edit, then verify immediately.**
+   - After each change group: run `npm run lint && npm run typecheck && npm run build:fast || ng build` and fix all errors before proceeding.
+   - If errors occur, fix them **before** adding new features.
+
+5. **No speculative code.** If an API/selector/class does not exist in this repo or official docs, do not invent it.
+
+---
+
+# Angular rules (apply to all `*.ts`, `*.html`, `*.scss`, `*.css`)
+
+**Architecture & APIs**
+- Use **standalone** components/directives/pipes. **Do not** create or reference `NgModule`s.
+- Treat standalone as **implicit** (do **not** add `standalone: true` unless the repo already does).
+- Use **signals** (`signal`, `computed`, `effect`) for component state. Prefer `input()` / `output()` over decorators.
+- Use **built-in control flow** (`@if`, `@for`, `@switch`). Do **not** use `*ngIf`, `*ngFor`, `*ngSwitch`.
+- **ChangeDetection.OnPush** on all components.
+- Prefer `inject()` over constructor injection when practical.
+- Images: use `NgOptimizedImage`.
+- Do **not** use `ngClass`/`NgClass` or `ngStyle`/`NgStyle`. Use native `[class.*]` and `[style.*]` bindings.
+- Do **not** use `@HostBinding` / `@HostListener`. Put host bindings in the `host` object in the decorator.
+- No `any`. Use strict typing; prefer inference or `unknown` + type-narrowing.
+
+**Material & styling**
+- Only use components from `material.angular.dev` for public UI unless the repo contains a local component library.
+- Theming via Material design tokens / CSS vars. Avoid custom CSS where Material provides tokens.
+- Use **relative units** (`rem`, `em`, `%`, `vh`, `vw`). Avoid `px` unless there’s a strong reason.
+- Keep templates simple—move logic to TypeScript.
+
+**Routing & structure**
+- Routes live in `app.routes.ts` or feature `routes.ts` files.
+- Feature folders: `features/<feature>`, shared utilities in `shared/`, global layout in `core/shell`.
+
+---
+
+# NestJS rules
+
+- Global prefix `/api`. Provide health at `/api/health`.
+- Use `@nestjs/config`, `class-validator`, `class-transformer`. Enable global validation pipe with `whitelist: true`, `forbidNonWhitelisted: true`, `transform: true`.
+- DTOs must be explicit classes with validators; no loose objects.
+- Controllers are thin; move logic to services.
+- Return typed responses; no `any`.
+
+---
+
+# Tooling & checks (agents must run)
+
+- `npm run lint` (eslint + template lint)
+- `npm run typecheck` (tsc `--noEmit`)
+- `npm run test` (unit tests when present)
+- `npm run start` / `ng serve` should be green with each change batch.
+
+---
+
+# Forbidden patterns (reject in code review)
+
+- `NgModule` definitions or imports.
+- `*ngIf`, `*ngFor`, `*ngSwitch` (use `@if/@for/@switch`).
+- `@HostBinding`, `@HostListener`, `ngClass`, `ngStyle`.
+- Unscaffolded hand-written boilerplate for components/routing/services that the CLI can generate.
+- Any API/class not present in this repo or official Angular/Nest docs.
+
+---
+
+# Acceptance criteria template (example: “Create homepage”)
+
+- Create `features/home` with:
+  - A hero section (title, subtitle, CTA button) using Angular Material and relative units.
+  - Data fetched from `GET /api/home` (NestJS) via a service, displayed on the page.
+- Add route `{ path: '', component: HomeComponent, pathMatch: 'full' }`.
+- All checks pass: `lint`, `typecheck`, `build`, `serve`.
+- No forbidden patterns present.
