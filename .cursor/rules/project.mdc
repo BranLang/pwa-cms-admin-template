@@ -1,0 +1,90 @@
+---
+description: Project‑specific guardrails for building a bilingual windows/doors website inspired by just‑eurookna.sk using Angular 20 + NestJS. It covers site structure, content management, multi‑language, admin auth and other requirements.
+globs: ["src/**/*.{ts,html,scss,css}", "apps/api/**/*.{ts}"]
+---
+
+# Scope and goals
+
+You are implementing a new bilingual website inspired by the Slovak company site **JUST Eurookná**.  
+The goal is to copy the original text and images to reproduce **all key features** of the site in a modern, accessible design using **Angular 20** (frontend) and **NestJS** (backend).  
+The website will promote windows, doors and related products and should match the structure seen on the source site: a hero section, product categories, informational pages, realizations (portfolio), articles, a price request form and a contact page【14492398650770†L115-L126】.  
+In addition to replicating these features, the site must support **English and Slovak** languages, and provide an **admin portal** with **Google SSO** where authorised users can update text, images, products and categories.
+
+# Site structure
+
+## Pages and navigation
+
+* **Home page:** a full‑width hero carousel with high‑quality images and catchphrases similar to the original (“Okná a dvere na celý život” – Windows and doors for life).  It should highlight key selling points – insulating properties, good design, easy operation and high aesthetics【14492398650770†L73-L80】.  Under the hero, display product categories (e.g. wooden windows, wood‑aluminium windows, aluminium windows, historic windows, wooden doors, aluminium doors, sliding doors) with links to their detail pages【14492398650770†L115-L126】.  Include a short company introduction and a call to action.
+* **About section:** multiple subpages for company info, services, manufacturing process and certificates.  Use informative text, images and lists; replicate the tab structure of the original site’s “O nás” submenu【14492398650770†L3-L8】.  All text must be translatable.
+* **Products:** organise products under nested categories (windows and doors) and subcategories.  Each product page should feature a descriptive heading, paragraphs explaining benefits (e.g. why wooden windows are eco‑friendly and offer good insulation【401964608949570†L58-L79】), bullet points listing advantages【401964608949570†L99-L115】, and images.  Product details (profiles, sizes, glazing options) must be data‑driven, not hard‑coded.
+* **Realizations/portfolio:** sections for completed projects.  Group by category (wooden windows, aluminium windows, etc.) mirroring the menu【14492398650770†L20-L24】.  Each project entry should display a gallery of images and a description.
+* **Articles/blog:** provide categories such as “Časté otázky” (FAQ), “Výber správnych okien a dverí” (Choosing the right windows/doors) and “Údržba a ošetrovanie” (Maintenance)【14492398650770†L28-L31】.  Posts are editable via the admin panel and support translations.
+* **Price request:** implement a form for customers to request a quote (fields: contact info, type of product, dimensions, message).  Submissions are stored in the database and trigger an email notification to admins.
+* **Contact page:** list the company’s address, GPS coordinates, phone numbers and email【84199358376044†L64-L92】.  Include opening hours and an embedded map.  Provide a contact form with validation (name, email, message)【84199358376044†L95-L101】.
+
+## Global layout
+
+* Create a responsive navigation bar mirroring the original site structure (Home, About, Products with drop‑down categories, Realizations, Price request, Articles, Contact).  Use Angular routing and `@for/@if` control flow.
+* Provide a footer with three columns: product categories, contact details (address, phone, company ID, etc.)【14492398650770†L126-L147】, and a short “About us” snippet【14492398650770†L139-L143】.  Include social media links.
+* Add a cookie consent banner (as required by GDPR) similar to the original site’s notice【14492398650770†L149-L152】.
+
+# Internationalisation (i18n)
+
+* Support **Slovak (“sk”) and English (“en”)**.  Every piece of text must come from a translation file or translation API (e.g. `ngx‑translate` or Angular i18n).  Do **not** hardcode strings in templates.
+* Provide a language switcher in the header.  Persist the chosen language in local storage or as part of the URL (e.g. `/sk/products/wooden-windows`).
+* Structure content in the database to include translations; each entity (product, article, page) should have fields for both languages.
+
+# Admin portal and authentication
+
+* Only authenticated users should access the admin portal.  Implement **Google SSO** using `@nestjs/passport` with the `passport-google-oauth20` strategy.  Store only the user’s Google ID and basic profile; no passwords.
+* After login, issue a signed JWT or session cookie.  Protect admin API routes with a guard that validates the token.
+* Provide CRUD interfaces (via Angular Material tables/forms) for:
+  - Pages (home sections, about subpages, contact details).
+  - Product categories and products (with translations, images, specifications).
+  - Realizations and portfolios.
+  - Blog categories and posts.
+  - Media library (upload, rename, delete images/files).  Use `NgOptimizedImage` to serve images on the frontend.
+* Enable drag‑and‑drop reordering of items and image galleries.  Use file upload controls with preview and progress.
+
+# Backend architecture
+
+* Use **NestJS** with a modular structure: AuthModule, UsersModule, PagesModule, ProductsModule, RealizationsModule, ArticlesModule, MediaModule, and TranslationsModule.  Use a database (e.g. PostgreSQL via Prisma or TypeORM) with entities for each model.  Each content entity must support multilingual fields.  Define DTOs with `class-validator` decorators and enable a global validation pipe (`whitelist: true`, `forbidNonWhitelisted: true`, `transform: true`).
+* Implement REST endpoints (or GraphQL if preferred) that return data based on the requested language.  Use route prefixes like `/api/en/products` and `/api/sk/products` or query parameters (`?lang=sk`).
+* Use Multer or Nest’s `@FileInterceptor` for file uploads.  Store files under `/uploads` or integrate with a cloud storage service.  Return URLs to the frontend.
+* Implement an email service (e.g. via Nodemailer) to send notifications for quote requests and contact form submissions.
+
+# Frontend implementation
+
+* Use Angular 20 standalone components and signals.  DO NOT use NgModules.  Always apply `ChangeDetectionStrategy.OnPush`.  Use built‑in control flow (`@if/@for`) instead of `*ngIf`/`*ngFor`.  Use `input()`/`output()` for component IO.  Follow the Material design rules and the Material guardrail file.  Images must be handled with `NgOptimizedImage`.
+* Scaffold pages and components using the CLI (`ng g c features/home`, `ng g c features/products/product-list`, etc.) instead of hand‑creating files.
+* Create services for fetching data from the backend (e.g. `ProductsService`, `PagesService`).  Use `HttpClient` with interceptors for language handling and JWT injection.  Use signals (`computed`, `effect`) to manage state.
+* Implement the admin portal as a separate route group (e.g. `/admin`).  Use Angular Material’s `MatTable`, `MatFormField`, `MatInput`, `MatDialog`, etc., for admin UIs.  Use reactive forms with validation for editing content.  Guard admin routes using a router guard that checks authentication tokens.
+* For the language switcher, update the document’s `lang` attribute and reload translations.  Avoid full page reloads; update only the translation observable.
+
+# Data model hints
+
+Define database schemas roughly like this (simplify as needed):
+
+* `User { id: string, googleId: string, name: string, email: string, role: 'admin'|'editor' }`
+* `Category { id: string, slug: string, parentId: string|null, order: number, translations: CategoryTranslation[] }`
+* `CategoryTranslation { id: string, categoryId: string, lang: 'sk'|'en', title: string, description: string }`
+* `Product { id: string, categoryId: string, slug: string, images: Media[], specs: Json, order: number, translations: ProductTranslation[] }`
+* `ProductTranslation { id: string, productId: string, lang: 'sk'|'en', title: string, intro: string, body: string }`
+* Similar translation tables for pages, realizations and articles.
+* `Media { id: string, filename: string, url: string, alt: string, translations: MediaTranslation[] }`
+* `QuoteRequest { id: string, name: string, email: string, phone: string, message: string, productType: string, createdAt: Date }`
+
+# Forbidden patterns
+
+This rule file supplements the general Angular and Material rules.
+
+* Expose Google SSO secrets or tokens in the codebase.  Use environment variables and do not commit them.
+* Bypass i18n by hardcoding strings.  All strings must be translatable.
+
+# Acceptance criteria
+
+* The website covers all page types described above, supports both languages and provides a language switcher.
+* The admin portal authenticates users via Google and allows CRUD operations on all content (pages, products, categories, realizations, articles, media).  Changes appear on the public site without redeploying.
+* The backend includes robust validation, authentication and file upload handling.  Quote and contact forms send notifications and store submissions.
+* The frontend adheres to the Angular and Material guardrails (standalone, signals, OnPush, built‑in control flow, proper theming, responsive layout).  Lint, typecheck and build tasks all pass.
+* No forbidden patterns are present.  All text and images are unique or properly sourced.
