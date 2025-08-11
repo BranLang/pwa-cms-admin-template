@@ -1,0 +1,38 @@
+{
+    "overrides": [
+      {
+        "files": ["**/*.ts"],
+        "rules": {
+          "@typescript-eslint/no-explicit-any": "error",
+          "no-restricted-syntax": [
+            "error",
+            {
+              "selector": "PropertyDefinition[decorators.length>0] > Decorator[expression.callee.name='HostBinding']",
+              "message": "Use 'host' metadata instead of @HostBinding."
+            },
+            {
+              "selector": "MethodDefinition[decorators.length>0] > Decorator[expression.callee.name='HostListener']",
+              "message": "Use 'host' metadata instead of @HostListener."
+            }
+          ]
+        }
+      },
+      {
+        "files": ["**/*.html"],
+        "rules": {
+          "@angular-eslint/template/no-negated-async": "warn",
+          "@angular-eslint/template/no-call-expression": "error",
+          "@angular-eslint/template/no-any": "error",
+          "@angular-eslint/template/no-inline-styles": "off",
+          "@angular-eslint/template/no-restricted-syntax": [
+            "error",
+            { "selector": "Element$[name='*ngIf']", "message": "Use @if control flow, not *ngIf." },
+            { "selector": "Element$[name='*ngFor']", "message": "Use @for control flow, not *ngFor." },
+            { "selector": "BoundAttribute[name='ngClass']", "message": "Use [class.*] bindings instead of ngClass." },
+            { "selector": "BoundAttribute[name='ngStyle']", "message": "Use [style.*] bindings instead of ngStyle." }
+          ]
+        }
+      }
+    ]
+  }
+  
