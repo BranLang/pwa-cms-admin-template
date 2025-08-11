@@ -43,7 +43,8 @@
   "nav": {
     "theme": "Theme",
     "light": "Light",
-    "dark": "Dark"
+    "dark": "Dark",
+    "language": "Language"
   },
   "lang": {
     "sk": "Slovak",

@@ -1,21 +1,30 @@
 import { Routes } from '@angular/router';
+import { homeResolver, menuResolver, settingsResolver, translationsResolver } from './resolvers';
 
 export const routes: Routes = [
   {
     path: '',
+    resolve: {
+      settings: settingsResolver,
+      menu: menuResolver,
+      translations: translationsResolver
+    },
     loadComponent: () => import('./layout/layout.component').then(m => m.LayoutComponent),
     children: [
       {
         path: '',
         pathMatch: 'full',
+        resolve: {
+          home: homeResolver
+        },
         loadComponent: () => import('./home/home.component').then(m => m.HomeComponent)
       },
-      { path: 'o-nas', loadComponent: () => import('./home/home.component').then(m => m.HomeComponent) },
+      { path: 'o-nas', loadComponent: () => import('./pages/about/about.component').then(m => m.AboutComponent) },
       { path: 'produkty', loadComponent: () => import('./pages/products/products.component').then(m => m.ProductsComponent) },
       { path: 'realizacie', loadComponent: () => import('./pages/projects/projects.component').then(m => m.ProjectsComponent) },
       { path: 'cenovy-dopyt', loadComponent: () => import('./pages/pricing/pricing.component').then(m => m.PricingComponent) },
       { path: 'clanky', loadComponent: () => import('./pages/articles/articles.component').then(m => m.ArticlesComponent) },
-      { path: 'kontakt', loadComponent: () => import('./home/home.component').then(m => m.HomeComponent) }
+      { path: 'kontakt', loadComponent: () => import('./pages/contact/contact.component').then(m => m.ContactComponent) }
     ]
   }
 ];

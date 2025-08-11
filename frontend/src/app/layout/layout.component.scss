@@ -1,35 +1,131 @@
 .toolbar {
-  position: sticky;
+  position: fixed;
   top: 0;
+  left: 0;
+  right: 0;
   z-index: 1000;
+  padding: 0 16px;
+  height: 64px;
+  display: flex;
+  align-items: center;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .brand {
-  font-weight: 600;
+  font-size: 20px;
+  font-weight: 500;
   cursor: pointer;
+  user-select: none;
+  transition: opacity 0.2s ease;
+
+  &:hover {
+    opacity: 0.8;
+  }
 }
 
 .spacer {
-  flex: 1 1 auto;
+  flex: 1;
 }
 
-.nav a[mat-button] {
-  text-transform: none;
+.nav {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+
+  a[mat-button], button[mat-button] {
+    font-weight: 500;
+    text-transform: none;
+    letter-spacing: 0.25px;
+    border-radius: 20px;
+    padding: 0 16px;
+    height: 40px;
+    line-height: 40px;
+    transition: all 0.2s ease;
+
+    &:hover {
+      background-color: rgba(255, 255, 255, 0.1);
+    }
+  }
 }
 
 .actions {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
+  gap: 8px;
 }
 
-.lang-select {
-  height: 36px;
-  border-radius: 4px;
+.theme-toggle, .lang-toggle {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
+
+.theme-menu .mat-mdc-menu-item, .lang-menu .mat-mdc-menu-item {
+  height: 48px;
+  padding: 0 16px;
+}
+
+.theme-option, .lang-option {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  width: 100%;
+}
+
+.theme-swatch {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  border: 1px solid rgba(0,0,0,0.1);
+}
+
+.theme-swatch-svg {
+  width: 24px;
+  height: 24px;
+  border-radius: 4px;
+  border: 1px solid rgba(0,0,0,0.1);
+  flex-shrink: 0;
+}
+
+.lang-code {
+  font-weight: 600;
+  min-width: 24px;
+  text-align: center;
+}
+
+.rose-red { background-color: #B71C1C; }
+.azure-blue { background-color: #1565C0; }
+.magenta-violet { background-color: #6A1B9A; }
+.cyan-orange { background-color: #006064; }
 
 .layout-content {
-  padding: 1rem;
+  margin-top: 64px;
+  min-height: calc(100vh - 64px);
+  padding: 24px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .toolbar {
+    padding: 0 8px;
+  }
+
+  .nav {
+    gap: 4px;
+
+    a[mat-button], button[mat-button] {
+      padding: 0 8px;
+      font-size: 14px;
+    }
+  }
+
+  .actions {
+    gap: 4px;
+  }
+
+  .layout-content {
+    padding: 16px;
+  }
 }
 
 

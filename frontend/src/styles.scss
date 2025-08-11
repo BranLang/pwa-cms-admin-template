@@ -5,6 +5,7 @@
 
 @include mat.core();
 
+/* Use default Material Design 3 themes to ensure compilation */
 $light-theme: mat.define-theme(());
 $dark-theme: mat.define-theme((
   color: (

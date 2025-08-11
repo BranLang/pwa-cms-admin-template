@@ -43,7 +43,8 @@
   "nav": {
     "theme": "Téma",
     "light": "Svetlá",
-    "dark": "Tmavá"
+    "dark": "Tmavá",
+    "language": "Jazyk"
   },
   "lang": {
     "sk": "Slovenčina",

@@ -30,11 +30,38 @@
   <span class="spacer"></span>
 
   <div class="actions">
-    <button mat-button (click)="toggleTheme()">{{ theme() === 'light' ? 'Dark' : 'Light' }}</button>
-    <button mat-button [matMenuTriggerFor]="langMenu">{{ lang() | uppercase }}</button>
-    <mat-menu #langMenu="matMenu">
-      <button mat-menu-item (click)="switchLanguage('sk')">SK</button>
-      <button mat-menu-item (click)="switchLanguage('en')">EN</button>
+    <!-- Theme selector -->
+    <button mat-icon-button [matMenuTriggerFor]="themeMenu" class="theme-toggle" [attr.aria-label]="'nav.theme' | translate">
+      <mat-icon>palette</mat-icon>
+    </button>
+    <mat-menu #themeMenu="matMenu" class="theme-menu">
+      @for(themeOption of availableThemes; track themeOption.name) {
+        <button mat-menu-item (click)="setTheme(themeOption.id)" class="theme-option">
+          <mat-icon class="theme-radio" [style.color]="theme() === themeOption.id ? themeOption.primary : ''">
+            {{ theme() === themeOption.id ? 'radio_button_checked' : 'radio_button_unchecked' }}
+          </mat-icon>
+          <svg class="theme-swatch-svg" width="80" height="80" viewBox="0 0 80 80">
+            <path [attr.fill]="themeOption.swatch.background" d="M77.87 0C79.05 0 80 .95 80 2.13v75.74c0 1.17-.95 2.13-2.13 2.13H2.13C.96 80 0 79.04 0 77.87V2.13C0 .95.96 0 2.13 0h75.74z"/>
+            <path [attr.fill]="themeOption.swatch.primary" d="M0 0h80v17.24H0V0z"/>
+          </svg>
+          <span class="theme-name">{{ themeOption.name }}</span>
+        </button>
+      }
+    </mat-menu>
+
+    <!-- Language selector -->
+    <button mat-icon-button [matMenuTriggerFor]="langMenu" class="lang-toggle" [attr.aria-label]="'nav.language' | translate">
+      <mat-icon>language</mat-icon>
+    </button>
+    <mat-menu #langMenu="matMenu" class="lang-menu">
+      <button mat-menu-item (click)="switchLanguage('sk')" class="lang-option">
+        <span class="lang-code">SK</span>
+        <span class="lang-name">{{ 'lang.sk' | translate }}</span>
+      </button>
+      <button mat-menu-item (click)="switchLanguage('en')" class="lang-option">
+        <span class="lang-code">EN</span>
+        <span class="lang-name">{{ 'lang.en' | translate }}</span>
+      </button>
     </mat-menu>
   </div>
 </mat-toolbar>

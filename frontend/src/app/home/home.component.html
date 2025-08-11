@@ -1,10 +1,12 @@
-@if (data | async; as data) {
+@if (data(); as homeData) {
   <section class="hero">
     <swiper-container slides-per-view="1" space-between="0" center-slides="true" pagination="true" navigation="true" loop="true" autoplay-delay="5000">
-      @for (s of data.carousel; track s.id) {
+      @for (s of homeData.carousel; track s.id; let first = $first) {
         <swiper-slide>
-          <img [ngSrc]="s.src" [width]="s.width" [height]="s.height" [alt]="s.alt[lang()]" priority />
-          <div class="caption">{{ s.caption[lang()] }}</div>
+          <div class="slide-container">
+            <img [ngSrc]="s.src" [width]="s.width" [height]="s.height" [alt]="s.alt[lang()]" [priority]="first" />
+            <div class="caption">{{ s.caption[lang()] }}</div>
+          </div>
         </swiper-slide>
       }
     </swiper-container>
@@ -12,9 +14,9 @@
   
   <section class="categories">
     <div class="container">
-      @for (c of data.categories; track c.id) {
+      @for (c of homeData.categories; track c.id) {
         <div class="card">
-          <img [ngSrc]="c.image" [width]="c.width" [height]="c.height" [alt]="(c.i18nKeyTitle | translate) ?? ''" />
+          <img [ngSrc]="c.image" [width]="c.width" [height]="c.height" [alt]="c.i18nKeyTitle | translate" />
           <div class="content">
             <h3>{{ c.i18nKeyTitle | translate }}</h3>
             <p>{{ c.i18nKeyDescription | translate }}</p>

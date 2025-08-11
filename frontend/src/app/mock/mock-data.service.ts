@@ -54,7 +54,7 @@ export class MockDataService implements InMemoryDbService {
         carousel: [
           {
             id: 1,
-            src: 'https://just-eurookna.sk/wp-content/uploads/2022/11/01-DREVO-HLINIK-TITAN.jpg',
+            src: '/uploads/homepage_1-2.jpg',
             alt: { 
               sk: 'Dokonalá svetelná pohoda hliníkových okien s prepojením so záhradou', 
               en: 'Perfect daylight comfort of aluminum windows connected to the garden' 
@@ -63,12 +63,12 @@ export class MockDataService implements InMemoryDbService {
               sk: 'Dokonalá svetelná pohoda hliníkových okien s prepojením so záhradou',
               en: 'Perfect daylight comfort of aluminum windows connected to the garden'
             },
-            width: 1200,
+            width: 1400,
             height: 500
           },
           {
             id: 2,
-            src: 'https://just-eurookna.sk/wp-content/uploads/2022/11/02-DREVO-CLASSIC-scaled.jpg',
+            src: '/uploads/homepage_2-2.jpg',
             alt: { 
               sk: 'Nezameniteľný, dokonalý domov s vôňou dreva', 
               en: 'Unmistakable, perfect home with the scent of wood' 
@@ -77,12 +77,12 @@ export class MockDataService implements InMemoryDbService {
               sk: 'Nezameniteľný, dokonalý domov s vôňou dreva',
               en: 'An unmistakable, perfect home with the scent of wood'
             },
-            width: 1200,
+            width: 1400,
             height: 500
           },
           {
             id: 3,
-            src: 'https://just-eurookna.sk/wp-content/uploads/2022/11/03-DREVO-HISTORIC-scaled.jpg',
+            src: '/uploads/homepage_3-2.jpg',
             alt: { 
               sk: 'Komfortné a bezpečné bývanie s osobitým akcentom', 
               en: 'Comfortable and secure living with a distinctive accent' 
@@ -91,12 +91,12 @@ export class MockDataService implements InMemoryDbService {
               sk: 'Komfortné a bezpečné bývanie s osobitým akcentom',
               en: 'Comfortable and secure living with a distinctive accent'
             },
-            width: 1200,
+            width: 1400,
             height: 500
           },
           {
             id: 4,
-            src: 'https://just-eurookna.sk/wp-content/uploads/2022/11/04-DREVO-HLINIK-CLASSIC-scaled.jpg',
+            src: '/uploads/homepage_4-2.jpg',
             alt: { 
               sk: 'Energeticky úsporný domov s funkčnými oknami', 
               en: 'Energy efficient home with functional windows' 
@@ -105,12 +105,12 @@ export class MockDataService implements InMemoryDbService {
               sk: 'Energeticky úsporný domov s funkčnými oknami',
               en: 'Energy efficient home with functional windows'
             },
-            width: 1200,
+            width: 1400,
             height: 500
           },
           {
             id: 5,
-            src: 'https://just-eurookna.sk/wp-content/uploads/2022/11/05-DREVO-HLINIK-MODERN-scaled.jpg',
+            src: '/uploads/homepage_5-2.jpg',
             alt: { 
               sk: 'Veľkorysý výhľad spája interiér s exteriérom', 
               en: 'Generous view connects interior with exterior' 
@@ -119,12 +119,12 @@ export class MockDataService implements InMemoryDbService {
               sk: 'Veľkorysý výhľad spája interiér s exteriérom',
               en: 'Generous view connects interior with exterior'
             },
-            width: 1200,
+            width: 1400,
             height: 500
           },
           {
             id: 6,
-            src: 'https://just-eurookna.sk/wp-content/uploads/2022/11/06-DREVO-HLINIK-HISTORIC-scaled.jpg',
+            src: '/uploads/homepage_7-2.jpg',
             alt: { 
               sk: 'Okná Vášho domova – kvalita, estetika, funkčný dizajn', 
               en: 'Windows of your home – quality, aesthetics, functional design' 
@@ -133,12 +133,12 @@ export class MockDataService implements InMemoryDbService {
               sk: 'Okná Vášho domova – kvalita, estetika, funkčný dizajn',
               en: 'Windows of your home – quality, aesthetics, functional design'
             },
-            width: 1200,
+            width: 1400,
             height: 500
           },
           {
             id: 7,
-            src: 'https://just-eurookna.sk/wp-content/uploads/2022/11/07-DREVO-HLINIK-TITAN-MODERN-scaled.jpg',
+            src: '/uploads/homepage_8-2.jpg',
             alt: { 
               sk: 'Dialóg moderných materiálov v modernej stavbe', 
               en: 'Dialogue of modern materials in modern construction' 
@@ -147,7 +147,7 @@ export class MockDataService implements InMemoryDbService {
               sk: 'Dialóg moderných materiálov v modernej stavbe',
               en: 'Dialogue of modern materials in modern construction'
             },
-            width: 1200,
+            width: 1400,
             height: 500
           }
         ],
@@ -156,7 +156,7 @@ export class MockDataService implements InMemoryDbService {
             id: 'windows',
             i18nKeyTitle: 'categories.windows.title',
             i18nKeyDescription: 'categories.windows.desc',
-            image: 'https://just-eurookna.sk/wp-content/uploads/2023/04/drevene-okna-1.jpg',
+            image: '/uploads/homeblock-drevene-okna.jpg',
             width: 400,
             height: 200
           },
@@ -164,7 +164,7 @@ export class MockDataService implements InMemoryDbService {
             id: 'doors',
             i18nKeyTitle: 'categories.doors.title',
             i18nKeyDescription: 'categories.doors.desc',
-            image: 'https://just-eurookna.sk/wp-content/uploads/2023/04/hlinikove-dvere-1.jpg',
+            image: '/uploads/homeblock-hlinikove-systemy.jpg',
             width: 400,
             height: 200
           },
@@ -172,7 +172,7 @@ export class MockDataService implements InMemoryDbService {
             id: 'projects',
             i18nKeyTitle: 'categories.projects.title',
             i18nKeyDescription: 'categories.projects.desc',
-            image: 'https://just-eurookna.sk/wp-content/uploads/2022/11/05-DREVO-HLINIK-MODERN-scaled.jpg',
+            image: '/uploads/homepage_5-2.jpg',
             width: 400,
             height: 200
           }
