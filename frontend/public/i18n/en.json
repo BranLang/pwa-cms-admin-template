@@ -36,9 +36,9 @@
     "articles.maintenance": "Maintenance guide"
   },
   "categories": {
-    "wood_windows": { "title": "Wooden windows", "desc": "An unmistakable, perfect home with the scent of wood" },
-    "al_windows": { "title": "Aluminum windows", "desc": "Perfect daylight comfort connected to the garden" },
-    "doors": { "title": "Entrance doors", "desc": "Comfortable and secure living with a distinctive accent" }
+    "windows": { "title": "Windows", "desc": "Choose from our wide range of windows" },
+    "doors": { "title": "Doors", "desc": "Secure and stylish entrance doors" },
+    "projects": { "title": "Projects", "desc": "See our references" }
   },
   "nav": {
     "theme": "Theme",

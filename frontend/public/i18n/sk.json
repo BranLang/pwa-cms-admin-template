@@ -36,9 +36,9 @@
     "articles.maintenance": "Návod na údržbu a ošetrovanie"
   },
   "categories": {
-    "wood_windows": { "title": "Drevené okná", "desc": "Nezameniteľný, dokonalý domov s vôňou dreva" },
-    "al_windows": { "title": "Hliníkové okná", "desc": "Dokonalá svetelná pohoda s prepojením so záhradou" },
-    "doors": { "title": "Vchodové dvere", "desc": "Komfortné a bezpečné bývanie s osobitým akcentom" }
+    "windows": { "title": "Okná", "desc": "Vyberte si z našej širokej ponuky okien" },
+    "doors": { "title": "Dvere", "desc": "Bezpečné a štýlové vchodové dvere" },
+    "projects": { "title": "Realizácie", "desc": "Pozrite si naše referencie" }
   },
   "nav": {
     "theme": "Téma",

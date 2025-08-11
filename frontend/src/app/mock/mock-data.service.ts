@@ -54,50 +54,127 @@ export class MockDataService implements InMemoryDbService {
         carousel: [
           {
             id: 1,
-            src: '/uploads/al-windows.jpg',
-            alt: { sk: 'Dokonalá svetelná pohoda', en: 'Perfect daylight comfort' },
+            src: 'https://just-eurookna.sk/wp-content/uploads/2022/11/01-DREVO-HLINIK-TITAN.jpg',
+            alt: { 
+              sk: 'Dokonalá svetelná pohoda hliníkových okien s prepojením so záhradou', 
+              en: 'Perfect daylight comfort of aluminum windows connected to the garden' 
+            },
             caption: {
               sk: 'Dokonalá svetelná pohoda hliníkových okien s prepojením so záhradou',
               en: 'Perfect daylight comfort of aluminum windows connected to the garden'
-            }
+            },
+            width: 1200,
+            height: 500
           },
           {
             id: 2,
-            src: '/uploads/wood-windows.jpg',
-            alt: { sk: 'Nezameniteľný domov s vôňou dreva', en: 'Unmistakable home with the scent of wood' },
+            src: 'https://just-eurookna.sk/wp-content/uploads/2022/11/02-DREVO-CLASSIC-scaled.jpg',
+            alt: { 
+              sk: 'Nezameniteľný, dokonalý domov s vôňou dreva', 
+              en: 'Unmistakable, perfect home with the scent of wood' 
+            },
             caption: {
               sk: 'Nezameniteľný, dokonalý domov s vôňou dreva',
               en: 'An unmistakable, perfect home with the scent of wood'
-            }
+            },
+            width: 1200,
+            height: 500
           },
           {
             id: 3,
-            src: '/uploads/entrance-doors.jpg',
-            alt: { sk: 'Komfortné a bezpečné bývanie', en: 'Comfortable and secure living' },
+            src: 'https://just-eurookna.sk/wp-content/uploads/2022/11/03-DREVO-HISTORIC-scaled.jpg',
+            alt: { 
+              sk: 'Komfortné a bezpečné bývanie s osobitým akcentom', 
+              en: 'Comfortable and secure living with a distinctive accent' 
+            },
             caption: {
               sk: 'Komfortné a bezpečné bývanie s osobitým akcentom',
               en: 'Comfortable and secure living with a distinctive accent'
-            }
+            },
+            width: 1200,
+            height: 500
+          },
+          {
+            id: 4,
+            src: 'https://just-eurookna.sk/wp-content/uploads/2022/11/04-DREVO-HLINIK-CLASSIC-scaled.jpg',
+            alt: { 
+              sk: 'Energeticky úsporný domov s funkčnými oknami', 
+              en: 'Energy efficient home with functional windows' 
+            },
+            caption: {
+              sk: 'Energeticky úsporný domov s funkčnými oknami',
+              en: 'Energy efficient home with functional windows'
+            },
+            width: 1200,
+            height: 500
+          },
+          {
+            id: 5,
+            src: 'https://just-eurookna.sk/wp-content/uploads/2022/11/05-DREVO-HLINIK-MODERN-scaled.jpg',
+            alt: { 
+              sk: 'Veľkorysý výhľad spája interiér s exteriérom', 
+              en: 'Generous view connects interior with exterior' 
+            },
+            caption: {
+              sk: 'Veľkorysý výhľad spája interiér s exteriérom',
+              en: 'Generous view connects interior with exterior'
+            },
+            width: 1200,
+            height: 500
+          },
+          {
+            id: 6,
+            src: 'https://just-eurookna.sk/wp-content/uploads/2022/11/06-DREVO-HLINIK-HISTORIC-scaled.jpg',
+            alt: { 
+              sk: 'Okná Vášho domova – kvalita, estetika, funkčný dizajn', 
+              en: 'Windows of your home – quality, aesthetics, functional design' 
+            },
+            caption: {
+              sk: 'Okná Vášho domova – kvalita, estetika, funkčný dizajn',
+              en: 'Windows of your home – quality, aesthetics, functional design'
+            },
+            width: 1200,
+            height: 500
+          },
+          {
+            id: 7,
+            src: 'https://just-eurookna.sk/wp-content/uploads/2022/11/07-DREVO-HLINIK-TITAN-MODERN-scaled.jpg',
+            alt: { 
+              sk: 'Dialóg moderných materiálov v modernej stavbe', 
+              en: 'Dialogue of modern materials in modern construction' 
+            },
+            caption: {
+              sk: 'Dialóg moderných materiálov v modernej stavbe',
+              en: 'Dialogue of modern materials in modern construction'
+            },
+            width: 1200,
+            height: 500
           }
         ],
         categories: [
           {
-            id: 'cat-wood-windows',
-            i18nKeyTitle: 'categories.wood_windows.title',
-            i18nKeyDescription: 'categories.wood_windows.desc',
-            image: '/uploads/wood-windows.jpg'
+            id: 'windows',
+            i18nKeyTitle: 'categories.windows.title',
+            i18nKeyDescription: 'categories.windows.desc',
+            image: 'https://just-eurookna.sk/wp-content/uploads/2023/04/drevene-okna-1.jpg',
+            width: 400,
+            height: 200
           },
           {
-            id: 'cat-al-windows',
-            i18nKeyTitle: 'categories.al_windows.title',
-            i18nKeyDescription: 'categories.al_windows.desc',
-            image: '/uploads/al-windows.jpg'
-          },
-          {
-            id: 'cat-doors',
+            id: 'doors',
             i18nKeyTitle: 'categories.doors.title',
             i18nKeyDescription: 'categories.doors.desc',
-            image: '/uploads/entrance-doors.jpg'
+            image: 'https://just-eurookna.sk/wp-content/uploads/2023/04/hlinikove-dvere-1.jpg',
+            width: 400,
+            height: 200
+          },
+          {
+            id: 'projects',
+            i18nKeyTitle: 'categories.projects.title',
+            i18nKeyDescription: 'categories.projects.desc',
+            image: 'https://just-eurookna.sk/wp-content/uploads/2022/11/05-DREVO-HLINIK-MODERN-scaled.jpg',
+            width: 400,
+            height: 200
           }
         ]
       }
