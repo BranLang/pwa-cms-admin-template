@@ -3,107 +3,52 @@
 /* Angular Material theming - Material Design 3 */
 @use '@angular/material' as mat;
 
-@include mat.core();
-
-// Define custom palettes
-$cyan-orange-palette: (
-  50: #e0f7fa,
-  100: #b2ebf2,
-  200: #80deea,
-  300: #4dd0e1,
-  400: #26c6da,
-  500: #00bcd4,
-  600: #00acc1,
-  700: #0097a7,
-  800: #00838f,
-  900: #006064,
-  contrast: (
-    50: #000000,
-    100: #000000,
-    200: #000000,
-    300: #000000,
-    400: #000000,
-    500: #000000,
-    600: #ffffff,
-    700: #ffffff,
-    800: #ffffff,
-    900: #ffffff,
+// Define M3 themes. M3 uses primary, secondary, and tertiary color roles.
+// We'll map your original colors to these roles.
+$light-theme: mat.define-theme((
+  color: (
+    theme-type: light,
+    primary: mat.$cyan-palette,
+    tertiary: mat.$orange-palette, // M3 uses tertiary, let's map accent to it
+  ),
+  density: (
+    scale: 0,
   )
-);
+));
 
-$magenta-violet-palette: (
-  50: #f3e5f5,
-  100: #e1bee7,
-  200: #ce93d8,
-  300: #ba68c8,
-  400: #ab47bc,
-  500: #9c27b0,
-  600: #8e24aa,
-  700: #7b1fa2,
-  800: #6a1b9a,
-  900: #4a148c,
-  contrast: (
-    50: #000000,
-    100: #000000,
-    200: #000000,
-    300: #ffffff,
-    400: #ffffff,
-    500: #ffffff,
-    600: #ffffff,
-    700: #ffffff,
-    800: #ffffff,
-    900: #ffffff,
+$dark-theme: mat.define-theme((
+  color: (
+    theme-type: dark,
+    primary: mat.$magenta-palette,
+    tertiary: mat.$violet-palette,
+  ),
+  density: (
+    scale: 0,
   )
-);
+));
 
-// Define themes
-$cyan-orange-theme: mat.define-light-theme(
-  (
-    color: (
-      primary: mat.define-palette($cyan-orange-palette, 700),
-      accent: mat.define-palette(mat.$orange-palette, A200, A100, A400),
-    ),
-    typography: mat.define-typography-config(),
-    density: 0,
-  )
-);
-
-$magenta-dark-theme: mat.define-dark-theme(
-  (
-    color: (
-      primary: mat.define-palette($magenta-violet-palette, 200),
-      accent: mat.define-palette(mat.$purple-palette, A100),
-    ),
-    typography: mat.define-typography-config(),
-    density: 0,
-  )
-);
-
-// Apply default theme
-@include mat.all-component-themes($cyan-orange-theme);
-
-// Apply dark theme when the class is present
-.magenta-theme {
-  @include mat.all-component-colors($magenta-dark-theme);
+// Apply the light theme by default. This sets all the CSS custom properties.
+html {
+  @include mat.theme($light-theme);
 }
 
+// Apply the dark theme when the `.magenta-theme` class is on the body.
+body.magenta-theme {
+  @include mat.theme($dark-theme);
+}
+
+// General styles
 html, body {
   height: 100%;
 }
 body {
   margin: 0;
-  font-family: Roboto, "Helvetica Neue", Arial, sans-serif;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
   transition: background-color 0.3s ease;
-}
 
-.mat-toolbar.mat-primary {
-  background: var(--mat-toolbar-container-background-color);
-}
-.mat-mdc-button.mat-primary,
-.mat-mdc-icon-button.mat-primary,
-.mat-mdc-raised-button.mat-primary {
-  --mdc-protected-button-container-color: var(--mdc-theme-primary);
-  --mdc-protected-button-label-text-color: #fff;
+  // Set the background and text color based on the current theme's system colors.
+  background-color: var(--mat-sys-color-surface);
+  color: var(--mat-sys-color-on-surface);
 }
 
 
