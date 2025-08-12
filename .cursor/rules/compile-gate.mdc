@@ -1,0 +1,43 @@
+---
+description: Do not claim success unless the project compiles. Enforce a verify loop with pasted logs, attempt limits, and Windows-safe commands.
+globs: ["**/*"]
+---
+
+# Success criteria (non-negotiable)
+A task is **not** complete unless:
+1) `npm run verify` exits with code 0, and  
+2) The agent pasted the last 50 lines of that command’s output, and  
+3) (If running locally) the frontend smoke test returns 200.
+
+# Operating procedure (every change batch)
+1. **Plan** minimal edits and list commands to run.  
+2. **Run** (Windows-safe):
+   - `npx ng version` (frontend) and `npx nest --version || echo skip` (backend)
+   - `npm run verify` (see scripts below)
+3. **Paste** exact command(s) and full output block.
+4. If any command fails (non-zero exit OR “ERROR in”/“Module not found”/“Undefined function”/“TypeScript error” in output):
+   - **Do not** say “should be fine now”.
+   - Propose a **single** minimal fix with file/line refs.
+   - Ask: “Apply and re-run verify?” and wait for approval (or proceed if the task explicitly says execute).
+5. **Attempt budget:** max **3 failing verify cycles** per request. After 3, stop and ask the user for guidance (versions, config, or to relax constraints).
+
+# Terminal & Windows rules
+- Use **PowerShell 7** (pwsh). If unavailable, chain with `;` not `&&`.
+- Long-lived commands (`ng serve`, `nest start --watch`) must not be used for verification. Use `ng build` and backend build instead.
+- If a command blocks the terminal, open a **new** terminal for `verify`.
+
+# Smoke test (optional when dev server is running)
+- Frontend: `curl -sSf http://localhost:4200 | Select-String -Quiet '</html>'` must succeed.
+- API: `curl -sSf http://localhost:3000/api/health` must return 200.
+- If smoke test fails, treat as a failed verify.
+
+# Phrases banned unless verify passed
+- “should be ok now”, “fixed”, “recompiling now”, “looks good” (or similar).
+
+# Angular Material theming sentinel (common failure)
+If SASS errors mention `mat.define-light-theme`/`mat.core`:
+- Ensure theme entry has **at top**:
+  ```scss
+  @use '@angular/material' as mat;
+  @use 'sass:map';
+  @include mat.core();

@@ -12,14 +12,48 @@ globs: ["src/**/*.{ts,html,scss,css}","projects/**/*.{ts,html,scss,css}"]
 - Prefer **Angular Material components** over custom widgets for standard UI (buttons, inputs, lists, tables, dialogs, menus, snackbars, tooltips, tabs, stepper, sidenav, toolbar).
 - Use **CDK** for behavior (overlay, drag-drop, portal, a11y, scrolling, virtual scroll, layout breakpoints) instead of ad-hoc DOM logic or third-party libs.
 - Component wrappers around Material are allowed only for **theming** or **composition**; keep wrappers thin (no re-exporting every input).
+# Source of truth
+- Use only components, directives, and APIs documented on **material.angular.dev** and **Angular CDK** docs.
+- Do **not** use legacy or deprecated prefixes/classes (e.g., `mat-legacy-*`).
+- Do **not** invent classes/selectors; if it isn’t in the docs or this repo, don’t write it.
 
 # Theming & tokens
 - Maintain a single theme entrypoint (e.g., `src/styles/theme.scss`) as the **only place** to define palettes, typography, density, and shape.
 - Implement **at least two schemes**: `light` and `dark`. Toggle with an attribute on `<html>` or `<body>` (e.g., `[data-theme="dark"]`); **no full page reload** for theme switch.
-- Prefer **design tokens / CSS variables** (when available in your version) or the **official Sass theming API**. Do **not** hardcode colors on Material internals.
-- Do **not** style `.mat-*` internals directly. Use component inputs, theme tokens, or exposed CSS parts/vars. If a change requires deep selectors, reconsider the design.
-- **Elevation:** use provided utilities (e.g., `mat-elevation-zN`) or tokenized shadows; never hardcode box-shadow values.
-- **Density:** apply Material density scale consistently (coarse/comfortable/compact). Do not mix arbitrary paddings per component.
+- **Material 3 theming** (Angular Material v19+): use the new API. In your theme file, import Material with `@use '@angular/material' as mat;` and apply a theme via `@include mat.theme(...)`. For example:
+  ```scss
+  @use '@angular/material' as mat;
+
+  html:not([data-theme="dark"]) {
+    color-scheme: light;
+    @include mat.theme((
+      color: (
+        theme-type: light,
+        primary: mat.$blue-palette,
+        tertiary: mat.$orange-palette
+      ),
+      typography: Roboto,
+      density: 0
+    ));
+  }
+
+  html[data-theme="dark"] {
+    color-scheme: dark;
+    @include mat.theme((
+      color: (
+        theme-type: dark
+      ),
+      typography: Roboto,
+      density: 0
+    ));
+  }
+```
+- Do not call mat.core() or the legacy helpers define-light-theme, define-palette, or any mat.m2-* functions in Material 3 files. Use Material design tokens and CSS variables instead of hardcoding colors.
+- Do not style .mat-* internals directly. Use component inputs, theme tokens, or exposed CSS parts/vars. If a change requires deep selectors, reconsider the design.
+- Elevation: use provided utilities (e.g., mat-elevation-zN) or tokenized shadows; never hardcode box-shadow values.
+- Density: apply Material density scale consistently (coarse/comfortable/compact). Do not mix arbitrary paddings per component.
+
+
 
 # Layout & spacing
 - Use responsive layout via **flexbox** or **CSS grid** with relative units (`rem`, `em`, `%`, `vh`, `vw`). Avoid `px` unless there’s no alternative.

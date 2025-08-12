@@ -1,4 +1,4 @@
-import { ApplicationConfig, importProvidersFrom, provideZoneChangeDetection } from '@angular/core';
+import { ApplicationConfig, importProvidersFrom, provideZonelessChangeDetection } from '@angular/core';
 import { provideRouter, withComponentInputBinding } from '@angular/router';
 import { routes } from './app.routes';
 import { provideHttpClient, withFetch, withInterceptors } from '@angular/common/http';
@@ -6,17 +6,22 @@ import { provideClientHydration, withEventReplay } from '@angular/platform-brows
 import { InMemoryWebApiModule } from 'angular-in-memory-web-api';
 import { MockDataService } from './mock/mock-data.service';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
-import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 
-export function HttpLoaderFactory() {
-  return new TranslateHttpLoader();
+// Custom loader that fetches translations from i18n folder
+export class CustomTranslateLoader implements TranslateLoader {
+  constructor(private http: HttpClient) {}
+
+  getTranslation(lang: string): Observable<Record<string, string | Record<string, string>>> {
+    return this.http.get(`./assets/i18n/${lang}.json`) as Observable<Record<string, string | Record<string, string>>>;
+  }
 }
 
 export const appConfig: ApplicationConfig = {
   providers: [
-    provideZoneChangeDetection({ eventCoalescing: true }),
+    provideZonelessChangeDetection(),
     provideRouter(routes, withComponentInputBinding()),
     provideHttpClient(withFetch(), withInterceptors([])),
     provideClientHydration(withEventReplay()),
@@ -30,12 +35,12 @@ export const appConfig: ApplicationConfig = {
     ),
     importProvidersFrom(
       TranslateModule.forRoot({
+        defaultLanguage: 'sk',
         loader: {
           provide: TranslateLoader,
-          useFactory: HttpLoaderFactory,
+          useClass: CustomTranslateLoader,
           deps: [HttpClient],
         },
-        defaultLanguage: 'sk',
       })
     ),
     provideAnimationsAsync(),

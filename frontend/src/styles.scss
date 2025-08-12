@@ -1,27 +1,21 @@
 /* Global styles */
-@use 'app/theming' as *;
+@use 'app/theming' as theming;
 @use '@angular/material' as mat;
 
-// Apply default theme and custom properties
-@include mat.all-component-themes($cyan-orange-theme);
-:root {
-  @include apply-custom-theme-properties($cyan-orange-theme);
+// Apply default theme
+@include mat.theme(theming.$cyan-orange-theme);
+
+// Apply other themes when their classes are present
+.magenta-violet-theme {
+  @include mat.theme(theming.$magenta-violet-theme);
 }
 
-// Apply dark theme and custom properties when the class is present
-.magenta-theme {
-  @include mat.all-component-colors($magenta-dark-theme);
-  @include apply-custom-theme-properties($magenta-dark-theme);
+.blue-red-theme {
+  @include mat.theme(theming.$blue-red-theme);
 }
 
-.deeppurple-amber-theme {
-  @include mat.all-component-colors($deeppurple-amber-theme);
-  @include apply-custom-theme-properties($deeppurple-amber-theme);
-}
-
-.pink-bluegrey-theme {
-  @include mat.all-component-colors($pink-bluegrey-theme);
-  @include apply-custom-theme-properties($pink-bluegrey-theme);
+.green-blue-theme {
+  @include mat.theme(theming.$green-blue-theme);
 }
 
 // General styles
@@ -33,7 +27,6 @@ body {
   font-family: Roboto, "Helvetica Neue", sans-serif;
   transition: background-color 0.3s ease;
 }
-
 
 /* Swiper styles after theming */
 @import 'swiper/swiper-bundle.css';
