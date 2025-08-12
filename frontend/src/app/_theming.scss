@@ -1,49 +1,40 @@
 @use '@angular/material' as mat;
 
-// Theme 1: Blue-Orange (Light)
-$blue-orange-theme: mat.define-theme((
-  color: (
-    theme-type: light,
-    primary: mat.$blue-palette,
-    tertiary: mat.$orange-palette,
-  ),
-  density: (
-    scale: 0,
-  )
-));
+// Angular 20 + Material 3 palette-based themes (supported API)
+// Themes: rose-red, azure-blue, magenta-violet, cyan-orange
 
-// Theme 2: Blue-Red (Dark)
-$blue-red-theme: mat.define-theme((
+$rose-red-theme: mat.define-theme((
   color: (
     theme-type: dark,
-    primary: mat.$blue-palette,
+    primary: mat.$rose-palette,
     tertiary: mat.$red-palette,
   ),
-  density: (
-    scale: 0,
-  )
+  density: (scale: 0)
 ));
 
-// Theme 3: Green-Blue (Light)
-$green-blue-theme: mat.define-theme((
+$azure-blue-theme: mat.define-theme((
   color: (
     theme-type: light,
-    primary: mat.$green-palette,
+    primary: mat.$azure-palette,
     tertiary: mat.$blue-palette,
   ),
-  density: (
-    scale: 0,
-  )
+  density: (scale: 0)
 ));
 
-// Theme 4: Red-Orange (Dark)
-$red-orange-theme: mat.define-theme((
+$magenta-violet-theme: mat.define-theme((
   color: (
     theme-type: dark,
-    primary: mat.$red-palette,
+    primary: mat.$violet-palette,
+    tertiary: mat.$magenta-palette,
+  ),
+  density: (scale: 0)
+));
+
+$cyan-orange-theme: mat.define-theme((
+  color: (
+    theme-type: dark,
+    primary: mat.$cyan-palette,
     tertiary: mat.$orange-palette,
   ),
-  density: (
-    scale: 0,
-  )
+  density: (scale: -1)
 ));

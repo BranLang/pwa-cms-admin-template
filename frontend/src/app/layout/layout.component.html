@@ -3,9 +3,11 @@
 
   <span class="spacer"></span>
 
+
+
   <nav class="nav">
-    @if (menuItems() && menuItems()!.length > 0) {
-      @for (m of menuItems()!; track m.id) {
+    @if (menuItems() && menuItems().length > 0) {
+      @for (m of menuItems(); track m.id) {
         @if (!m.children?.length) {
           <a mat-button [routerLink]="[m.path]" routerLinkActive="active-link">{{ m.i18nKey | translate }}</a>
         } @else {
@@ -38,6 +40,8 @@
           </mat-menu>
         }
       }
+    } @else {
+      <span style="color: white; font-size: 12px;">No menu items loaded</span>
     }
   </nav>
 
@@ -54,16 +58,18 @@
 
     <!-- Theme menu -->
     <mat-menu #themeMenu="matMenu" [overlapTrigger]="false" class="theme-menu">
-      @for (opt of availableThemes; track trackById($index, opt)) {
-        <button mat-menu-item (click)="setTheme(opt.id)" [class.active]="theme() === opt.id">
-          <mat-radio-button
-            [checked]="theme() === opt.id"
-            [value]="opt.id"
-            class="theme-radio">
-          </mat-radio-button>
-          <div class="theme-content">
-            <span class="theme-name">{{ opt.name }}</span>
-            <span class="theme-description">{{ opt.description }}</span>
+      @for (opt of availableThemes(); track trackById($index, opt)) {
+        <button mat-menu-item (click)="setTheme(opt.id)" [class.selected]="theme() === opt.id">
+          <div class="theme-option">
+            <div class="theme-swatch" [style.background]="'linear-gradient(135deg, ' + opt.primaryColor + ' 0%, ' + opt.primaryColor + ' 50%, ' + opt.accentColor + ' 50%, ' + opt.accentColor + ' 100%)'">
+              @if (theme() === opt.id) {
+                <mat-icon class="selected-icon">check_circle</mat-icon>
+              }
+            </div>
+            <div class="theme-info">
+              <span class="theme-name">{{ opt.name }}</span>
+              <span class="theme-description">{{ opt.description }}</span>
+            </div>
           </div>
         </button>
       }

@@ -36,6 +36,11 @@
                 "input": "src/assets"
               },
               {
+                "glob": "*.css",
+                "input": "node_modules/@angular/material/prebuilt-themes",
+                "output": "themes/material"
+              },
+              {
                 "glob": "**/*",
                 "input": "../server/uploads",
                 "output": "uploads"

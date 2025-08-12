@@ -2,23 +2,52 @@
 @use 'app/theming' as theming;
 @use '@angular/material' as mat;
 
-// Apply default theme (Blue-Orange)
-@include mat.theme(theming.$blue-orange-theme);
-
-// Apply other themes when their classes are present
-html[data-theme="blue-red"],
-body[data-theme="blue-red"] {
-  @include mat.theme(theming.$blue-red-theme);
+// Define CSS variables for Material components to fix invisible text
+// Use tokens emitted by Material; avoid fixed colors so they follow the active theme
+:root {
+  --mat-toolbar-container-text-color: var(--mat-sys-on-primary);
+  --mat-menu-item-label-text-color: var(--mat-sys-on-surface);
+  --mat-menu-item-subtitle-text-color: var(--mat-sys-on-surface-variant);
+  --mat-menu-item-icon-color: var(--mat-sys-on-surface-variant);
 }
 
-html[data-theme="green-blue"],
-body[data-theme="green-blue"] {
-  @include mat.theme(theming.$green-blue-theme);
+// Apply default palette-based theme and expose system tokens
+@include mat.theme(theming.$azure-blue-theme);
+@include mat.system-level-colors(theming.$azure-blue-theme);
+@include mat.system-level-typography(theming.$azure-blue-theme);
+
+// CSS custom properties (avoid hardcoded hex where possible; lean on Material tokens)
+:root {
+  // Toolbar background follows primary
+  --mat-toolbar-container-background-color: var(--mat-sys-primary);
 }
 
-html[data-theme="red-orange"],
-body[data-theme="red-orange"] {
-  @include mat.theme(theming.$red-orange-theme);
+html[data-theme="azure-blue"] {
+  color-scheme: light;
+  @include mat.theme(theming.$azure-blue-theme);
+  @include mat.system-level-colors(theming.$azure-blue-theme);
+  @include mat.system-level-typography(theming.$azure-blue-theme);
+}
+
+html[data-theme="rose-red"] {
+  color-scheme: dark;
+  @include mat.theme(theming.$rose-red-theme);
+  @include mat.system-level-colors(theming.$rose-red-theme);
+  @include mat.system-level-typography(theming.$rose-red-theme);
+}
+
+html[data-theme="magenta-violet"] {
+  color-scheme: dark;
+  @include mat.theme(theming.$magenta-violet-theme);
+  @include mat.system-level-colors(theming.$magenta-violet-theme);
+  @include mat.system-level-typography(theming.$magenta-violet-theme);
+}
+
+html[data-theme="cyan-orange"] {
+  color-scheme: light;
+  @include mat.theme(theming.$cyan-orange-theme);
+  @include mat.system-level-colors(theming.$cyan-orange-theme);
+  @include mat.system-level-typography(theming.$cyan-orange-theme);
 }
 
 // General styles
@@ -29,21 +58,13 @@ html, body {
 body {
   margin: 0;
   font-family: Roboto, "Helvetica Neue", sans-serif;
-  transition: background-color 0.3s ease, color 0.3s ease;
+  background: var(--mat-sys-surface);
+  color: var(--mat-sys-on-surface); 
 }
 
-// Force Material buttons to be visible
-.mat-mdc-button, .mat-mdc-raised-button, .mat-mdc-outlined-button, .mat-mdc-unelevated-button {
-  display: inline-block !important;
-  visibility: visible !important;
-  opacity: 1 !important;
-}
+body.dark-mode {
+  color-scheme: dark;
 
-// Override any Material button hiding
-.mat-mdc-button-base {
-  display: inline-block !important;
-  visibility: visible !important;
-  opacity: 1 !important;
 }
 
 /* Swiper styles after theming */

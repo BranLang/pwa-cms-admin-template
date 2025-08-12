@@ -10,6 +10,12 @@
   padding: 0 1rem;
   min-height: 4rem;
   border-bottom: 1px solid var(--mat-divider-color, rgba(0,0,0,0.12));
+  background-color: var(--mat-toolbar-container-background-color, var(--mdc-theme-primary, #1976d2));
+  color: var(--mat-toolbar-container-text-color);
+  // Force Material button/icon colors inside toolbar to use toolbar contrast color
+  --mdc-text-button-label-text-color: var(--mat-toolbar-container-text-color);
+  --mdc-icon-button-icon-color: var(--mat-toolbar-container-text-color);
+  transition: background-color 0.3s ease;
 }
 
 .brand {
@@ -31,84 +37,44 @@
   display: flex;
   gap: 0.5rem;
   align-items: center;
-  // Debug styling to see the nav area
-  border: 3px solid lime;
-  background: rgba(0, 255, 0, 0.2);
-  padding: 1rem;
-  min-height: 4rem;
   
-  // Force all navigation elements to be visible
-  * {
-    display: block !important;
-    visibility: visible !important;
-    opacity: 1 !important;
-  }
-  
-  // Navigation links - following Material Design standards with !important overrides
+  // Navigation links - proper Material Design styling
   a[mat-button] {
-    display: inline-block !important;
-    visibility: visible !important;
-    opacity: 1 !important;
-    color: var(--mat-toolbar-container-text-color, #fff) !important;
+    color: inherit;  // use the toolbar's contrast colour automatically
     text-decoration: none;
     font-weight: 500;
     border-radius: 0.25rem;
     transition: all 0.2s ease;
     padding: 0.5rem 1rem;
-    background: transparent !important;
-    border: none !important;
-    min-width: auto !important;
-    min-height: auto !important;
     
     &:hover {
-      background-color: rgba(255, 255, 255, 0.1) !important;
+      background-color: rgba(255, 255, 255, 0.1);
     }
     
     &.active-link {
-      background-color: rgba(255, 255, 255, 0.2) !important;
-    }
-    
-    // Override any Material default styles
-    ::ng-deep .mdc-button__label {
-      color: var(--mat-toolbar-container-text-color, #fff) !important;
-      visibility: visible !important;
-      opacity: 1 !important;
+      background-color: rgba(255, 255, 255, 0.2);
     }
   }
   
-  // Menu trigger buttons with proper Material styling and !important overrides
+  // Menu trigger buttons with proper Material styling
   button[mat-button].menu-trigger {
-    display: inline-block !important;
-    visibility: visible !important;
-    opacity: 1 !important;
-    color: var(--mat-toolbar-container-text-color, #fff) !important;
+    color: inherit;  // use the toolbar's contrast colour automatically
     font-weight: 500;
     border-radius: 0.25rem;
     transition: all 0.2s ease;
     padding: 0.5rem 1rem;
-    background: transparent !important;
-    border: none !important;
-    min-width: auto !important;
-    min-height: auto !important;
-    display: flex !important;
+    display: flex;
     align-items: center;
     gap: 0.25rem;
     
     &:hover {
-      background-color: rgba(255, 255, 255, 0.1) !important;
+      background-color: rgba(255, 255, 255, 0.1);
     }
     
     mat-icon {
       font-size: 1.125rem;
       width: 1.125rem;
       height: 1.125rem;
-    }
-    
-    // Override any Material default styles
-    ::ng-deep .mdc-button__label {
-      color: var(--mat-toolbar-container-text-color, #fff) !important;
-      visibility: visible !important;
-      opacity: 1 !important;
     }
   }
 }
@@ -133,41 +99,75 @@
   overflow-y: auto;
 }
 
-// Theme menu styling following Material Design
-.theme-menu {
+// Theme menu styling exactly like Angular Material documentation
+::ng-deep .theme-menu {
+  min-width: 240px !important;
+  
   .mat-mdc-menu-item {
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
-    padding: 0.75rem 1rem;
-    min-height: 3rem;
+    padding: 8px 16px !important;
+    min-height: 48px !important;
     
-    .theme-radio {
-      margin: 0;
+    .theme-option {
+      display: flex !important;
+      align-items: center !important;
+      gap: 12px !important;
+      width: 100% !important;
       
-      ::ng-deep .mdc-radio {
-        padding: 0;
+      .theme-swatch {
+        position: relative !important;
+        width: 32px !important;
+        height: 32px !important;
+        border-radius: 50% !important;
+        flex-shrink: 0 !important;
+        border: 2px solid rgba(0,0,0,0.12) !important;
+        
+        .selected-icon {
+          position: absolute !important;
+          top: 50% !important;
+          left: 50% !important;
+          transform: translate(-50%, -50%) !important;
+          color: white !important;
+          font-size: 18px !important;
+          width: 18px !important;
+          height: 18px !important;
+          text-shadow: 0 1px 3px rgba(0,0,0,0.5) !important;
+        }
+      }
+      
+      .theme-info {
+        display: flex !important;
+        flex-direction: column !important;
+        gap: 2px !important;
+        flex: 1 !important;
+        
+        .theme-name {
+          font-weight: 500 !important;
+          color: rgba(0,0,0,0.87) !important;
+          font-size: 14px !important;
+          line-height: 20px !important;
+        }
+        
+        .theme-description {
+          font-size: 12px !important;
+          color: rgba(0,0,0,0.6) !important;
+          line-height: 16px !important;
+        }
       }
     }
     
-    .theme-content {
-      display: flex;
-      flex-direction: column;
-      gap: 0.25rem;
+    &.selected {
+      background-color: color-mix(in oklab, var(--mat-sys-primary), transparent 92%) !important;
       
-      .theme-name {
-        font-weight: 500;
-        color: var(--mat-menu-item-label-text-color, rgba(0,0,0,0.87));
-      }
-      
-      .theme-description {
-        font-size: 0.875rem;
-        color: var(--mat-menu-item-subtitle-text-color, rgba(0,0,0,0.6));
+      .theme-swatch {
+        border-color: var(--mat-sys-primary) !important;
+        border-width: 2px !important;
       }
     }
     
-    &.active {
-      background-color: var(--mat-menu-item-hover-state-layer-color, rgba(0,0,0,0.04));
+    &:hover {
+      .theme-swatch {
+        border-color: var(--mat-sys-primary) !important;
+      }
     }
   }
 }

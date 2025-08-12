@@ -9,6 +9,7 @@ import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
+import { provideAnimations } from '@angular/platform-browser/animations';
 
 // Custom loader that fetches translations from public/i18n folder
 export class CustomTranslateLoader implements TranslateLoader {
@@ -24,6 +25,8 @@ export const appConfig: ApplicationConfig = {
     provideRouter(routes, withComponentInputBinding()),
     provideHttpClient(withFetch(), withInterceptors([])),
     provideClientHydration(withEventReplay()),
+    // Proper Angular Material animations
+    provideAnimations(),
     importProvidersFrom(
       // The `environment` file is not used to simplify the setup.
       // The In-Memory Web API is enabled by default for this template.
