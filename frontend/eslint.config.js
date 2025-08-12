@@ -39,5 +39,8 @@ module.exports = tseslint.config(
       ...angular.configs.templateAccessibility,
     ],
     rules: {},
+  },
+  {
+    ignores: ["node_modules/", "dist/", ".angular/", ".vscode/", "coverage/"],
   }
 );

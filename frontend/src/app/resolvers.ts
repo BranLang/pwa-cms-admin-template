@@ -2,11 +2,10 @@ import { inject } from '@angular/core';
 import { ActivatedRouteSnapshot, ResolveFn } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { firstValueFrom } from 'rxjs';
-import { Test } from './test';
 import { ApiService, HomeResponse, MenuItemResponse, SettingsResponse } from './services/api.service';
 
 export const settingsResolver: ResolveFn<SettingsResponse> = () => {
-  return inject(Test).getSettings();
+  return inject(ApiService).getSettings();
 };
 
 export const menuResolver: ResolveFn<MenuItemResponse[]> = () => {

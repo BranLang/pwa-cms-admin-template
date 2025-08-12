@@ -14,6 +14,7 @@
   align-items: center;
   padding: 0 24px;
   height: 64px;
+  border-bottom: 1px solid rgba(0,0,0,0.12); // Add a subtle border
 }
 
 .brand {
@@ -38,6 +39,7 @@
 .actions {
   display: flex;
   align-items: center;
+  gap: 8px; // Add a gap between buttons
 }
 
 .layout-content {
@@ -47,43 +49,56 @@
   overflow-y: auto;
 }
 
-// Theme menu styles
-.theme-menu {
-  .mat-mdc-menu-item {
-    display: flex;
-    align-items: center;
-    gap: 16px;
-  }
+// Theme menu styles to match material.angular.dev
+.theme-menu .mat-mdc-menu-item {
+  height: 48px;
+  padding: 0 16px !important; // Use !important to override default styles
+  display: flex;
+  align-items: center;
 
   .theme-radio {
-    font-size: 20px;
-    width: 20px;
-    height: 20px;
+    margin-right: 16px;
+    color: rgba(0,0,0,.6); // Unchecked radio color
+  }
+
+  &.active .theme-radio {
+    color: var(--mat-option-selected-state-label-text-color); // Checked radio color from theme
   }
 
   .theme-name {
-    flex: 1;
+    flex-grow: 1;
+    font-size: 14px;
+    line-height: 20px;
   }
 
   .theme-swatch {
     width: 32px;
-    height: 24px;
-    border-radius: 4px;
-    border: 1px solid rgba(0,0,0,.12);
-    background: linear-gradient(180deg, var(--swatch-primary) 50%, var(--swatch-bg) 50%);
+    height: 32px;
+    border-radius: 50%; // Circular swatch
+    border: 1px solid rgba(0,0,0,0.12);
+    margin-left: 16px;
+    background: linear-gradient(135deg, var(--swatch-bg) 50%, var(--swatch-primary) 50%);
   }
 }
 
-// Language menu styles
-.lang-menu {
-  .mat-mdc-menu-item {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-  }
+
+// Language menu styles to match theme menu
+.lang-menu .mat-mdc-menu-item {
+  height: 48px;
+  padding: 0 16px !important;
+  display: flex;
+  align-items: center;
+  gap: 16px;
 
   .lang-code {
-    font-weight: bold;
+    font-weight: 500;
+    width: 28px; // Align with theme menu text
+  }
+
+  .lang-name {
+    flex-grow: 1;
+    font-size: 14px;
+    line-height: 20px;
   }
 }
 

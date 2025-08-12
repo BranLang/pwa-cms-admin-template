@@ -41,7 +41,7 @@
     <!-- Theme menu -->
     <mat-menu #themeMenu="matMenu" [overlapTrigger]="false" class="theme-menu">
       @for (opt of availableThemes; track trackById($index, opt)) {
-        <button mat-menu-item (click)="setTheme(opt.id)">
+        <button mat-menu-item (click)="setTheme(opt.id)" [class.active]="theme() === opt.id">
           <mat-icon
             class="theme-radio"
             [fontIcon]="theme() === opt.id ? 'radio_button_checked' : 'radio_button_unchecked'"

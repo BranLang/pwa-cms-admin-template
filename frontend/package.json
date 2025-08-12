@@ -9,7 +9,11 @@
     "test": "ng test",
     "images:compress": "node tools/compress-images.mjs",
     "serve:ssr:frontend": "node dist/frontend/server/server.mjs",
-    "lint": "ng lint"
+    "lint": "npx eslint . --ext .ts,.html",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "build:web": "npx ng build --configuration development --no-progress",
+    "build:api": "npx nest build",
+    "verify": "npm run lint && npm run typecheck && npm run build:web && npm run build:api"
   },
   "prettier": {
     "overrides": [

@@ -1,8 +1,16 @@
+@use '@angular/material' as mat;
+
+:host {
+  display: block;
+  // Use theme-aware background color
+  background-color: var(--mat-app-background-color);
+  color: var(--mat-app-text-color);
+}
+
 .hero {
   width: 100%;
-  height: 500px;
+  height: clamp(300px, 60vh, 500px); // Use clamp for responsive height
   background-color: #f5f5f5;
-  margin-top: 64px; // Account for fixed toolbar
 }
 
 swiper-container {
@@ -51,7 +59,7 @@ swiper-slide {
 }
 
 .categories {
-  padding: 40px 0;
+  padding: 40px 24px; // Add horizontal padding
 }
 
 .container {
@@ -63,14 +71,16 @@ swiper-slide {
 }
 
 .card {
-  background-color: #fff;
-  border-radius: 10px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  // Use theme-aware background and shadow
+  background-color: var(--mat-card-background-color);
+  box-shadow: var(--mat-card-box-shadow);
+  border-radius: 8px;
   overflow: hidden;
-  transition: transform 0.3s ease;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
 
   &:hover {
     transform: translateY(-5px);
+    box-shadow: var(--mat-card-hover-box-shadow);
   }
 
   img {
@@ -86,11 +96,13 @@ swiper-slide {
       margin-top: 0;
       font-size: 1.25rem;
       font-weight: 600;
-      color: #333;
+      // Use theme-aware text color
+      color: var(--mat-card-title-text-color);
     }
 
     p {
-      color: #666;
+      // Use theme-aware text color
+      color: var(--mat-card-subtitle-text-color);
       line-height: 1.5;
     }
   }

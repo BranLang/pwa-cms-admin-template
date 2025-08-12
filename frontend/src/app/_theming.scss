@@ -1,0 +1,82 @@
+@use '@angular/material' as mat;
+@use 'sass:map';
+
+// Must be included once per application.
+@include mat.core();
+
+// Define custom palettes
+$cyan-orange-palette: (
+  50: #e0f7fa, 100: #b2ebf2, 200: #80deea, 300: #4dd0e1, 400: #26c6da,
+  500: #00bcd4, 600: #00acc1, 700: #0097a7, 800: #00838f, 900: #006064,
+  contrast: (50: #000, 100: #000, 200: #000, 300: #000, 400: #000, 500: #000,
+    600: #fff, 700: #fff, 800: #fff, 900: #fff,)
+);
+
+$magenta-violet-palette: (
+  50: #f3e5f5, 100: #e1bee7, 200: #ce93d8, 300: #ba68c8, 400: #ab47bc,
+  500: #9c27b0, 600: #8e24aa, 700: #7b1fa2, 800: #6a1b9a, 900: #4a148c,
+  contrast: (50: #000, 100: #000, 200: #000, 300: #fff, 400: #fff, 500: #fff,
+    600: #fff, 700: #fff, 800: #fff, 900: #fff,)
+);
+
+$deeppurple-amber-palette: (
+  50: #ede7f6, 100: #d1c4e9, 200: #b39ddb, 300: #9575cd, 400: #7e57c2,
+  500: #673ab7, 600: #5e35b1, 700: #512da8, 800: #4527a0, 900: #311b92,
+  contrast: (50: #000, 100: #000, 200: #000, 300: #fff, 400: #fff, 500: #fff,
+    600: #fff, 700: #fff, 800: #fff, 900: #fff,)
+);
+
+$pink-bluegrey-palette: (
+  50: #fce4ec, 100: #f8bbd0, 200: #f48fb1, 300: #f06292, 400: #ec407a,
+  500: #e91e63, 600: #d81b60, 700: #c2185b, 800: #ad1457, 900: #880e4f,
+  contrast: (50: #000, 100: #000, 200: #000, 300: #000, 400: #000, 500: #fff,
+    600: #fff, 700: #fff, 800: #fff, 900: #fff,)
+);
+
+// Define themes
+$cyan-orange-theme: mat.define-light-theme((
+  color: (
+    primary: mat.define-palette($cyan-orange-palette, 700),
+    accent: mat.define-palette(mat.$orange-palette, A200, A100, A400),
+  ),
+  typography: mat.define-typography-config(),
+  density: 0,
+));
+
+$magenta-dark-theme: mat.define-dark-theme((
+  color: (
+    primary: mat.define-palette($magenta-violet-palette, 200),
+    accent: mat.define-palette(mat.$purple-palette, A100),
+  ),
+  typography: mat.define-typography-config(),
+  density: 0,
+));
+
+$deeppurple-amber-theme: mat.define-light-theme((
+  color: (
+    primary: mat.define-palette($deeppurple-amber-palette, 700),
+    accent: mat.define-palette(mat.$amber-palette, A200, A100, A400),
+  ),
+  typography: mat.define-typography-config(),
+  density: 0,
+));
+
+$pink-bluegrey-theme: mat.define-dark-theme((
+  color: (
+    primary: mat.define-palette($pink-bluegrey-palette, 700),
+    accent: mat.define-palette(mat.$blue-grey-palette, A200, A100, A400),
+  ),
+  typography: mat.define-typography-config(),
+  density: 0,
+));
+
+// Define a mixin to apply theme-specific custom properties
+@mixin apply-custom-theme-properties($theme) {
+  --mat-app-background-color: #{mat.get-theme-color($theme, background, background)};
+  --mat-app-text-color: #{mat.get-theme-color($theme, foreground, text)};
+  --mat-card-background-color: #{mat.get-theme-color($theme, background, card)};
+  --mat-card-title-text-color: #{mat.get-theme-color($theme, foreground, title)};
+  --mat-card-subtitle-text-color: #{mat.get-theme-color($theme, foreground, secondary-text)};
+  --mat-card-box-shadow: #{mat.get-theme-elevation($theme, 2)};
+  --mat-card-hover-box-shadow: #{mat.get-theme-elevation($theme, 8)};
+}

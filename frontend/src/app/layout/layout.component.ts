@@ -45,12 +45,20 @@ export class LayoutComponent {
   private readonly platformId = inject(PLATFORM_ID);
   private readonly translate = inject(TranslateService);
   private readonly document = inject(DOCUMENT);
+  private readonly localStorage = this.document.defaultView?.localStorage;
   
   constructor() {
-    const initialSettings = this.route.snapshot.data['settings'] as SettingsResponse;
-    if (initialSettings) {
-      const initialTheme: string = initialSettings.theme === 'dark' ? 'magenta-theme' : 'cyan-orange-theme';
-      this.setTheme(initialTheme);
+    if (isPlatformBrowser(this.platformId)) {
+      const storedTheme = this.localStorage?.getItem('theme');
+      if (storedTheme) {
+        this.setTheme(storedTheme);
+      } else {
+        const initialSettings = this.route.snapshot.data['settings'] as SettingsResponse;
+        if (initialSettings) {
+          const initialTheme: string = initialSettings.theme === 'dark' ? 'magenta-theme' : 'cyan-orange-theme';
+          this.setTheme(initialTheme);
+        }
+      }
     }
   }
 
@@ -62,6 +70,8 @@ export class LayoutComponent {
   protected readonly availableThemes: ThemeOption[] = [
     { id: 'cyan-orange-theme', name: 'Cyan & Orange', swatch: { background: '#E0F7FA', primary: '#0097A7' } },
     { id: 'magenta-theme', name: 'Magenta & Violet', swatch: { background: '#F3E5F5', primary: '#7B1FA2' } },
+    { id: 'deeppurple-amber-theme', name: 'Deep Purple & Amber', swatch: { background: '#EDE7F6', primary: '#512DA8' } },
+    { id: 'pink-bluegrey-theme', name: 'Pink & Blue-grey', swatch: { background: '#FCE4EC', primary: '#C2185B' } },
   ];
 
   protected readonly lang = this.languageService.language;
@@ -91,6 +101,7 @@ export class LayoutComponent {
     
     // Add the new theme class
     body.classList.add(themeId);
+    this.localStorage?.setItem('theme', themeId);
   }
 
   protected trackById = (_: number, o: ThemeOption) => o.id;

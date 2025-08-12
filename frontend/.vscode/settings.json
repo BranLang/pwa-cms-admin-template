@@ -1,0 +1,12 @@
+{
+    "terminal.integrated.defaultProfile.windows": "PowerShell",
+    "terminal.integrated.profiles.windows": {
+      "PowerShell": {
+        "path": "C:\\Program Files\\PowerShell\\7\\pwsh.exe"
+        // If you used the portable ZIP, point to that path instead.
+        // e.g. "C:\\Users\\you\\Apps\\PowerShell-7\\pwsh.exe"
+      }
+    },
+    // Make tasks/scripts also use pwsh
+    "terminal.integrated.automationShell.windows": "C:\\Program Files\\PowerShell\\7\\pwsh.exe"
+  }

@@ -1,40 +1,27 @@
 /* Global styles */
-
-/* Angular Material theming - Material Design 3 */
+@use 'app/theming' as *;
 @use '@angular/material' as mat;
 
-// Define M3 themes. M3 uses primary, secondary, and tertiary color roles.
-// We'll map your original colors to these roles.
-$light-theme: mat.define-theme((
-  color: (
-    theme-type: light,
-    primary: mat.$cyan-palette,
-    tertiary: mat.$orange-palette, // M3 uses tertiary, let's map accent to it
-  ),
-  density: (
-    scale: 0,
-  )
-));
-
-$dark-theme: mat.define-theme((
-  color: (
-    theme-type: dark,
-    primary: mat.$magenta-palette,
-    tertiary: mat.$violet-palette,
-  ),
-  density: (
-    scale: 0,
-  )
-));
-
-// Apply the light theme by default. This sets all the CSS custom properties.
-html {
-  @include mat.theme($light-theme);
+// Apply default theme and custom properties
+@include mat.all-component-themes($cyan-orange-theme);
+:root {
+  @include apply-custom-theme-properties($cyan-orange-theme);
 }
 
-// Apply the dark theme when the `.magenta-theme` class is on the body.
-body.magenta-theme {
-  @include mat.theme($dark-theme);
+// Apply dark theme and custom properties when the class is present
+.magenta-theme {
+  @include mat.all-component-colors($magenta-dark-theme);
+  @include apply-custom-theme-properties($magenta-dark-theme);
+}
+
+.deeppurple-amber-theme {
+  @include mat.all-component-colors($deeppurple-amber-theme);
+  @include apply-custom-theme-properties($deeppurple-amber-theme);
+}
+
+.pink-bluegrey-theme {
+  @include mat.all-component-colors($pink-bluegrey-theme);
+  @include apply-custom-theme-properties($pink-bluegrey-theme);
 }
 
 // General styles
@@ -45,10 +32,6 @@ body {
   margin: 0;
   font-family: Roboto, "Helvetica Neue", sans-serif;
   transition: background-color 0.3s ease;
-
-  // Set the background and text color based on the current theme's system colors.
-  background-color: var(--mat-sys-color-surface);
-  color: var(--mat-sys-color-on-surface);
 }
 
 

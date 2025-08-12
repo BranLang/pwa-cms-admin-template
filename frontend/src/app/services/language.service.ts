@@ -5,13 +5,16 @@ import { isPlatformBrowser } from '@angular/common';
 
 @Injectable({ providedIn: 'root' })
 export class LanguageService {
-  private readonly currentLanguage = signal<LanguageCode>('sk');
   private readonly platformId = inject(PLATFORM_ID);
   private readonly translate = inject(TranslateService);
+  private readonly localStorage = isPlatformBrowser(this.platformId) ? window.localStorage : undefined;
+
+  private readonly currentLanguage = signal<LanguageCode>(this.getInitialLanguage());
 
   constructor() {
     this.translate.addLangs(['sk', 'en']);
     this.translate.setDefaultLang('sk');
+
     if (isPlatformBrowser(this.platformId)) {
       this.translate.use(this.currentLanguage());
     }
@@ -21,6 +24,7 @@ export class LanguageService {
       if (isPlatformBrowser(this.platformId)) {
         this.translate.use(lang);
         document.documentElement.lang = lang;
+        this.localStorage?.setItem('language', lang);
       }
     });
   }
@@ -31,6 +35,21 @@ export class LanguageService {
 
   switchLanguage(lang: LanguageCode) {
     this.currentLanguage.set(lang);
+  }
+
+  private getInitialLanguage(): LanguageCode {
+    if (!isPlatformBrowser(this.platformId)) {
+      return 'sk';
+    }
+    const storedLang = this.localStorage?.getItem('language');
+    if (storedLang === 'sk' || storedLang === 'en') {
+      return storedLang;
+    }
+    const browserLang = this.translate.getBrowserLang();
+    if (browserLang === 'sk' || browserLang === 'en') {
+      return browserLang;
+    }
+    return 'sk';
   }
 }
 
