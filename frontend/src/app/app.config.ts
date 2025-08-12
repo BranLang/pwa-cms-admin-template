@@ -1,4 +1,4 @@
-import { ApplicationConfig, importProvidersFrom, provideZonelessChangeDetection } from '@angular/core';
+import { ApplicationConfig, importProvidersFrom } from '@angular/core';
 import { provideRouter, withComponentInputBinding } from '@angular/router';
 import { routes } from './app.routes';
 import { provideHttpClient, withFetch, withInterceptors } from '@angular/common/http';
@@ -10,18 +10,17 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 
-// Custom loader that fetches translations from i18n folder
+// Custom loader that fetches translations from public/i18n folder
 export class CustomTranslateLoader implements TranslateLoader {
   constructor(private http: HttpClient) {}
 
   getTranslation(lang: string): Observable<Record<string, string | Record<string, string>>> {
-    return this.http.get(`./assets/i18n/${lang}.json`) as Observable<Record<string, string | Record<string, string>>>;
+    return this.http.get(`/i18n/${lang}.json`) as Observable<Record<string, string | Record<string, string>>>;
   }
 }
 
 export const appConfig: ApplicationConfig = {
   providers: [
-    provideZonelessChangeDetection(),
     provideRouter(routes, withComponentInputBinding()),
     provideHttpClient(withFetch(), withInterceptors([])),
     provideClientHydration(withEventReplay()),
@@ -35,7 +34,7 @@ export const appConfig: ApplicationConfig = {
     ),
     importProvidersFrom(
       TranslateModule.forRoot({
-        defaultLanguage: 'sk',
+        fallbackLang: 'sk',
         loader: {
           provide: TranslateLoader,
           useClass: CustomTranslateLoader,

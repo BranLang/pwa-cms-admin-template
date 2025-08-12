@@ -25,7 +25,7 @@ import { TranslateModule } from '@ngx-translate/core';
     }
     
     h1 {
-      color: #333;
+      color: var(--mat-app-text-color, #333);
       margin-bottom: 2rem;
       font-size: 2.5rem;
       font-weight: 600;
@@ -34,7 +34,7 @@ import { TranslateModule } from '@ngx-translate/core';
     .content p {
       font-size: 1.1rem;
       line-height: 1.6;
-      color: #666;
+      color: var(--mat-app-text-color, #666);
       margin-bottom: 1rem;
     }
   `],

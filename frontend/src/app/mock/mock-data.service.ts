@@ -63,8 +63,8 @@ export class MockDataService implements InMemoryDbService {
               sk: 'Dokonalá svetelná pohoda hliníkových okien s prepojením so záhradou',
               en: 'Perfect daylight comfort of aluminum windows connected to the garden'
             },
-            width: 1400,
-            height: 500
+            width: 1200,
+            height: 400
           },
           {
             id: 2,
@@ -77,8 +77,8 @@ export class MockDataService implements InMemoryDbService {
               sk: 'Nezameniteľný, dokonalý domov s vôňou dreva',
               en: 'An unmistakable, perfect home with the scent of wood'
             },
-            width: 1400,
-            height: 500
+            width: 1200,
+            height: 400
           },
           {
             id: 3,
@@ -91,8 +91,8 @@ export class MockDataService implements InMemoryDbService {
               sk: 'Komfortné a bezpečné bývanie s osobitým akcentom',
               en: 'Comfortable and secure living with a distinctive accent'
             },
-            width: 1400,
-            height: 500
+            width: 1200,
+            height: 400
           },
           {
             id: 4,
@@ -105,8 +105,8 @@ export class MockDataService implements InMemoryDbService {
               sk: 'Energeticky úsporný domov s funkčnými oknami',
               en: 'Energy efficient home with functional windows'
             },
-            width: 1400,
-            height: 500
+            width: 1200,
+            height: 400
           },
           {
             id: 5,
@@ -119,8 +119,8 @@ export class MockDataService implements InMemoryDbService {
               sk: 'Veľkorysý výhľad spája interiér s exteriérom',
               en: 'Generous view connects interior with exterior'
             },
-            width: 1400,
-            height: 500
+            width: 1200,
+            height: 400
           },
           {
             id: 6,
@@ -133,8 +133,8 @@ export class MockDataService implements InMemoryDbService {
               sk: 'Okná Vášho domova – kvalita, estetika, funkčný dizajn',
               en: 'Windows of your home – quality, aesthetics, functional design'
             },
-            width: 1400,
-            height: 500
+            width: 1200,
+            height: 400
           },
           {
             id: 7,
@@ -147,8 +147,8 @@ export class MockDataService implements InMemoryDbService {
               sk: 'Dialóg moderných materiálov v modernej stavbe',
               en: 'Dialogue of modern materials in modern construction'
             },
-            width: 1400,
-            height: 500
+            width: 1200,
+            height: 400
           }
         ],
         categories: [
@@ -157,24 +157,24 @@ export class MockDataService implements InMemoryDbService {
             i18nKeyTitle: 'categories.windows.title',
             i18nKeyDescription: 'categories.windows.desc',
             image: '/uploads/homeblock-drevene-okna.jpg',
-            width: 400,
-            height: 200
+            width: 1200,
+            height: 634
           },
           {
             id: 'doors',
             i18nKeyTitle: 'categories.doors.title',
             i18nKeyDescription: 'categories.doors.desc',
             image: '/uploads/homeblock-hlinikove-systemy.jpg',
-            width: 400,
-            height: 200
+            width: 1200,
+            height: 634
           },
           {
             id: 'projects',
             i18nKeyTitle: 'categories.projects.title',
             i18nKeyDescription: 'categories.projects.desc',
             image: '/uploads/homepage_5-2.jpg',
-            width: 400,
-            height: 200
+            width: 1200,
+            height: 400
           }
         ]
       }

@@ -7,19 +7,13 @@ export const routes: Routes = [
     resolve: {
       settings: settingsResolver,
       menu: menuResolver,
+      home: homeResolver,
     },
     loadComponent: () => import('./layout/layout.component').then(m => m.LayoutComponent),
     children: [
       {
         path: '',
         pathMatch: 'full',
-        redirectTo: 'home'
-      },
-      {
-        path: 'home',
-        resolve: {
-          home: homeResolver,
-        },
         loadComponent: () => import('./home/home.component').then(m => m.HomeComponent),
       },
       {

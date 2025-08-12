@@ -1,0 +1,91 @@
+---
+description: Security guardrails for the bilingual Angular 20 + NestJS project. Enforce secure coding, data protection, authentication, and operational practices.
+globs: ["src/**/*.{ts,html,scss,css}", "apps/api/**/*.{ts}", "**/*.env"]
+---
+
+# Global security posture
+
+- **HTTPS everywhere.** Serve both frontend and backend over HTTPS; never include `http://` resources. Configure HSTS with a preload directive.
+- **Secrets management.** Store API keys, database passwords, OAuth credentials, and tokens in environment variables or a secret vault (e.g., `.env` files loaded via `@nestjs/config`). **Never commit secrets** to the repository. If the agent suggests hard-coded credentials, reject and move them to `.env`.
+- **Dependency hygiene.** Keep Angular, NestJS, TypeScript, and third-party libraries up to date. Run `npm audit` and `npm outdated` regularly. Avoid unmaintained packages; prefer official libraries. Pin versions in `package.json` to avoid untracked updates.
+- **Static analysis & scanning.** Run `npm run lint`, `npm run typecheck`, `npm audit`, and a SAST tool (e.g., `nest-lint` or `eslint-plugin-security`) on each build. Fix high/critical findings immediately. Agents must treat unresolved critical vulnerabilities as failed verification.
+- **Error handling.** Do not expose stack traces or sensitive data in error messages. Use NestJS exception filters and Angular error handlers to present user-friendly messages and log full details server-side only.
+- **Logging & monitoring.** Implement structured logging (JSON) with sensitive fields redacted. Consider integrating with a monitoring service (e.g., Prometheus, Grafana, or LogRocket) for anomaly detection.
+
+# API & backend (NestJS) security
+
+- **Authentication & authorization.**
+  - Use **Google SSO** for admin portal access, implemented via `@nestjs/passport` with `passport-google-oauth20`. Validate JWTs on every protected request.
+  - Issue stateless JWTs with short expirations (15–60 minutes) and refresh tokens stored in HTTP-only, secure cookies.
+  - Implement role-based access control (RBAC) to restrict actions (e.g., only admins can publish content, editors can draft).
+  - Protect API routes under `/api` with guards; public endpoints (e.g., product catalogue) should be read-only.
+- **Input validation & sanitization.**
+  - Use global `ValidationPipe` with `whitelist: true`, `forbidNonWhitelisted: true`, and `transform: true`. Define DTO classes with `class-validator` decorators for all request bodies/params.
+  - Sanitize incoming data to prevent injection; escape special characters in SQL queries even when using ORM. Use prepared statements and parameter binding; **never concatenate user input** into SQL queries.
+- **Rate limiting & throttling.**
+  - Apply `@nestjs/throttler` to limit request rates (e.g., 100 requests per IP per minute). Customize for authentication and form endpoints to deter brute-force attacks.
+- **CSRF & CORS.**
+  - Enable CSRF protection on forms that mutate state (e.g., quote request, contact submissions). Use Angular’s built‑in `XSRF-TOKEN` mechanism.
+  - Configure CORS in NestJS to allow only trusted origins (e.g., your domain and localhost for development). Disallow wildcard origins.
+- **Session & cookie security.**
+  - Mark cookies as `HttpOnly`, `Secure`, and `SameSite=Lax` or `Strict`. Store JWT refresh tokens in cookies; avoid localStorage for tokens.
+  - Rotate tokens on each login and logout. Revoke tokens on password or permission changes.
+- **Database security.**
+  - Use SQLite only for local development/testing. For production, prefer a more robust DB (e.g., PostgreSQL) with proper user roles and least-privilege access.
+  - Encrypt sensitive fields at rest (e.g., user PII, contact form submissions) using libraries like `crypto` or a DB-level solution.
+  - Backup databases regularly; test restoration.
+- **File uploads.**
+  - Use `Multer` with file-type filters and size limits. Store uploads outside the web root or in a dedicated storage service. Sanitize filenames and generate random names to prevent overwriting and path traversal.
+  - Validate images via libraries (e.g., sharp) to strip metadata and verify content.
+
+# Frontend (Angular) security
+
+- **Sanitize DOM interactions.**
+  - Never use `innerHTML` or `[innerHTML]` bindings with unsanitized content. Use Angular’s `DomSanitizer` only when unavoidable and safe.
+  - Escape variables in templates; avoid building HTML strings manually.
+- **Content Security Policy (CSP).**
+  - Configure CSP headers to disallow inline scripts/styles, restrict allowed origins for fonts/images, and enable trusted CDNs only.
+  - Use Angular CLI’s `index.html` to inject nonces for inline scripts if needed.
+- **Secure HTTP calls.**
+  - Use Angular `HttpClient` with interceptors to attach JWT and handle refresh. Never expose secrets in client-side code.
+  - Validate API responses; handle errors gracefully; do not rely on HTTP status alone.
+- **Third‑party scripts & iframes.**
+  - Restrict usage of remote scripts; self-host dependencies when possible. If you embed third‑party widgets (maps, videos), ensure they comply with your CSP and privacy policies.
+  - Disable dangerous features (e.g., allow-scripts) on `<iframe>` unless absolutely necessary.
+
+# UI & UX considerations
+
+- **No sensitive data caching.** Prevent browsers from caching pages with sensitive data (e.g., admin portal) by setting appropriate cache headers.
+- **Clear user feedback.** Display validation errors and success messages clearly; never leak system info (e.g., “Invalid password” instead of “User not found”).
+- **Accessibility & privacy notices.** Include cookie consent and privacy policy pages (e.g., GDPR compliance). Provide a mechanism for users to request data deletion/exports.
+
+# Operational & deployment security
+
+- **Environment separation.** Maintain separate environments (dev, staging, production) with distinct credentials and databases. Never point dev builds at production data.
+- **Infrastructure hardening.**
+  - Use a reverse proxy (e.g., NGINX) to terminate TLS, set security headers (CSP, HSTS, X‑Frame‑Options, X‑Content‑Type‑Options, Referrer‑Policy), and handle gzip/HTTP2.
+  - Keep OS and runtime patched. Restrict SSH access via key pairs; disable password logins.
+- **Continuous Integration (CI).**
+  - Integrate static code analysis (e.g., ESLint, Snyk), unit tests, and end-to-end tests into CI. Block deployments on failed security checks.
+  - Store secrets in CI using encrypted secrets stores; do not echo secrets in logs.
+- **Monitoring & alerting.**
+  - Log authentication events, admin actions, and errors with unique correlation IDs. Forward logs to a centralized system and set up alerts for anomalies.
+  - Implement uptime monitoring for the API and website; configure alerts on thresholds (e.g., high error rates, CPU spikes).
+- **Incident response & backups.**
+  - Document an incident response plan: detection, containment, eradication, recovery, and postmortem. Assign responsibilities.
+  - Regularly test restoring from backups and patching vulnerabilities. Keep an inventory of dependencies and versions for quick assessment.
+
+# Coding hygiene for agents
+
+- **No pseudocode.** Agents must generate real, secure code (no placeholders for “TODO: add validation” without instructions).
+- **Explain security choices.** When the agent picks libraries or strategies, it must cite official docs (e.g., Angular/NestJS guides) and summarize why the choice is secure.
+- **Ask before scaffolding security-critical features.** For example, before enabling 2FA or third-party auth providers, agents must seek human approval.
+- **Refuse insecure suggestions.** If an agent is asked to bypass validation, hard-code secrets, or lower security headers, it should decline and propose a secure alternative.
+
+# Acceptance criteria
+
+- All routes and endpoints enforce authentication/authorization where appropriate.
+- All inputs are validated and sanitized; no untrusted data flows into SQL or DOM APIs.
+- Secrets are not present in version control; environment variables or vaults are used instead.
+- Lint, typecheck, build (web & API), and security scans pass with zero critical issues.
+- The app passes functional tests for authentication, rate limiting, and error handling (e.g., login fails gracefully with invalid credentials; form submissions with invalid data are rejected).

@@ -1,23 +1,22 @@
-import { ChangeDetectionStrategy, Component, inject, signal, computed, PLATFORM_ID } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, signal, computed, PLATFORM_ID, OnInit } from '@angular/core';
 import { DOCUMENT, isPlatformBrowser } from '@angular/common';
 import { CommonModule } from '@angular/common';
-import { ActivatedRoute, RouterLink, RouterOutlet } from '@angular/router';
+import { ActivatedRoute, RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatButtonModule } from '@angular/material/button';
 import { MatSelectModule } from '@angular/material/select';
 import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
+import { MatRadioModule } from '@angular/material/radio';
 import { FormsModule } from '@angular/forms';
-import { MenuItemResponse, SettingsResponse } from '../services/api.service';
+import { MenuItemResponse, SettingsResponse, HomeResponse } from '../services/api.service';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { LanguageService } from '../services/language.service';
-import { map } from 'rxjs';
-import { toSignal } from '@angular/core/rxjs-interop';
 
 export interface ThemeOption {
   id: string;
   name: string;
-  swatch: { background: string; primary: string };
+  description: string;
 }
 
 @Component({
@@ -25,86 +24,121 @@ export interface ThemeOption {
   standalone: true,
   imports: [
     CommonModule,
-    RouterLink,
     RouterOutlet,
+    RouterLink,
+    RouterLinkActive,
     MatToolbarModule,
     MatButtonModule,
     MatSelectModule,
     MatIconModule,
     MatMenuModule,
+    MatRadioModule,
+    FormsModule,
     TranslateModule,
-    FormsModule
   ],
   templateUrl: './layout.component.html',
   styleUrl: './layout.component.scss',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class LayoutComponent {
-  private readonly route = inject(ActivatedRoute);
-  protected readonly languageService = inject(LanguageService);
+export class LayoutComponent implements OnInit {
+  private readonly activatedRoute = inject(ActivatedRoute);
+  private readonly document = inject(DOCUMENT);
   private readonly platformId = inject(PLATFORM_ID);
   private readonly translate = inject(TranslateService);
-  private readonly document = inject(DOCUMENT);
-  private readonly localStorage = this.document.defaultView?.localStorage;
-  
-  protected readonly theme = signal<string>('cyan-orange-theme');
+  private readonly languageService = inject(LanguageService);
+
+  private readonly localStorage: Storage | undefined;
+
+  protected readonly settings = signal<SettingsResponse | undefined>(undefined);
+  protected readonly menuItems = signal<MenuItemResponse[]>([]);
+  protected readonly theme = signal<string>('blue-orange');
   protected readonly availableThemes: ThemeOption[] = [
-    { id: 'cyan-orange-theme', name: 'Cyan & Orange', swatch: { background: '#E0F7FA', primary: '#0097A7' } },
-    { id: 'magenta-violet-theme', name: 'Magenta & Violet', swatch: { background: '#F3E5F5', primary: '#7B1FA2' } },
-    { id: 'blue-red-theme', name: 'Blue & Red', swatch: { background: '#E3F2FD', primary: '#1976D2' } },
-    { id: 'green-blue-theme', name: 'Green & Blue', swatch: { background: '#E8F5E8', primary: '#388E3C' } },
+    { id: 'blue-orange', name: 'Blue & Orange', description: 'Blue primary with orange accent' },
+    { id: 'blue-red', name: 'Blue & Red', description: 'Blue primary with red accent' },
+    { id: 'green-blue', name: 'Green & Blue', description: 'Green primary with blue accent' },
+    { id: 'red-orange', name: 'Red & Orange', description: 'Red primary with orange accent' },
   ];
+
+  protected readonly localizedTitle = computed(() => {
+    const title = this.settings()?.title;
+    if (title && typeof title === 'object') {
+      const currentLang = this.languageService.language();
+      return title[currentLang] || title['sk'] || '';
+    }
+    return '';
+  });
 
   constructor() {
     if (isPlatformBrowser(this.platformId)) {
-      const storedTheme = this.localStorage?.getItem('theme');
-      if (storedTheme) {
-        this.setTheme(storedTheme);
-      } else {
-        const initialSettings = this.route.snapshot.data['settings'] as SettingsResponse;
-        if (initialSettings) {
-          const initialTheme: string = initialSettings.theme === 'dark' ? 'magenta-violet-theme' : 'cyan-orange-theme';
-          this.setTheme(initialTheme);
-        }
-      }
+      this.localStorage = window.localStorage;
     }
   }
 
-  private readonly data$ = this.route.data;
-  protected readonly settings = toSignal(this.data$.pipe(map(d => d['settings'] as SettingsResponse)));
-  protected readonly menuItems = toSignal(this.data$.pipe(map(d => d['menu'] as MenuItemResponse[])));
-  
-  protected readonly lang = this.languageService.language;
-  protected readonly localizedTitle = computed(() => {
-    const s = this.settings();
-    const l = this.lang();
-    return s ? s.title[l] : '';
-  });
+  ngOnInit(): void {
+    console.log('🏗️ LayoutComponent ngOnInit - starting data subscription');
+    this.activatedRoute.data.subscribe(data => {
+      console.log('📦 Layout route data received:', data);
+      const settings = data['settings'] as SettingsResponse;
+      const menu = data['menu'] as MenuItemResponse[];
+      const home = data['home'] as HomeResponse;
+
+      console.log('🔍 Settings data:', settings);
+      console.log('🔍 Menu data:', menu);
+      console.log('🔍 Home data:', home);
+
+      if (settings) {
+        this.settings.set(settings);
+        this.translate.setDefaultLang(settings.languages[0]);
+        this.translate.use(this.localStorage?.getItem('lang') || settings.languages[0]);
+        this.setTheme(this.localStorage?.getItem('theme') || settings.theme);
+        console.log('✅ Settings data loaded and applied:', settings);
+      } else {
+        console.warn('❌ No settings data found in layout route data.');
+      }
+
+      if (menu && menu.length > 0) {
+        this.menuItems.set(menu);
+        console.log('✅ Menu data loaded successfully:', menu);
+        console.log('✅ Menu items count:', menu.length);
+        console.log('✅ First menu item:', menu[0]);
+      } else {
+        console.warn('❌ No menu data found in layout route data or menu is empty.');
+        console.warn('❌ Menu data type:', typeof menu);
+        console.warn('❌ Menu data length:', menu?.length);
+      }
+
+      if (home) {
+        console.log('✅ Home data found in layout route data (parent):', home);
+      } else {
+        console.warn('❌ No home data found in layout route data (parent).');
+      }
+    });
+  }
+
+  protected setTheme(themeId: string) {
+    this.theme.set(themeId);
+    const html = this.document.documentElement;
+    const body = this.document.body;
+
+    html.removeAttribute('data-theme');
+    body.removeAttribute('data-theme');
+
+    if (themeId !== 'blue-orange') {
+      html.setAttribute('data-theme', themeId);
+      body.setAttribute('data-theme', themeId);
+    }
+    this.localStorage?.setItem('theme', themeId);
+  }
 
   protected switchLanguage(lang: 'sk' | 'en') {
     this.languageService.switchLanguage(lang);
     this.translate.use(lang);
   }
 
-  protected setTheme(themeId: string) {
-    if (!isPlatformBrowser(this.platformId)) {
-      return;
-    }
-    
-    this.theme.set(themeId);
-    const body = this.document.body;
-    
-    // Remove all theme classes
-    this.availableThemes.forEach(t => {
-      body.classList.remove(t.id);
-    });
-    
-    // Add the new theme class
-    body.classList.add(themeId);
-    this.localStorage?.setItem('theme', themeId);
+  protected trackById(index: number, item: ThemeOption | MenuItemResponse): string | number {
+    return item.id;
   }
-
-  protected trackById = (_: number, o: ThemeOption) => o.id;
 }
+
 
 

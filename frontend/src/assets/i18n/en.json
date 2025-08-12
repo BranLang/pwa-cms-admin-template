@@ -1,0 +1,55 @@
+{
+  "app": {
+    "title": "Windows Promotion"
+  },
+  "menu": {
+    "home": "Home",
+    "about": "About",
+    "products": "Products",
+    "projects": "Projects",
+    "pricing": "Price Inquiry",
+    "articles": "Articles",
+    "contact": "Contact",
+    "about.company": "Company",
+    "about.services": "Services",
+    "about.how": "How we manufacture",
+    "about.certs": "Certificates",
+    "products.windows": "Windows",
+    "products.windows.wood": "Wooden windows",
+    "products.windows.wood_al": "Wood-aluminum windows",
+    "products.windows.al": "Aluminum windows",
+    "products.windows.historic": "Historic windows",
+    "products.doors": "Entrance doors",
+    "products.doors.wood": "Wooden doors",
+    "products.doors.historic": "Historic doors",
+    "products.doors.al": "Aluminum doors",
+    "products.doors.sliding": "Sliding doors",
+    "products.addons": "Accessories",
+    "projects.wood": "Wooden windows",
+    "projects.wood_al": "Wood-aluminum windows",
+    "projects.al": "Aluminum windows",
+    "projects.historic": "Historic windows",
+    "projects.doors": "Entrance doors",
+    "projects.sliding": "Sliding walls",
+    "articles.faq": "FAQ",
+    "articles.choose": "Choosing the right windows and doors",
+    "articles.maintenance": "Maintenance guide"
+  },
+  "categories": {
+    "windows": { "title": "Windows", "desc": "Choose from our wide range of windows" },
+    "doors": { "title": "Doors", "desc": "Secure and stylish entrance doors" },
+    "projects": { "title": "Projects", "desc": "See our references" }
+  },
+  "nav": {
+    "theme": "Theme",
+    "light": "Light",
+    "dark": "Dark",
+    "language": "Language"
+  },
+  "lang": {
+    "sk": "Slovak",
+    "en": "English"
+  }
+}
+
+

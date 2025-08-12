@@ -1,0 +1,64 @@
+---
+description: Require unit and end-to-end tests to pass before claiming tasks completed. Define best practices for Angular, NestJS and Cypress tests.
+globs: ["src/**/*.{ts,html}", "apps/api/src/**/*.ts", "cypress/**/*.{ts,js}"]
+---
+
+# Success criteria
+A task is **not complete** unless:
+1) All unit tests pass (Angular & NestJS) with `npm run test` (see updated scripts below), and
+2) All Cypress e2e tests pass with `npm run e2e`, and
+3) The agent has pasted the last 50 lines of both commands’ outputs in the conversation before claiming success.
+
+# Unit tests (Angular)
+- **File naming:** Use `<component/service>.spec.ts`. Place unit tests alongside the code or under `src/app/**/`.
+- **Testing tools:** Use Angular’s `TestBed` API (see examples in `test-project/src/app`:contentReference[oaicite:1]{index=1}) and [`provideZonelessChangeDetection()`](https://angular.dev/api/core/provideZonelessChangeDetection) for better performance.
+- **Signals & change detection:** When testing components using signals or `computed()`, call `fixture.detectChanges()` after updating signals. Avoid `tick()` unless you need to wait for observables; prefer `await fixture.whenStable()`.
+- **Services:** Use `TestBed.inject(Service)` for injection and mock dependencies using simple classes or Jasmine spies.
+- **Async tests:** Use `async/await` with `TestBed.compileComponents()`. Avoid nested callbacks.
+- **Material & DOM:** Query the DOM via standard selectors (`fixture.nativeElement.querySelector(...)`) instead of hard-coded test IDs. Test accessibility attributes (`aria-label`, `role`) as part of UI tests.
+
+# Unit tests (NestJS)
+- **File naming:** Use `<module/controller/service>.spec.ts`. Place tests under `apps/api/src`.
+- **Testing tools:** Use `@nestjs/testing`’s `Test.createTestingModule()` to create isolated modules and controllers. Use `supertest` to send HTTP requests against the app.
+- **Validation & DTOs:** Test that invalid payloads return appropriate HTTP status codes (e.g., 400 for bad requests) and that the global `ValidationPipe` catches malformed input.
+- **Auth:** When endpoints are protected, mock authentication guards or supply valid JWTs in tests. Never disable guards globally in production code.
+
+# Coverage & metrics
+- Configure your test runner (Karma/Jasmine or Jest) to generate a coverage report. Fail the build if **global coverage drops below 80%**. 
+- Include at least one test per component/service and per Nest controller/service.
+
+# Cypress e2e tests
+- **Folder structure:** Place Cypress tests under `cypress/e2e/`. Name files after the feature (`home.cy.ts`, `admin-login.cy.ts`).
+- **No mocks in production:** Do not rely on artificial mocks within e2e tests, except for third-party APIs (e.g. payment or maps). Use `cy.intercept()` only to stub external network calls, not your own backend.
+- **Test flows:** For each critical flow (home page load, login, admin CRUD, contact form, language switch), write a Cypress test that:
+  1. Visits the page (`cy.visit('/')`),
+  2. Asserts that initial content appears (headline, menu items),
+  3. Performs interactions (click buttons, fill forms, switch language),
+  4. Verifies results in the UI and network calls (`cy.wait('@apiCall')` where appropriate).
+- **Authentication:** Use Google SSO only in the app; in Cypress, test with service accounts or stubbed OAuth flows. Do not check real credentials into the repo.
+- **Accessibility:** Integrate `cypress-axe` or similar to perform automated a11y audits (`cy.injectAxe(); cy.checkA11y();`) as part of e2e tests.
+
+# Tooling updates & CI integration
+- Add or modify package scripts in `frontend/package.json`:
+
+```json
+{
+  "scripts": {
+    "test:unit": "ng test --watch=false --progress=false --code-coverage",
+    "test:e2e": "cypress run",
+    "test": "npm run test:unit",
+    "e2e": "npm run test:e2e",
+    "verify": "npm run lint && npm run typecheck && npm run test && npm run e2e && npm run build:web && npm run build:api"
+  }
+}
+```
+Agents must run npm run verify after any change and paste the logs. If either test or e2e fails, they must not claim success and must propose fixes.
+
+In continuous integration (CI), run npm run test, npm run e2e, and enforce coverage thresholds.
+
+Forbidden patterns
+Skipping tests with xit or xdescribe. All tests should run unless explicitly marked pending for a reason and documented.
+
+Stubbing core app logic in e2e tests (e.g., bypassing auth or replacing real API calls with mocks).
+
+Introducing flaky tests that depend on timeouts rather than waiting for specific elements or network responses.

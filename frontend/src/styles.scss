@@ -2,30 +2,48 @@
 @use 'app/theming' as theming;
 @use '@angular/material' as mat;
 
-// Apply default theme
-@include mat.theme(theming.$cyan-orange-theme);
+// Apply default theme (Blue-Orange)
+@include mat.theme(theming.$blue-orange-theme);
 
 // Apply other themes when their classes are present
-.magenta-violet-theme {
-  @include mat.theme(theming.$magenta-violet-theme);
-}
-
-.blue-red-theme {
+html[data-theme="blue-red"],
+body[data-theme="blue-red"] {
   @include mat.theme(theming.$blue-red-theme);
 }
 
-.green-blue-theme {
+html[data-theme="green-blue"],
+body[data-theme="green-blue"] {
   @include mat.theme(theming.$green-blue-theme);
+}
+
+html[data-theme="red-orange"],
+body[data-theme="red-orange"] {
+  @include mat.theme(theming.$red-orange-theme);
 }
 
 // General styles
 html, body {
   height: 100%;
 }
+
 body {
   margin: 0;
   font-family: Roboto, "Helvetica Neue", sans-serif;
-  transition: background-color 0.3s ease;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+// Force Material buttons to be visible
+.mat-mdc-button, .mat-mdc-raised-button, .mat-mdc-outlined-button, .mat-mdc-unelevated-button {
+  display: inline-block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+}
+
+// Override any Material button hiding
+.mat-mdc-button-base {
+  display: inline-block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
 }
 
 /* Swiper styles after theming */

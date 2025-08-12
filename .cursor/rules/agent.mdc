@@ -1,3 +1,7 @@
+---
+alwaysApply: true
+---
+
 # Agent Operating Procedure
 
 **Goal:** Implement tasks in a modern Angular 20 + NestJS repo with zero hallucinations.
@@ -36,3 +40,13 @@
 - The feature works in the browser.
 - Lint/typecheck/build green.
 - No forbidden patterns (see `.cursorrules`).
+# Agent Operating Procedure
+
+**Goal:** Implement tasks in a modern Angular 20 + NestJS repo with zero hallucinations.
+
+## Terminal responsiveness
+
+- **Detecting a stuck process:** If a command in the integrated terminal produces no output for ~5 seconds or the prompt doesn’t return, assume it’s hung.
+- **Abort it gracefully:** Press `Ctrl + C` once to send an interrupt. On Windows and macOS this stops most CLI processes (Angular dev server, Node, NestJS, etc.).
+- **Confirm the exit:** Wait until you see the shell prompt again (e.g. `PS C:\\...>` for PowerShell or `$` for Bash). Only then run the next command.
+- **Don’t chain commands while stuck:** Never append new commands (`&&`/`;`) to a line that hasn’t finished. Always abort first, then start a fresh command.

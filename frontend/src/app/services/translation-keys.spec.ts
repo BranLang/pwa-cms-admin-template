@@ -1,10 +1,9 @@
 import { TestBed } from '@angular/core/testing';
-import { TranslateLoader, TranslateModule, TranslateService } from '@ngx-translate/core';
+import { TranslateLoader, TranslateModule, TranslateService, TranslationObject } from '@ngx-translate/core';
 import { Observable, of } from 'rxjs';
-import { provideZonelessChangeDetection } from '@angular/core';
 
 // Mock data mirroring the JSON structure
-const translations = {
+const translations: Record<string, TranslationObject> = {
   sk: {
     app: { title: 'Windows Propagácia' },
     menu: { home: 'Úvod', contact: 'Kontakt' },
@@ -31,8 +30,8 @@ const translations = {
 
 // Mock loader for the testing environment
 class MockTranslateLoader implements TranslateLoader {
-  getTranslation(lang: string): Observable<object> {
-    return of((translations as Record<string, object>)[lang]);
+  getTranslation(lang: string): Observable<TranslationObject> {
+    return of(translations[lang] ?? {});
   }
 }
 
@@ -56,15 +55,15 @@ describe('Translations', () => {
           loader: { provide: TranslateLoader, useClass: MockTranslateLoader },
         }),
       ],
-      providers: [provideZonelessChangeDetection()]
+      providers: []
     }).compileComponents();
     translate = TestBed.inject(TranslateService);
     translate.setDefaultLang('sk');
   });
 
   it('should have identical key structures in sk and en', () => {
-    const skKeys = new Set(flattenKeys(translations.sk));
-    const enKeys = new Set(flattenKeys(translations.en));
+    const skKeys = new Set(flattenKeys(translations['sk']));
+    const enKeys = new Set(flattenKeys(translations['en']));
 
     const onlyInSk = [...skKeys].filter(k => !enKeys.has(k));
     const onlyInEn = [...enKeys].filter(k => !skKeys.has(k));
@@ -85,7 +84,7 @@ describe('Translations', () => {
 
   it('should not show raw keys for any defined translation', async () => {
     await translate.use('en').toPromise();
-    const skKeys = flattenKeys(translations.sk);
+    const skKeys = flattenKeys(translations['sk']);
     
     for (const key of skKeys) {
         const translation = await translate.get(key).toPromise();

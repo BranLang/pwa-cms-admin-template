@@ -30,21 +30,21 @@ import { TranslateModule } from '@ngx-translate/core';
     }
     
     h1 {
-      color: #333;
+      color: var(--mat-app-text-color, #333);
       margin-bottom: 2rem;
       font-size: 2.5rem;
       font-weight: 600;
     }
     
     .contact-info {
-      background: #f5f5f5;
+      background: var(--mat-app-background-color, #f5f5f5);
       padding: 2rem;
       border-radius: 8px;
-      border-left: 4px solid #1976d2;
+      border-left: 4px solid var(--mat-primary-color, #1976d2);
     }
     
     .contact-info h3 {
-      color: #1976d2;
+      color: var(--mat-primary-color, #1976d2);
       margin-bottom: 1rem;
       font-size: 1.5rem;
     }
@@ -52,7 +52,7 @@ import { TranslateModule } from '@ngx-translate/core';
     .contact-info p {
       font-size: 1.1rem;
       line-height: 1.6;
-      color: #666;
+      color: var(--mat-app-text-color, #666);
       margin-bottom: 0.5rem;
     }
   `],

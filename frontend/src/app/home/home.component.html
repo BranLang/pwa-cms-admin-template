@@ -1,6 +1,15 @@
 @if (data$ | async; as homeData) {
   <section class="hero">
-    <swiper-container slides-per-view="1" space-between="0" center-slides="true" pagination="true" navigation="true" loop="true" autoplay-delay="5000">
+    <swiper-container 
+      init="false"
+      slides-per-view="1" 
+      space-between="0" 
+      center-slides="true" 
+      pagination="true" 
+      navigation="true" 
+      loop="true" 
+      autoplay-delay="5000"
+      autoplay-disable-on-interaction="false">
       @for (s of homeData.carousel; track trackById($index, s); let first = $first) {
         <swiper-slide>
           <div class="slide-container">

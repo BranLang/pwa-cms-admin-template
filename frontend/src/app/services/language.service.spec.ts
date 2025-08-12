@@ -1,8 +1,8 @@
 import { TestBed, ComponentFixture } from '@angular/core/testing';
-import { TranslateLoader, TranslateModule, TranslateService } from '@ngx-translate/core';
+import { TranslateLoader, TranslateModule, TranslateService, TranslationObject } from '@ngx-translate/core';
 import { of } from 'rxjs';
 import { LanguageService } from './language.service';
-import { provideZonelessChangeDetection, Component } from '@angular/core';
+import { Component } from '@angular/core';
 
 // Create a dummy component to host the service
 @Component({
@@ -13,7 +13,7 @@ import { provideZonelessChangeDetection, Component } from '@angular/core';
 class TestHostComponent {}
 
 class FakeTranslateLoader implements TranslateLoader {
-  private readonly translations: Record<string, object> = {
+  private readonly translations: Record<string, TranslationObject> = {
     sk: {
       categories: {
         windows: { title: 'Okná', desc: 'Vyberte si z našej širokej ponuky okien' },
@@ -42,17 +42,18 @@ describe('LanguageService + translations', () => {
         TestHostComponent,
         TranslateModule.forRoot({
           loader: { provide: TranslateLoader, useClass: FakeTranslateLoader },
-          defaultLanguage: 'sk',
-          useDefaultLang: true,
           fallbackLang: 'sk'
         })
       ],
-      providers: [provideZonelessChangeDetection(), LanguageService]
+      providers: [LanguageService]
     }).compileComponents();
 
     fixture = TestBed.createComponent(TestHostComponent);
     translate = TestBed.inject(TranslateService);
     service = TestBed.inject(LanguageService);
+    
+    // Set initial language
+    await translate.use('sk').toPromise();
   });
 
   it('loads default language (sk) and translates keys', async () => {
@@ -63,6 +64,9 @@ describe('LanguageService + translations', () => {
   it('switches language to en and translates keys', async () => {
     service.switchLanguage('en');
     await fixture.whenStable();
+    
+    // Wait for language change to complete
+    await translate.use('en').toPromise();
     const value = await translate.get('categories.windows.title').toPromise();
     expect(value).toBe('Windows');
   });

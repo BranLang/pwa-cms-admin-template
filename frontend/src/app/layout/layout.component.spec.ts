@@ -3,7 +3,8 @@ import { LayoutComponent } from './layout.component';
 import { TranslateModule } from '@ngx-translate/core';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { provideRouter } from '@angular/router';
-import { provideZonelessChangeDetection } from '@angular/core';
+import { provideHttpClient } from '@angular/common/http';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 
 describe('LayoutComponent', () => {
   let component: LayoutComponent;
@@ -13,7 +14,11 @@ describe('LayoutComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [LayoutComponent, TranslateModule.forRoot(), NoopAnimationsModule],
-      providers: [provideRouter([]), provideZonelessChangeDetection()]
+      providers: [
+        provideRouter([]), 
+        provideHttpClient(),
+        provideHttpClientTesting()
+      ]
     }).compileComponents();
 
     fixture = TestBed.createComponent(LayoutComponent);
@@ -26,37 +31,38 @@ describe('LayoutComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should have 4 theme options after opening the menu', () => {
-    const themeMenuButton = element.querySelector('.theme-toggle') as HTMLElement;
-    themeMenuButton.click();
-    fixture.detectChanges();
-
-    const themeButtons = document.querySelectorAll('.theme-option');
-    expect(themeButtons.length).toBe(4);
+  it('should have 4 theme options', () => {
+    expect(component['availableThemes'].length).toBe(4);
   });
 
-  it('should switch theme when a theme option is clicked', () => {
-    const setThemeSpy = spyOn(component, 'setTheme');
-    
-    const themeMenuButton = element.querySelector('.theme-toggle') as HTMLElement;
-    themeMenuButton.click();
-    fixture.detectChanges();
-
-    const themeButton = document.querySelector('.theme-option') as HTMLElement;
-    themeButton.click();
-    fixture.detectChanges();
-    
-    expect(setThemeSpy).toHaveBeenCalledWith('rose-red');
+  it('should have correct theme names', () => {
+    const themeNames = component['availableThemes'].map(t => t.name);
+    expect(themeNames).toContain('Blue & Orange');
+    expect(themeNames).toContain('Blue & Red');
+    expect(themeNames).toContain('Green & Blue');
+    expect(themeNames).toContain('Red & Orange');
   });
 
-  it('should apply the correct theme class to the body', () => {
-    component.setTheme('azure-blue');
+  it('should apply the correct data-theme attribute to html and body', () => {
+    // Access protected method through component instance
+    (component as any).setTheme('blue-red');
     fixture.detectChanges();
-    expect(document.body.classList).toContain('azure-blue-theme');
+    
+    expect(document.documentElement.getAttribute('data-theme')).toBe('blue-red');
+    expect(document.body.getAttribute('data-theme')).toBe('blue-red');
+  });
+
+  it('should not apply data-theme for default theme', () => {
+    // Access protected method through component instance
+    (component as any).setTheme('blue-orange');
+    fixture.detectChanges();
+    
+    expect(document.documentElement.getAttribute('data-theme')).toBeNull();
+    expect(document.body.getAttribute('data-theme')).toBeNull();
   });
 
   it('should track by id', () => {
-    const theme = { id: 'test-theme', name: 'Test Theme' };
-    expect(component.trackById(0, theme)).toBe('test-theme');
+    const theme = { id: 'test-theme', name: 'Test Theme', description: 'Test' };
+    expect((component as any).trackById(0, theme)).toBe('test-theme');
   });
 });

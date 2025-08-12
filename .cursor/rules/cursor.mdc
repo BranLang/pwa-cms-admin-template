@@ -1,8 +1,6 @@
 ---
-description: Hard guardrails for Angular 20 + NestJS projects. Agents must follow these steps and constraints exactly.
-globs: ["**/*"]
+alwaysApply: true
 ---
-
 # Operating Procedure (must follow in order)
 
 1. **Identify stack & versions (no edits yet).**

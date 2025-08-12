@@ -33,6 +33,10 @@
               },
               {
                 "glob": "**/*",
+                "input": "src/assets"
+              },
+              {
+                "glob": "**/*",
                 "input": "../server/uploads",
                 "output": "uploads"
               }
