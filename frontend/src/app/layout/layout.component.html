@@ -1,99 +1,97 @@
-<mat-toolbar color="primary" class="toolbar">
-  <div class="brand" [routerLink]="['/']">{{ localizedTitle() }}</div>
+<div class="app-layout">
+  <md-top-app-bar>
+    <div [routerLink]="['/']" class="brand">{{ localizedTitle() }}</div>
+    <div style="flex: 1"></div>
 
-  <span class="spacer"></span>
-
-
-
-  <nav class="nav">
-    @if (menuItems() && menuItems().length > 0) {
-      @for (m of menuItems(); track m.id) {
-        @if (!m.children?.length) {
-          <a mat-button [routerLink]="[m.path]" routerLinkActive="active-link">{{ m.i18nKey | translate }}</a>
-        } @else {
-          <button mat-button [matMenuTriggerFor]="parentMenu" class="menu-trigger">
-            {{ m.i18nKey | translate }}
-            <mat-icon>expand_more</mat-icon>
-          </button>
-          <mat-menu #parentMenu="matMenu" panelClass="submenu-panel">
-            @for (c of m.children; track c.id) {
-              @if (!c.children?.length) {
-                <a mat-menu-item [routerLink]="[c.path]">
-                  <mat-icon>chevron_right</mat-icon>
-                  <span>{{ c.i18nKey | translate }}</span>
-                </a>
-              } @else {
-                <button mat-menu-item [matMenuTriggerFor]="childMenu">
-                  <mat-icon>chevron_right</mat-icon>
-                  <span>{{ c.i18nKey | translate }}</span>
-                </button>
-                <mat-menu #childMenu="matMenu" panelClass="submenu-panel">
-                  @for (gc of c.children; track gc.id) {
-                    <a mat-menu-item [routerLink]="[gc.path]">
-                      <mat-icon>chevron_right</mat-icon>
-                      <span>{{ gc.i18nKey | translate }}</span>
-                    </a>
-                  }
-                </mat-menu>
-              }
-            }
-          </mat-menu>
+    <!-- Desktop Navigation -->
+    <nav class="navigation-desktop">
+      @if (menuItems() && menuItems().length > 0) {
+        @for (m of menuItems(); track m.id) {
+          @if (!m.children?.length) {
+            <md-text-button [routerLink]="[m.path]" routerLinkActive="active-link">{{ m.i18nKey | translate }}</md-text-button>
+          } @else {
+            <div class="menu-container">
+              <md-text-button (click)="toggleMenu(m.id)">
+                {{ m.i18nKey | translate }}
+                <md-icon>expand_more</md-icon>
+              </md-text-button>
+              <md-menu [attr.id]="'menu-' + m.id" (closed)="closeMenu(m.id)">
+                @for (c of m.children; track c.id) {
+                  <md-menu-item [routerLink]="[c.path]">
+                    <div slot="headline">{{ c.i18nKey | translate }}</div>
+                  </md-menu-item>
+                }
+              </md-menu>
+            </div>
+          }
         }
       }
-    } @else {
-      <span style="color: white; font-size: 12px;">No menu items loaded</span>
-    }
-  </nav>
+    </nav>
 
-  <span class="spacer"></span>
+    <div style="flex: 1"></div>
 
-  <div class="actions">
-    <!-- Theme selector -->
-    <button mat-icon-button
-            [matMenuTriggerFor]="themeMenu"
-            class="theme-toggle"
-            aria-label="Change theme">
-      <mat-icon>format_color_fill</mat-icon>
-    </button>
+    <div class="actions">
+      <!-- Theme selector -->
+      <md-icon-button (click)="toggleMenu('theme-menu')" class="theme-toggle" aria-label="Change theme">
+        <md-icon>format_color_fill</md-icon>
+      </md-icon-button>
+      <md-menu id="theme-menu" (closed)="closeMenu('theme-menu')">
+        @for (opt of availableThemes(); track trackById($index, opt)) {
+          <md-menu-item (click)="setTheme(opt.id)" [class.selected]="theme() === opt.id">
+            <div slot="headline">{{ opt.name }}</div>
+          </md-menu-item>
+        }
+      </md-menu>
 
-    <!-- Theme menu -->
-    <mat-menu #themeMenu="matMenu" [overlapTrigger]="false" panelClass="theme-menu-panel">
-      @for (opt of availableThemes(); track trackById($index, opt)) {
-        <button mat-menu-item (click)="setTheme(opt.id)" [class.selected]="theme() === opt.id">
-          <div class="theme-option">
-            <div class="theme-swatch" [style.background]="opt.seedColor">
-              @if (theme() === opt.id) {
-                <mat-icon class="selected-icon">check_circle</mat-icon>
-              }
+      <!-- Language selector -->
+      <md-icon-button (click)="toggleMenu('lang-menu')" class="lang-toggle" [attr.aria-label]="'nav.language' | translate">
+        <md-icon>language</md-icon>
+      </md-icon-button>
+      <md-menu id="lang-menu" (closed)="closeMenu('lang-menu')">
+        <md-menu-item (click)="switchLanguage('sk')">
+          <div slot="headline">SK</div>
+        </md-menu-item>
+        <md-menu-item (click)="switchLanguage('en')">
+          <div slot="headline">EN</div>
+        </md-menu-item>
+      </md-menu>
+    </div>
+
+    <!-- Mobile Navigation -->
+    <md-icon-button (click)="toggleDrawer()" class="navigation-mobile-menu-button">
+      <md-icon>menu</md-icon>
+    </md-icon-button>
+  </md-top-app-bar>
+
+  <md-navigation-drawer #drawer>
+    <div class="navigation-mobile">
+      @if (menuItems() && menuItems().length > 0) {
+        @for (m of menuItems(); track m.id) {
+          @if (!m.children?.length) {
+            <md-text-button [routerLink]="[m.path]" routerLinkActive="active-link">{{ m.i18nKey | translate }}</md-text-button>
+          } @else {
+            <div class="menu-container">
+              <md-text-button (click)="toggleMenu('mobile-menu-' + m.id)">
+                {{ m.i18nKey | translate }}
+                <md-icon>expand_more</md-icon>
+              </md-text-button>
+              <md-menu [attr.id]="'mobile-menu-' + m.id" (closed)="closeMenu('mobile-menu-' + m.id)">
+                @for (c of m.children; track c.id) {
+                  <md-menu-item [routerLink]="[c.path]">
+                    <div slot="headline">{{ c.i18nKey | translate }}</div>
+                  </md-menu-item>
+                }
+              </md-menu>
             </div>
-            <div class="theme-info">
-              <span class="theme-name">{{ opt.name }}</span>
-              <span class="theme-description">{{ opt.description }}</span>
-            </div>
-          </div>
-        </button>
+          }
+        }
       }
-    </mat-menu>
+    </div>
+  </md-navigation-drawer>
 
-    <!-- Language selector -->
-    <button mat-icon-button [matMenuTriggerFor]="langMenu" class="lang-toggle" [attr.aria-label]="'nav.language' | translate">
-      <mat-icon>language</mat-icon>
-    </button>
-    <mat-menu #langMenu="matMenu" panelClass="lang-menu-panel">
-      <button mat-menu-item (click)="switchLanguage('sk')" class="lang-option">
-        <span class="lang-code">SK</span>
-        <span class="lang-name">{{ 'lang.sk' | translate }}</span>
-      </button>
-      <button mat-menu-item (click)="switchLanguage('en')" class="lang-option">
-        <span class="lang-code">EN</span>
-        <span class="lang-name">{{ 'lang.en' | translate }}</span>
-      </button>
-    </mat-menu>
-  </div>
-</mat-toolbar>
+  <main class="layout-content">
+    <router-outlet />
+  </main>
 
-<main class="layout-content">
-  <router-outlet />
-</main>
-
-
+  <app-footer></app-footer>
+</div>

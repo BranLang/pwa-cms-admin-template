@@ -1,5 +1,6 @@
 import { Injectable, signal, effect, inject, PLATFORM_ID } from '@angular/core';
 import { DOCUMENT, isPlatformBrowser } from '@angular/common';
+import { argbFromHex, themeFromSourceColor, applyTheme } from '@material/material-color-utilities';
 
 export interface ThemeOption {
   id: string;
@@ -84,14 +85,24 @@ export class ThemeService {
    * Apply theme to DOM
    */
   private applyThemeToDom(themeId: string): void {
-    const html = this.document.documentElement;
-    // Remove, then apply to html only (styles are bound to html[data-theme])
-    html.removeAttribute('data-theme');
-    html.setAttribute('data-theme', themeId);
+    const theme = this.getTheme(themeId);
+    if (!theme) {
+      console.warn('🎨 ThemeService: Invalid theme ID for DOM application:', themeId);
+      return;
+    }
 
-    console.log('🎨 Theme applied to DOM:', {
+    const sourceColor = argbFromHex(theme.seedColor);
+    const m3Theme = themeFromSourceColor(sourceColor);
+
+    applyTheme(m3Theme, {
+      target: this.document.body,
+      dark: theme.isDark,
+    });
+
+    console.log('🎨 M3 Theme applied to DOM:', {
       themeId,
-      htmlAttribute: html.getAttribute('data-theme'),
+      seedColor: theme.seedColor,
+      isDark: theme.isDark,
     });
   }
 }

@@ -36,6 +36,25 @@ ng build
 
 This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
 
+## M3 Refactor
+
+This project has been refactored to use Material 3 (M3) components and theming.
+
+### Switching Themes
+
+The application supports multiple themes, which can be switched at runtime. The theme selector is located in the top app bar. The available themes are:
+
+-   Rose & Red (dark)
+-   Azure & Blue (light)
+-   Magenta & Violet (dark)
+-   Cyan & Orange (light)
+
+The theme choice is persisted in `localStorage`.
+
+### Mock Data
+
+The application uses a mock data service to provide content for the pages. The data is located in `src/app/mock/mock-data.service.ts`.
+
 ## Running unit tests
 
 To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
@@ -43,6 +62,8 @@ To execute unit tests with the [Karma](https://karma-runner.github.io) test runn
 ```bash
 ng test
 ```
+
+**Note:** The test runner is currently experiencing issues and the tests may time out. This is a known issue that needs to be investigated.
 
 ## Running end-to-end tests
 
