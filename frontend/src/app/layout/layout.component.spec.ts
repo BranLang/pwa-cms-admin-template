@@ -9,7 +9,6 @@ import { provideHttpClientTesting } from '@angular/common/http/testing';
 describe('LayoutComponent', () => {
   let component: LayoutComponent;
   let fixture: ComponentFixture<LayoutComponent>;
-  let element: HTMLElement;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -45,7 +44,7 @@ describe('LayoutComponent', () => {
 
   it('should apply the correct data-theme attribute to html and body', () => {
     // Access protected method through component instance
-    (component as any).setTheme('blue-red');
+    component.setTheme('blue-red');
     fixture.detectChanges();
     
     expect(document.documentElement.getAttribute('data-theme')).toBe('blue-red');
@@ -54,7 +53,7 @@ describe('LayoutComponent', () => {
 
   it('should not apply data-theme for default theme', () => {
     // Access protected method through component instance
-    (component as any).setTheme('blue-orange');
+    component.setTheme('blue-orange');
     fixture.detectChanges();
     
     expect(document.documentElement.getAttribute('data-theme')).toBeNull();
@@ -63,6 +62,6 @@ describe('LayoutComponent', () => {
 
   it('should track by id', () => {
     const theme = { id: 'test-theme', name: 'Test Theme', description: 'Test' };
-    expect((component as any).trackById(0, theme)).toBe('test-theme');
+    expect(component.trackById(0, theme)).toBe('test-theme');
   });
 });

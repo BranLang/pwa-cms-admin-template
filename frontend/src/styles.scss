@@ -9,17 +9,12 @@
   --mat-menu-item-label-text-color: var(--mat-sys-on-surface);
   --mat-menu-item-subtitle-text-color: var(--mat-sys-on-surface-variant);
   --mat-menu-item-icon-color: var(--mat-sys-on-surface-variant);
+  --mat-toolbar-container-background-color: var(--mat-sys-primary);
 }
 
-// Apply default palette-based theme and expose system tokens
-@include mat.theme(theming.$azure-blue-theme);
-@include mat.system-level-colors(theming.$azure-blue-theme);
-@include mat.system-level-typography(theming.$azure-blue-theme);
-
-// CSS custom properties (avoid hardcoded hex where possible; lean on Material tokens)
-:root {
-  // Toolbar background follows primary
-  --mat-toolbar-container-background-color: var(--mat-sys-primary);
+// Apply default theme to the body. The theme service will override this with a data-theme attribute.
+body {
+  @include mat.theme(theming.$azure-blue-theme);
 }
 
 html[data-theme="azure-blue"] {

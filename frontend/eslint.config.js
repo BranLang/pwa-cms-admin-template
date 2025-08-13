@@ -6,6 +6,15 @@ const angular = require("angular-eslint");
 module.exports = tseslint.config(
   {
     files: ["**/*.ts"],
+    languageOptions: {
+      parserOptions: {
+        project: [
+          './tsconfig.app.json',
+          './tsconfig.spec.json',
+        ],
+        tsconfigRootDir: __dirname,
+      },
+    },
     extends: [
       eslint.configs.recommended,
       ...tseslint.configs.recommended,
@@ -14,22 +23,7 @@ module.exports = tseslint.config(
     ],
     processor: angular.processInlineTemplates,
     rules: {
-      "@angular-eslint/directive-selector": [
-        "error",
-        {
-          type: "attribute",
-          prefix: "app",
-          style: "camelCase",
-        },
-      ],
-      "@angular-eslint/component-selector": [
-        "error",
-        {
-          type: "element",
-          prefix: "app",
-          style: "kebab-case",
-        },
-      ],
+      // Custom rules here
     },
   },
   {
@@ -41,6 +35,6 @@ module.exports = tseslint.config(
     rules: {},
   },
   {
-    ignores: ["node_modules/", "dist/", ".angular/", ".vscode/", "coverage/"],
+    ignores: ["node_modules/", "dist/"],
   }
 );

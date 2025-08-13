@@ -1,13 +1,16 @@
 @use '@angular/material' as mat;
+@use './themes/azure-blue-theme.scss' as azure-blue;
+@use './themes/rose-red-theme.scss' as rose-red;
+@use './themes/magenta-violet-theme.scss' as magenta-violet;
+@use './themes/cyan-orange-theme.scss' as cyan-orange;
 
-// Angular 20 + Material 3 palette-based themes (supported API)
-// Themes: rose-red, azure-blue, magenta-violet, cyan-orange
+// Angular 20 + Material 3 palette-based themes
 
 $rose-red-theme: mat.define-theme((
   color: (
     theme-type: dark,
-    primary: mat.$rose-palette,
-    tertiary: mat.$red-palette,
+    primary: rose-red.$primary-palette,
+    tertiary: rose-red.$tertiary-palette,
   ),
   density: (scale: 0)
 ));
@@ -15,8 +18,8 @@ $rose-red-theme: mat.define-theme((
 $azure-blue-theme: mat.define-theme((
   color: (
     theme-type: light,
-    primary: mat.$azure-palette,
-    tertiary: mat.$blue-palette,
+    primary: azure-blue.$primary-palette,
+    tertiary: azure-blue.$tertiary-palette,
   ),
   density: (scale: 0)
 ));
@@ -24,17 +27,17 @@ $azure-blue-theme: mat.define-theme((
 $magenta-violet-theme: mat.define-theme((
   color: (
     theme-type: dark,
-    primary: mat.$violet-palette,
-    tertiary: mat.$magenta-palette,
+    primary: magenta-violet.$primary-palette,
+    tertiary: magenta-violet.$tertiary-palette,
   ),
   density: (scale: 0)
 ));
 
 $cyan-orange-theme: mat.define-theme((
   color: (
-    theme-type: dark,
-    primary: mat.$cyan-palette,
-    tertiary: mat.$orange-palette,
+    theme-type: light,
+    primary: cyan-orange.$primary-palette,
+    tertiary: cyan-orange.$tertiary-palette,
   ),
   density: (scale: -1)
 ));

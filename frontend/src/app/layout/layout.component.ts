@@ -1,5 +1,4 @@
-import { ChangeDetectionStrategy, Component, inject, signal, computed, PLATFORM_ID, OnInit } from '@angular/core';
-import { DOCUMENT, isPlatformBrowser } from '@angular/common';
+import { ChangeDetectionStrategy, Component, inject, signal, computed, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { MatToolbarModule } from '@angular/material/toolbar';
@@ -103,7 +102,7 @@ export class LayoutComponent implements OnInit {
     });
   }
 
-  protected setTheme(themeId: string) {
+  public setTheme(themeId: string) {
     console.log('🎨 Layout setTheme called with:', themeId);
     this.themeService.setTheme(themeId);
   }
@@ -113,7 +112,7 @@ export class LayoutComponent implements OnInit {
     this.translate.use(lang);
   }
 
-  protected trackById(index: number, item: ThemeOption | MenuItemResponse): string | number {
+  public trackById(index: number, item: ThemeOption | MenuItemResponse): string | number {
     return item.id;
   }
 }
