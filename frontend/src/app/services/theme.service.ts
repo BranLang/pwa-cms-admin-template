@@ -84,14 +84,16 @@ export class ThemeService {
    * Apply theme to DOM
    */
   private applyThemeToDom(themeId: string): void {
-    const html = this.document.documentElement;
-    // Remove, then apply to html only (styles are bound to html[data-theme])
-    html.removeAttribute('data-theme');
-    html.setAttribute('data-theme', themeId);
-
-    console.log('🎨 Theme applied to DOM:', {
-      themeId,
-      htmlAttribute: html.getAttribute('data-theme'),
-    });
+    const head = this.document.getElementsByTagName('head')[0];
+    const themeLink = this.document.getElementById('app-theme') as HTMLLinkElement;
+    if (themeLink) {
+      themeLink.href = `${themeId}.css`;
+    } else {
+      const style = this.document.createElement('link');
+      style.id = 'app-theme';
+      style.rel = 'stylesheet';
+      style.href = `${themeId}.css`;
+      head.appendChild(style);
+    }
   }
 }

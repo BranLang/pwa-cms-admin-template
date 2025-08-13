@@ -1,43 +1,48 @@
 @use '@angular/material' as mat;
-@use './themes/azure-blue-theme.scss' as azure-blue;
-@use './themes/rose-red-theme.scss' as rose-red;
-@use './themes/magenta-violet-theme.scss' as magenta-violet;
-@use './themes/cyan-orange-theme.scss' as cyan-orange;
 
-// Angular 20 + Material 3 palette-based themes
+// Define the palettes for your theme using the Material Design palettes.
+$azure-blue-primary: mat.define-palette(mat.$blue-palette);
+$azure-blue-tertiary: mat.define-palette(mat.$cyan-palette);
+
+$rose-red-primary: mat.define-palette(mat.$pink-palette);
+$rose-red-tertiary: mat.define-palette(mat.$red-palette);
+
+$magenta-violet-primary: mat.define-palette(mat.$purple-palette);
+$magenta-violet-tertiary: mat.define-palette(mat.$deep-purple-palette);
+
+$cyan-orange-primary: mat.define-palette(mat.$cyan-palette);
+$cyan-orange-tertiary: mat.define-palette(mat.$orange-palette);
+
+
+// Define the themes.
+$azure-blue-theme: mat.define-theme((
+  color: (
+    theme-type: light,
+    primary: $azure-blue-primary,
+    tertiary: $azure-blue-tertiary,
+  )
+));
 
 $rose-red-theme: mat.define-theme((
   color: (
     theme-type: dark,
-    primary: rose-red.$primary-palette,
-    tertiary: rose-red.$tertiary-palette,
-  ),
-  density: (scale: 0)
-));
-
-$azure-blue-theme: mat.define-theme((
-  color: (
-    theme-type: light,
-    primary: azure-blue.$primary-palette,
-    tertiary: azure-blue.$tertiary-palette,
-  ),
-  density: (scale: 0)
+    primary: $rose-red-primary,
+    tertiary: $rose-red-tertiary,
+  )
 ));
 
 $magenta-violet-theme: mat.define-theme((
   color: (
     theme-type: dark,
-    primary: magenta-violet.$primary-palette,
-    tertiary: magenta-violet.$tertiary-palette,
-  ),
-  density: (scale: 0)
+    primary: $magenta-violet-primary,
+    tertiary: $magenta-violet-tertiary,
+  )
 ));
 
 $cyan-orange-theme: mat.define-theme((
   color: (
     theme-type: light,
-    primary: cyan-orange.$primary-palette,
-    tertiary: cyan-orange.$tertiary-palette,
-  ),
-  density: (scale: -1)
+    primary: $cyan-orange-primary,
+    tertiary: $cyan-orange-tertiary,
+  )
 ));
