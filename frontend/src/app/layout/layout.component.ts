@@ -9,8 +9,9 @@ import { ThemeService, ThemeOption } from '../services/theme.service';
 
 // Import Material Web Components
 import '@material/web/all.js';
-import { MdDrawer } from '@material/web/drawer/drawer.js';
-import { MdMenu } from '@material/web/menu/menu.js';
+// TODO: Find a way to import the types for MdDrawer and MdMenu
+// import { MdDrawer } from '@material/web/drawer/drawer.js';
+// import { MdMenu } from '@material/web/menu/menu.js';
 
 import { FooterComponent } from './footer/footer.component';
 
@@ -114,21 +115,21 @@ export class LayoutComponent implements OnInit {
   }
 
   toggleMenu(menuId: string) {
-    const menu = document.getElementById(menuId) as MdMenu | null;
+    const menu = document.getElementById(menuId) as any | null;
     if (menu) {
       menu.open = !menu.open;
     }
   }
 
   closeMenu(menuId: string) {
-    const menu = document.getElementById(menuId) as MdMenu | null;
+    const menu = document.getElementById(menuId) as any | null;
     if (menu) {
       menu.open = false;
     }
   }
 
   toggleDrawer() {
-    const drawer = document.querySelector('md-navigation-drawer') as MdDrawer | null;
+    const drawer = document.querySelector('md-navigation-drawer') as any | null;
     if (drawer) {
       drawer.opened = !drawer.opened;
     }
