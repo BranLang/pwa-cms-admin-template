@@ -15,7 +15,7 @@
             {{ m.i18nKey | translate }}
             <mat-icon>expand_more</mat-icon>
           </button>
-          <mat-menu #parentMenu="matMenu" class="submenu">
+          <mat-menu #parentMenu="matMenu" panelClass="submenu-panel">
             @for (c of m.children; track c.id) {
               @if (!c.children?.length) {
                 <a mat-menu-item [routerLink]="[c.path]">
@@ -27,7 +27,7 @@
                   <mat-icon>chevron_right</mat-icon>
                   <span>{{ c.i18nKey | translate }}</span>
                 </button>
-                <mat-menu #childMenu="matMenu" class="submenu">
+                <mat-menu #childMenu="matMenu" panelClass="submenu-panel">
                   @for (gc of c.children; track gc.id) {
                     <a mat-menu-item [routerLink]="[gc.path]">
                       <mat-icon>chevron_right</mat-icon>
@@ -57,11 +57,11 @@
     </button>
 
     <!-- Theme menu -->
-    <mat-menu #themeMenu="matMenu" [overlapTrigger]="false" class="theme-menu">
+    <mat-menu #themeMenu="matMenu" [overlapTrigger]="false" panelClass="theme-menu-panel">
       @for (opt of availableThemes(); track trackById($index, opt)) {
         <button mat-menu-item (click)="setTheme(opt.id)" [class.selected]="theme() === opt.id">
           <div class="theme-option">
-            <div class="theme-swatch" [style.background]="'linear-gradient(135deg, ' + opt.primaryColor + ' 0%, ' + opt.primaryColor + ' 50%, ' + opt.accentColor + ' 50%, ' + opt.accentColor + ' 100%)'">
+            <div class="theme-swatch" [style.background]="opt.seedColor">
               @if (theme() === opt.id) {
                 <mat-icon class="selected-icon">check_circle</mat-icon>
               }
@@ -79,7 +79,7 @@
     <button mat-icon-button [matMenuTriggerFor]="langMenu" class="lang-toggle" [attr.aria-label]="'nav.language' | translate">
       <mat-icon>language</mat-icon>
     </button>
-    <mat-menu #langMenu="matMenu" class="lang-menu">
+    <mat-menu #langMenu="matMenu" panelClass="lang-menu-panel">
       <button mat-menu-item (click)="switchLanguage('sk')" class="lang-option">
         <span class="lang-code">SK</span>
         <span class="lang-name">{{ 'lang.sk' | translate }}</span>

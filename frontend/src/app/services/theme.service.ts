@@ -5,8 +5,7 @@ export interface ThemeOption {
   id: string;
   name: string;
   description: string;
-  primaryColor: string;
-  accentColor: string;
+  seedColor: string;
   isDark: boolean;
 }
 
@@ -18,12 +17,12 @@ export class ThemeService {
   private readonly platformId = inject(PLATFORM_ID);
   private readonly localStorage: Storage | undefined;
 
-  // Official Angular Material prebuilt themes
+  // M3 themes
   private readonly themes: ThemeOption[] = [
-    { id: 'rose-red', name: 'Rose & Red', description: 'Seeded dark', primaryColor: '#e91e63', accentColor: '#f44336', isDark: true },
-    { id: 'azure-blue', name: 'Azure & Blue', description: 'Seeded light', primaryColor: '#1976d2', accentColor: '#2196f3', isDark: false },
-    { id: 'magenta-violet', name: 'Magenta & Violet', description: 'Seeded dark', primaryColor: '#9c27b0', accentColor: '#7c4dff', isDark: true },
-    { id: 'cyan-orange', name: 'Cyan & Orange', description: 'Seeded light', primaryColor: '#00bcd4', accentColor: '#ff9800', isDark: false },
+    { id: 'rose-red', name: 'Rose & Red', description: 'Seeded dark', seedColor: '#e91e63', isDark: true },
+    { id: 'azure-blue', name: 'Azure & Blue', description: 'Seeded light', seedColor: '#1976d2', isDark: false },
+    { id: 'magenta-violet', name: 'Magenta & Violet', description: 'Seeded dark', seedColor: '#9c27b0', isDark: true },
+    { id: 'cyan-orange', name: 'Cyan & Orange', description: 'Seeded light', seedColor: '#00bcd4', isDark: false },
   ];
 
   // Reactive theme state
