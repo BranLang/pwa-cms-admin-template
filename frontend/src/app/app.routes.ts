@@ -21,6 +21,22 @@ export const routes: Routes = [
         loadComponent: () => import('./pages/about/about.component').then(m => m.AboutComponent),
       },
       {
+        path: 'products',
+        loadComponent: () => import('./pages/products/products.component').then(m => m.ProductsComponent),
+      },
+      {
+        path: 'projects',
+        loadComponent: () => import('./pages/projects/projects.component').then(m => m.ProjectsComponent),
+      },
+      {
+        path: 'cenovy-dopyt',
+        loadComponent: () => import('./pages/quote/quote.component').then(m => m.QuoteComponent),
+      },
+      {
+        path: 'articles',
+        loadComponent: () => import('./pages/articles/articles.component').then(m => m.ArticlesComponent),
+      },
+      {
         path: 'contact',
         loadComponent: () => import('./pages/contact/contact.component').then(m => m.ContactComponent),
       }

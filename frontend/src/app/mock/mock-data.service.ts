@@ -177,7 +177,67 @@ export class MockDataService implements InMemoryDbService {
             height: 400
           }
         ]
-      }
+      },
+      projects: [
+        {
+          id: '1',
+          title: { sk: 'Projekt 1', en: 'Project 1' },
+          description: { sk: 'Popis projektu 1', en: 'Description of project 1' },
+          image: '/uploads/homepage_1-2.jpg',
+          width: 1200,
+          height: 400
+        },
+        {
+          id: '2',
+          title: { sk: 'Projekt 2', en: 'Project 2' },
+          description: { sk: 'Popis projektu 2', en: 'Description of project 2' },
+          image: '/uploads/homepage_2-2.jpg',
+          width: 1200,
+          height: 400
+        },
+        {
+          id: '3',
+          title: { sk: 'Projekt 3', en: 'Project 3' },
+          description: { sk: 'Popis projektu 3', en: 'Description of project 3' },
+          image: '/uploads/homepage_3-2.jpg',
+          width: 1200,
+          height: 400
+        },
+        {
+          id: '4',
+          title: { sk: 'Projekt 4', en: 'Project 4' },
+          description: { sk: 'Popis projektu 4', en: 'Description of project 4' },
+          image: '/uploads/homepage_4-2.jpg',
+          width: 1200,
+          height: 400
+        }
+      ],
+      articles: [
+        {
+          id: '1',
+          title: { sk: 'Časté otázky', en: 'Frequently Asked Questions' },
+          snippet: { sk: 'Odpovede na najčastejšie otázky našich zákazníkov.', en: 'Answers to the most common questions from our customers.' },
+          image: '/uploads/homepage_5-2.jpg',
+          width: 1200,
+          height: 400
+        },
+        {
+          id: '2',
+          title: { sk: 'Výber správnych okien a dverí', en: 'Choosing the right windows and doors' },
+          snippet: { sk: 'Ako si vybrať tie správne okná a dvere pre váš domov.', en: 'How to choose the right windows and doors for your home.' },
+          image: '/uploads/homepage_7-2.jpg',
+          width: 1200,
+          height: 400
+        },
+        {
+          id: '3',
+          title: { sk: 'Návod na údržbu a ošetrovanie', en: 'Maintenance and care instructions' },
+          snippet: { sk: 'Ako sa starať o vaše nové okná a dvere, aby vám dlho vydržali.', en: 'How to care for your new windows and doors to make them last.' },
+          image: '/uploads/homepage_8-2.jpg',
+          width: 1200,
+          height: 400
+        }
+      ]
     };
     return db;
   }

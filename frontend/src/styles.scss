@@ -1,66 +1,13 @@
 /* Global styles */
-@use 'app/theming' as theming;
-@use '@angular/material' as mat;
+@import 'https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap';
 
-// Define CSS variables for Material components to fix invisible text
-// Use tokens emitted by Material; avoid fixed colors so they follow the active theme
-:root {
-  --mat-toolbar-container-text-color: var(--mat-sys-on-primary);
-  --mat-menu-item-label-text-color: var(--mat-sys-on-surface);
-  --mat-menu-item-subtitle-text-color: var(--mat-sys-on-surface-variant);
-  --mat-menu-item-icon-color: var(--mat-sys-on-surface-variant);
-  --mat-toolbar-container-background-color: var(--mat-sys-primary);
-}
-
-// Apply default theme to the body. The theme service will override this with a data-theme attribute.
-body {
-  @include mat.theme(theming.$azure-blue-theme);
-}
-
-html[data-theme="azure-blue"] {
-  color-scheme: light;
-  @include mat.theme(theming.$azure-blue-theme);
-  @include mat.system-level-colors(theming.$azure-blue-theme);
-  @include mat.system-level-typography(theming.$azure-blue-theme);
-}
-
-html[data-theme="rose-red"] {
-  color-scheme: dark;
-  @include mat.theme(theming.$rose-red-theme);
-  @include mat.system-level-colors(theming.$rose-red-theme);
-  @include mat.system-level-typography(theming.$rose-red-theme);
-}
-
-html[data-theme="magenta-violet"] {
-  color-scheme: dark;
-  @include mat.theme(theming.$magenta-violet-theme);
-  @include mat.system-level-colors(theming.$magenta-violet-theme);
-  @include mat.system-level-typography(theming.$magenta-violet-theme);
-}
-
-html[data-theme="cyan-orange"] {
-  color-scheme: light;
-  @include mat.theme(theming.$cyan-orange-theme);
-  @include mat.system-level-colors(theming.$cyan-orange-theme);
-  @include mat.system-level-typography(theming.$cyan-orange-theme);
-}
-
-// General styles
 html, body {
   height: 100%;
 }
 
 body {
   margin: 0;
-  font-family: Roboto, "Helvetica Neue", sans-serif;
-  background: var(--mat-sys-surface);
-  color: var(--mat-sys-on-surface); 
+  font-family: 'Roboto', sans-serif;
+  background-color: var(--md-sys-color-surface);
+  color: var(--md-sys-color-on-surface);
 }
-
-body.dark-mode {
-  color-scheme: dark;
-
-}
-
-/* Swiper styles after theming */
-@import 'swiper/swiper-bundle.css';
