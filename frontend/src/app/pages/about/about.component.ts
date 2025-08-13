@@ -13,7 +13,7 @@ import '@material/web/tabs/primary-tab.js';
     <div class="about-page">
       <h1>{{ 'menu.about' | translate }}</h1>
 
-      <md-tabs aria-label="About us sections" (change)="selectedTab.set(($event.target as any)?.activeTabIndex ?? 0)">
+      <md-tabs aria-label="About us sections" (change)="onTabChange($event)">
         <md-primary-tab id="company-tab" aria-controls="company-panel">
           O spoločnosti
         </md-primary-tab>
@@ -118,4 +118,11 @@ import '@material/web/tabs/primary-tab.js';
 })
 export class AboutComponent {
   selectedTab = signal(0);
+
+  onTabChange(event: Event) {
+    const target = event.target as any;
+    if (target) {
+      this.selectedTab.set(target.activeTabIndex ?? 0);
+    }
+  }
 }
