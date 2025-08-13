@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, inject, signal, computed, OnInit, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, signal, computed, OnInit, CUSTOM_ELEMENTS_SCHEMA, ViewChild, ElementRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { FormsModule } from '@angular/forms';
@@ -37,6 +37,8 @@ export class LayoutComponent implements OnInit {
   private readonly translate = inject(TranslateService);
   private readonly languageService = inject(LanguageService);
   private readonly themeService = inject(ThemeService);
+
+  @ViewChild('drawer') drawer!: ElementRef<any>;
 
   protected readonly settings = signal<SettingsResponse | undefined>(undefined);
   protected readonly menuItems = signal<MenuItemResponse[]>([]);
@@ -114,25 +116,16 @@ export class LayoutComponent implements OnInit {
     return item.id;
   }
 
-  toggleMenu(menuId: string) {
-    const menu = document.getElementById(menuId) as any | null;
-    if (menu) {
-      menu.open = !menu.open;
-    }
+  toggleMenu(menu: any) {
+    menu.open = !menu.open;
   }
 
-  closeMenu(menuId: string) {
-    const menu = document.getElementById(menuId) as any | null;
-    if (menu) {
-      menu.open = false;
-    }
+  closeMenu(menu: any) {
+    menu.open = false;
   }
 
   toggleDrawer() {
-    const drawer = document.querySelector('md-navigation-drawer') as any | null;
-    if (drawer) {
-      drawer.opened = !drawer.opened;
-    }
+    this.drawer.nativeElement.opened = !this.drawer.nativeElement.opened;
   }
 }
 

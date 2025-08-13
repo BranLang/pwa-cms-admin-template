@@ -35,9 +35,9 @@ import '@material/web/button/filled-button.js';
       <div class="contact-form">
         <h2>{{ 'contact.form.title' | translate }}</h2>
         <form [formGroup]="contactForm" (ngSubmit)="onSubmit()">
-          <md-outlined-text-field label="Name" formControlName="name"></md-outlined-text-field>
-          <md-outlined-text-field label="Email" type="email" formControlName="email"></md-outlined-text-field>
-          <md-outlined-text-field label="Message" type="textarea" rows="5" formControlName="message"></md-outlined-text-field>
+          <md-outlined-text-field label="Name" [value]="contactForm.controls.name.value" (input)="contactForm.controls.name.setValue($event.target.value)"></md-outlined-text-field>
+          <md-outlined-text-field label="Email" type="email" [value]="contactForm.controls.email.value" (input)="contactForm.controls.email.setValue($event.target.value)"></md-outlined-text-field>
+          <md-outlined-text-field label="Message" type="textarea" rows="5" [value]="contactForm.controls.message.value" (input)="contactForm.controls.message.setValue($event.target.value)"></md-outlined-text-field>
 
           <md-filled-button type="submit" [disabled]="contactForm.invalid">Submit</md-filled-button>
         </form>

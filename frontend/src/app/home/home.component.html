@@ -2,8 +2,20 @@
   <section class="hero">
     @if (homeData.carousel && homeData.carousel.length > 0) {
       <div class="hero-image-container">
-        <img [ngSrc]="homeData.carousel[0].src" [width]="homeData.carousel[0].width" [height]="homeData.carousel[0].height" [alt]="homeData.carousel[0].alt[lang()]" priority />
-        <div class="hero-caption">{{ homeData.carousel[0].caption[lang()] }}</div>
+        @for (item of homeData.carousel; track item.id; let i = $index) {
+          @if (i === currentImageIndex()) {
+            <img [ngSrc]="item.src" [width]="item.width" [height]="item.height" [alt]="item.alt[lang()]" priority />
+            <div class="hero-caption">{{ item.caption[lang()] }}</div>
+          }
+        }
+      </div>
+      <div class="hero-actions">
+        <md-icon-button (click)="selectImage(currentImageIndex() - 1, homeData.carousel.length)">
+          <md-icon>chevron_left</md-icon>
+        </md-icon-button>
+        <md-icon-button (click)="selectImage(currentImageIndex() + 1, homeData.carousel.length)">
+          <md-icon>chevron_right</md-icon>
+        </md-icon-button>
       </div>
     }
   </section>

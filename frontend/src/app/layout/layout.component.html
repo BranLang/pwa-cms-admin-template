@@ -11,11 +11,11 @@
             <md-text-button [routerLink]="[m.path]" routerLinkActive="active-link">{{ m.i18nKey | translate }}</md-text-button>
           } @else {
             <div class="menu-container">
-              <md-text-button (click)="toggleMenu(m.id)">
+              <md-text-button (click)="toggleMenu(parentMenu)">
                 {{ m.i18nKey | translate }}
                 <md-icon>expand_more</md-icon>
               </md-text-button>
-              <md-menu [attr.id]="'menu-' + m.id" (closed)="closeMenu(m.id)">
+              <md-menu #parentMenu (closed)="closeMenu(parentMenu)">
                 @for (c of m.children; track c.id) {
                   <md-menu-item [routerLink]="[c.path]">
                     <div slot="headline">{{ c.i18nKey | translate }}</div>
@@ -32,10 +32,10 @@
 
     <div class="actions">
       <!-- Theme selector -->
-      <md-icon-button (click)="toggleMenu('theme-menu')" class="theme-toggle" aria-label="Change theme">
+      <md-icon-button (click)="toggleMenu(themeMenu)" class="theme-toggle" aria-label="Change theme">
         <md-icon>format_color_fill</md-icon>
       </md-icon-button>
-      <md-menu id="theme-menu" (closed)="closeMenu('theme-menu')">
+      <md-menu #themeMenu (closed)="closeMenu(themeMenu)">
         @for (opt of availableThemes(); track trackById($index, opt)) {
           <md-menu-item (click)="setTheme(opt.id)" [class.selected]="theme() === opt.id">
             <div slot="headline">{{ opt.name }}</div>
@@ -44,10 +44,10 @@
       </md-menu>
 
       <!-- Language selector -->
-      <md-icon-button (click)="toggleMenu('lang-menu')" class="lang-toggle" [attr.aria-label]="'nav.language' | translate">
+      <md-icon-button (click)="toggleMenu(langMenu)" class="lang-toggle" [attr.aria-label]="'nav.language' | translate">
         <md-icon>language</md-icon>
       </md-icon-button>
-      <md-menu id="lang-menu" (closed)="closeMenu('lang-menu')">
+      <md-menu #langMenu (closed)="closeMenu(langMenu)">
         <md-menu-item (click)="switchLanguage('sk')">
           <div slot="headline">SK</div>
         </md-menu-item>

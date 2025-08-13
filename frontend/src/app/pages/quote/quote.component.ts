@@ -17,11 +17,11 @@ import '@material/web/button/filled-button.js';
       <h1>{{ 'menu.pricing' | translate }}</h1>
 
       <form [formGroup]="quoteForm" (ngSubmit)="onSubmit()">
-        <md-outlined-text-field label="Name" formControlName="name"></md-outlined-text-field>
-        <md-outlined-text-field label="Email" type="email" formControlName="email"></md-outlined-text-field>
-        <md-outlined-text-field label="Phone" type="tel" formControlName="phone"></md-outlined-text-field>
+        <md-outlined-text-field label="Name" [value]="quoteForm.controls.name.value" (input)="quoteForm.controls.name.setValue($event.target.value)"></md-outlined-text-field>
+        <md-outlined-text-field label="Email" type="email" [value]="quoteForm.controls.email.value" (input)="quoteForm.controls.email.setValue($event.target.value)"></md-outlined-text-field>
+        <md-outlined-text-field label="Phone" type="tel" [value]="quoteForm.controls.phone.value" (input)="quoteForm.controls.phone.setValue($event.target.value)"></md-outlined-text-field>
 
-        <md-outlined-select label="Product Type" formControlName="productType">
+        <md-outlined-select label="Product Type" [value]="quoteForm.controls.productType.value" (change)="quoteForm.controls.productType.setValue($event.target.value)">
           <md-select-option value="drevene-okna">Drevené okná</md-select-option>
           <md-select-option value="drevohlinikove-okna">Drevohliníkové okná</md-select-option>
           <md-select-option value="hlinikove-okna">Hliníkové okná</md-select-option>
@@ -32,8 +32,8 @@ import '@material/web/button/filled-button.js';
           <md-select-option value="posuvne-dvere">Posuvné dvere</md-select-option>
         </md-outlined-select>
 
-        <md-outlined-text-field label="Dimensions" formControlName="dimensions"></md-outlined-text-field>
-        <md-outlined-text-field label="Message" type="textarea" rows="5" formControlName="message"></md-outlined-text-field>
+        <md-outlined-text-field label="Dimensions" [value]="quoteForm.controls.dimensions.value" (input)="quoteForm.controls.dimensions.setValue($event.target.value)"></md-outlined-text-field>
+        <md-outlined-text-field label="Message" type="textarea" rows="5" [value]="quoteForm.controls.message.value" (input)="quoteForm.controls.message.setValue($event.target.value)"></md-outlined-text-field>
 
         <md-filled-button type="submit" [disabled]="quoteForm.invalid">Submit</md-filled-button>
       </form>
