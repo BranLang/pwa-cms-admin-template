@@ -71,11 +71,11 @@
             <md-text-button [routerLink]="[m.path]" routerLinkActive="active-link">{{ m.i18nKey | translate }}</md-text-button>
           } @else {
             <div class="menu-container">
-              <md-text-button (click)="toggleMenu('mobile-menu-' + m.id)">
+              <md-text-button (click)="toggleMenu(mobileParentMenu)">
                 {{ m.i18nKey | translate }}
                 <md-icon>expand_more</md-icon>
               </md-text-button>
-              <md-menu [attr.id]="'mobile-menu-' + m.id" (closed)="closeMenu('mobile-menu-' + m.id)">
+              <md-menu #mobileParentMenu (closed)="closeMenu(mobileParentMenu)">
                 @for (c of m.children; track c.id) {
                   <md-menu-item [routerLink]="[c.path]">
                     <div slot="headline">{{ c.i18nKey | translate }}</div>
