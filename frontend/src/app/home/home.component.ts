@@ -5,7 +5,14 @@ import { LanguageService } from '../services/language.service';
 import { ActivatedRoute } from '@angular/router';
 import { HomeResponse } from '../services/api.service';
 import { Observable } from 'rxjs';
-import { map, tap, switchMap } from 'rxjs/operators';
+import { map, tap } from 'rxjs/operators';
+
+// Define a type for the Swiper custom element
+type SwiperContainer = HTMLElement & {
+  initialize: () => void;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  swiper: any; // Add more specific Swiper instance properties if needed
+};
 
 @Component({
   selector: 'app-home',
@@ -59,11 +66,11 @@ export class HomeComponent implements OnInit, AfterViewInit {
       
       // Wait for Swiper to be available with a longer timeout
       const checkSwiper = () => {
-        const swiperEl = document.querySelector('swiper-container');
+        const swiperEl = document.querySelector<SwiperContainer>('swiper-container');
         console.log('🔍 Swiper element found:', !!swiperEl);
         
         // Check if Swiper is available in window
-        const swiperAvailable = !!(window as any).Swiper;
+        const swiperAvailable = !!window.Swiper;
         console.log('🔍 Window Swiper available:', swiperAvailable);
         
         if (swiperEl && swiperAvailable) {
@@ -96,7 +103,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
             };
 
             Object.assign(swiperEl, swiperParams);
-            (swiperEl as any).initialize();
+            swiperEl.initialize();
             console.log('✅ Swiper initialized successfully');
           } catch (error) {
             console.error('❌ Error initializing Swiper:', error);
@@ -120,7 +127,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
   private retryCount = 0;
 
-  protected trackById<T extends { id?: string | number }>(index: number, item: T): string | number {
+  public trackById<T extends { id?: string | number }>(index: number, item: T): string | number {
     return item?.id ?? index;
   }
 }

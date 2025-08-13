@@ -10,7 +10,7 @@ register();
 console.log('✅ Swiper registered');
 
 // Ensure Swiper is available on window
-(window as any).Swiper = (window as any).Swiper || {};
+window.Swiper = window.Swiper || {};
 
 bootstrapApplication(App, appConfig)
   .catch((err) => console.error(err));

@@ -114,7 +114,7 @@ describe('HomeComponent', () => {
 
   it('should track by id', () => {
     const item = { id: 'test-id' };
-    expect((component as any).trackById(0, item)).toBe('test-id');
+    expect(component.trackById(0, item)).toBe('test-id');
   });
 });
 
