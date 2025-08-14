@@ -10,7 +10,7 @@
   padding: 0 1rem;
   min-height: 4rem;
   border-bottom: 1px solid var(--mat-divider-color, rgba(0,0,0,0.12));
-  background-color: var(--mat-toolbar-container-background-color, var(--mdc-theme-primary, #1976d2));
+
   color: var(--mat-toolbar-container-text-color);
   // Force Material button/icon colors inside toolbar to use toolbar contrast color
   --mdc-text-button-label-text-color: var(--mat-toolbar-container-text-color);
@@ -22,7 +22,7 @@
   font-size: 1.5rem;
   font-weight: 500;
   cursor: pointer;
-  color: var(--mat-toolbar-container-text-color, #fff);
+
   
   &:hover {
     opacity: 0.8;
@@ -47,13 +47,7 @@
     transition: all 0.2s ease;
     padding: 0.5rem 1rem;
     
-    &:hover {
-      background-color: rgba(255, 255, 255, 0.1);
-    }
-    
-    &.active-link {
-      background-color: rgba(255, 255, 255, 0.2);
-    }
+  
   }
   
   // Menu trigger buttons with proper Material styling
@@ -87,7 +81,7 @@
 
 .theme-toggle,
 .lang-toggle {
-  color: var(--mat-toolbar-container-text-color, #fff);
+  color: var(--mat-toolbar-container-text-color);
   
   &:hover {
     background-color: rgba(255, 255, 255, 0.1);
@@ -126,7 +120,7 @@
           top: 50% !important;
           left: 50% !important;
           transform: translate(-50%, -50%) !important;
-          color: white !important;
+          // color: white !important;
           font-size: 18px !important;
           width: 18px !important;
           height: 18px !important;
@@ -142,14 +136,14 @@
         
         .theme-name {
           font-weight: 500 !important;
-          color: rgba(0,0,0,0.87) !important;
+          // color: rgba(0,0,0,0.87) !important;
           font-size: 14px !important;
           line-height: 20px !important;
         }
         
         .theme-description {
           font-size: 12px !important;
-          color: rgba(0,0,0,0.6) !important;
+          // color: rgba(0,0,0,0.6) !important;
           line-height: 16px !important;
         }
       }
@@ -219,8 +213,8 @@
 
 // Menu panel styling following Material Design
 ::ng-deep .mat-mdc-menu-panel {
-  background-color: var(--mat-menu-container-color, #fff) !important;
-  border: 1px solid var(--mat-menu-container-border-color, rgba(0,0,0,0.12));
+  background-color: var(--mat-menu-container-color) !important;
+  border: 1px solid var(--mat-menu-container-border-color);
   box-shadow: var(--mat-menu-container-elevation-shadow, 0 4px 20px rgba(0,0,0,0.15));
   border-radius: 0.5rem;
   min-width: 16rem;

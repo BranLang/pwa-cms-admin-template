@@ -23,7 +23,7 @@
 }
 
 html[data-theme="azure-blue"] {
-  color-scheme: light;
+  color-scheme: dark;
   @include mat.theme(theming.$azure-blue-theme);
   @include mat.system-level-colors(theming.$azure-blue-theme);
   @include mat.system-level-typography(theming.$azure-blue-theme);
@@ -44,7 +44,7 @@ html[data-theme="magenta-violet"] {
 }
 
 html[data-theme="cyan-orange"] {
-  color-scheme: light;
+  color-scheme: dark;
   @include mat.theme(theming.$cyan-orange-theme);
   @include mat.system-level-colors(theming.$cyan-orange-theme);
   @include mat.system-level-typography(theming.$cyan-orange-theme);
