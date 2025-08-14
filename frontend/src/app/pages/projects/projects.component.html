@@ -1,0 +1,7 @@
+<div class="projects-page">
+  <h1>{{ 'menu.projects' | translate }}</h1>
+
+  @if (images$ | async; as images) {
+    <app-image-gallery [images]="images"></app-image-gallery>
+  }
+</div>

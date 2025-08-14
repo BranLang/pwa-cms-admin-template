@@ -4,8 +4,10 @@ import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-pricing',
+  standalone: true,
   imports: [CommonModule, TranslateModule],
-  template: `<h1>{{ 'menu.pricing' | translate }}</h1>`,
+  templateUrl: './pricing.component.html',
+  styleUrls: ['./pricing.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class PricingComponent {}

@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, inject, CUSTOM_ELEMENTS_SCHEMA, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, OnInit, signal } from '@angular/core';
 import { CommonModule, NgOptimizedImage } from '@angular/common';
 import { TranslateModule } from '@ngx-translate/core';
 import { LanguageService } from '../services/language.service';
@@ -6,19 +6,24 @@ import { ActivatedRoute } from '@angular/router';
 import { HomeResponse } from '../services/api.service';
 import { Observable } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
+import { MatIconModule } from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
+import { MatCardModule } from '@angular/material/card';
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [CommonModule, NgOptimizedImage, TranslateModule],
+  imports: [CommonModule, NgOptimizedImage, TranslateModule, MatIconModule, MatButtonModule, MatCardModule],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss',
-  schemas: [CUSTOM_ELEMENTS_SCHEMA],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class HomeComponent implements OnInit {
   private readonly route = inject(ActivatedRoute);
   private readonly languageService = inject(LanguageService);
+  
+  // Carousel state
+  protected readonly currentImageIndex = signal(0);
   
   // Get data from parent route (layout component) - this is the key fix
   protected readonly data$: Observable<HomeResponse> = this.route.parent!.data.pipe(
@@ -47,6 +52,19 @@ export class HomeComponent implements OnInit {
 
   public trackById<T extends { id?: string | number }>(index: number, item: T): string | number {
     return item?.id ?? index;
+  }
+
+  protected selectImage(newIndex: number, totalImages: number): void {
+    if (totalImages === 0) return;
+    
+    // Handle circular navigation
+    if (newIndex < 0) {
+      newIndex = totalImages - 1;
+    } else if (newIndex >= totalImages) {
+      newIndex = 0;
+    }
+    
+    this.currentImageIndex.set(newIndex);
   }
 }
 

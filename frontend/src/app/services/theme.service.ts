@@ -1,12 +1,12 @@
-import { Injectable, signal, effect, inject, PLATFORM_ID } from '@angular/core';
+import { Injectable, signal, inject, PLATFORM_ID, RendererFactory2, Renderer2 } from '@angular/core';
 import { DOCUMENT, isPlatformBrowser } from '@angular/common';
-import { argbFromHex, themeFromSourceColor, applyTheme } from '@material/material-color-utilities';
 
 export interface ThemeOption {
   id: string;
   name: string;
   description: string;
-  seedColor: string;
+  primaryColor: string;
+  tertiaryColor: string;
   isDark: boolean;
 }
 
@@ -16,93 +16,70 @@ export interface ThemeOption {
 export class ThemeService {
   private readonly document = inject(DOCUMENT);
   private readonly platformId = inject(PLATFORM_ID);
+  private readonly rendererFactory = inject(RendererFactory2);
+  private renderer: Renderer2;
   private readonly localStorage: Storage | undefined;
 
-  // M3 themes
   private readonly themes: ThemeOption[] = [
-    { id: 'rose-red', name: 'Rose & Red', description: 'Seeded dark', seedColor: '#e91e63', isDark: true },
-    { id: 'azure-blue', name: 'Azure & Blue', description: 'Seeded light', seedColor: '#1976d2', isDark: false },
-    { id: 'magenta-violet', name: 'Magenta & Violet', description: 'Seeded dark', seedColor: '#9c27b0', isDark: true },
-    { id: 'cyan-orange', name: 'Cyan & Orange', description: 'Seeded light', seedColor: '#00bcd4', isDark: false },
+    {
+      id: 'rose-red',
+      name: 'Rose & Red',
+      description: 'Rose primary with red tertiary',
+      primaryColor: 'rose',
+      tertiaryColor: 'red',
+      isDark: true
+    },
+    {
+      id: 'azure-blue',
+      name: 'Azure & Blue',
+      description: 'Blue primary with blue tertiary',
+      primaryColor: 'blue',
+      tertiaryColor: 'blue',
+      isDark: false
+    },
+    {
+      id: 'magenta-violet',
+      name: 'Magenta & Violet',
+      description: 'Magenta primary with violet tertiary',
+      primaryColor: 'magenta',
+      tertiaryColor: 'violet',
+      isDark: false
+    },
+    {
+      id: 'cyan-orange',
+      name: 'Cyan & Orange',
+      description: 'Cyan primary with orange tertiary',
+      primaryColor: 'cyan',
+      tertiaryColor: 'orange',
+      isDark: false
+    },
   ];
 
-  // Reactive theme state
-  public readonly currentTheme = signal<string>('azure-blue');
+  public readonly currentTheme = signal<string>('magenta-violet');
   public readonly availableThemes = signal<ThemeOption[]>(this.themes);
-  public readonly currentThemeData = signal<ThemeOption>(this.themes[0]);
 
   constructor() {
+    this.renderer = this.rendererFactory.createRenderer(null, null);
     if (isPlatformBrowser(this.platformId)) {
       this.localStorage = window.localStorage;
-      
-      // Load saved theme from localStorage
-      const savedTheme = this.localStorage?.getItem('theme') || 'indigo-pink';
+      const savedTheme = this.localStorage?.getItem('theme') || 'magenta-violet';
       this.setTheme(savedTheme);
     }
-
-    // Effect to update current theme data when theme changes
-    effect(() => {
-      const themeId = this.currentTheme();
-      const themeData = this.themes.find(t => t.id === themeId) || this.themes[0];
-      this.currentThemeData.set(themeData);
-      console.log('🎨 Theme service - theme changed to:', themeId, themeData);
-    });
-
-    // Effect to apply theme to DOM when theme changes
-    effect(() => {
-      if (isPlatformBrowser(this.platformId)) {
-        const themeId = this.currentTheme();
-        this.applyThemeToDom(themeId);
-      }
-    });
   }
 
-  /**
-   * Set the current theme
-   */
   setTheme(themeId: string): void {
-    if (this.themes.some(t => t.id === themeId)) {
-      console.log('🎨 ThemeService.setTheme called with:', themeId);
+    const theme = this.themes.find(t => t.id === themeId);
+    if (theme) {
       this.currentTheme.set(themeId);
-      
-      // Save to localStorage
       if (isPlatformBrowser(this.platformId)) {
         this.localStorage?.setItem('theme', themeId);
+        // Remove previous theme classes
+        this.themes.forEach(t => this.renderer.removeClass(this.document.documentElement, t.id));
+        // Add new theme class
+        this.renderer.addClass(this.document.documentElement, themeId);
       }
     } else {
-      console.warn('🎨 ThemeService: Invalid theme ID:', themeId);
+      console.warn('ThemeService: Invalid theme ID:', themeId);
     }
-  }
-
-  /**
-   * Get theme by ID
-   */
-  getTheme(themeId: string): ThemeOption | undefined {
-    return this.themes.find(t => t.id === themeId);
-  }
-
-  /**
-   * Apply theme to DOM
-   */
-  private applyThemeToDom(themeId: string): void {
-    const theme = this.getTheme(themeId);
-    if (!theme) {
-      console.warn('🎨 ThemeService: Invalid theme ID for DOM application:', themeId);
-      return;
-    }
-
-    const sourceColor = argbFromHex(theme.seedColor);
-    const m3Theme = themeFromSourceColor(sourceColor);
-
-    applyTheme(m3Theme, {
-      target: this.document.body,
-      dark: theme.isDark,
-    });
-
-    console.log('🎨 M3 Theme applied to DOM:', {
-      themeId,
-      seedColor: theme.seedColor,
-      isDark: theme.isDark,
-    });
   }
 }

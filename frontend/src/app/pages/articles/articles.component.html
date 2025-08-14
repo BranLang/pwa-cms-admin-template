@@ -1,0 +1,15 @@
+<div class="articles-page">
+  <h1>{{ 'menu.articles' | translate }}</h1>
+
+  <div class="article-list">
+    @for (article of articles$ | async; track article.id) {
+      <mat-card>
+        <img [ngSrc]="article.image" [width]="article.width" [height]="article.height" [alt]="article.title[lang()]" />
+        <div class="card-content">
+          <h3>{{ article.title[lang()] }}</h3>
+          <p>{{ article.snippet[lang()] }}</p>
+        </div>
+      </mat-card>
+    }
+  </div>
+</div>

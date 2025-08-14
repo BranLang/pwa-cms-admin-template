@@ -1,0 +1,13 @@
+<div class="products-page">
+  <h1>{{ 'menu.products' | translate }}</h1>
+
+  <div class="category-list">
+    @for (category of productCategories$ | async; track category.id) {
+      <mat-card [routerLink]="[category.path]">
+        <div class="card-content">
+          <h3>{{ category.i18nKey | translate }}</h3>
+        </div>
+      </mat-card>
+    }
+  </div>
+</div>

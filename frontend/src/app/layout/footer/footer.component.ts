@@ -40,8 +40,8 @@ import { map } from 'rxjs/operators';
   `,
   styles: [`
     .footer {
-      background-color: var(--md-sys-color-surface-container);
-      color: var(--md-sys-color-on-surface);
+      background-color: var(--surface-color);
+      color: var(--text-color);
       padding: 2rem 0;
     }
     .container {
@@ -53,7 +53,7 @@ import { map } from 'rxjs/operators';
       gap: 2rem;
     }
     .column h4 {
-      color: var(--md-sys-color-primary);
+      color: var(--primary-color);
     }
     ul {
       list-style: none;
@@ -65,9 +65,9 @@ import { map } from 'rxjs/operators';
     }
     a {
       text-decoration: none;
-      color: var(--md-sys-color-on-surface);
+      color: var(--text-color);
       &:hover {
-        color: var(--md-sys-color-primary);
+        color: var(--primary-color);
       }
     }
   `],

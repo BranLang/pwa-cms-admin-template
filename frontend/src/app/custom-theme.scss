@@ -1,0 +1,34 @@
+@use '@angular/material' as mat;
+
+// Define the themes using a simpler approach for Angular Material 20
+$magenta-violet-theme: mat.define-theme((
+  color: (
+    theme-type: light,
+    primary: mat.$magenta-palette,
+    tertiary: mat.$violet-palette
+  )
+));
+
+$rose-red-theme: mat.define-theme((
+  color: (
+    theme-type: dark,
+    primary: mat.$rose-palette,
+    tertiary: mat.$red-palette
+  )
+));
+
+$azure-blue-theme: mat.define-theme((
+  color: (
+    theme-type: light,
+    primary: mat.$blue-palette,
+    tertiary: mat.$blue-palette
+  )
+));
+
+$cyan-orange-theme: mat.define-theme((
+  color: (
+    theme-type: light,
+    primary: mat.$cyan-palette,
+    tertiary: mat.$orange-palette
+  )
+));

@@ -1,0 +1,46 @@
+<div class="quote-page">
+  <h1>{{ 'menu.pricing' | translate }}</h1>
+
+  <form [formGroup]="quoteForm" (ngSubmit)="onSubmit()">
+    <mat-form-field>
+      <mat-label>Name</mat-label>
+      <input matInput formControlName="name">
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Email</mat-label>
+      <input matInput formControlName="email" type="email">
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Phone</mat-label>
+      <input matInput formControlName="phone" type="tel">
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Product Type</mat-label>
+      <mat-select formControlName="productType">
+        <mat-option value="drevene-okna">Drevené okná</mat-option>
+        <mat-option value="drevohlinikove-okna">Drevohliníkové okná</mat-option>
+        <mat-option value="hlinikove-okna">Hliníkové okná</mat-option>
+        <mat-option value="historicke-okna">Historické okná</mat-option>
+        <mat-option value="drevene-dvere">Drevené dvere</mat-option>
+        <mat-option value="historicke-dvere">Historické dvere</mat-option>
+        <mat-option value="hlinikove-dvere">Hliníkové dvere</mat-option>
+        <mat-option value="posuvne-dvere">Posuvné dvere</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Dimensions</mat-label>
+      <input matInput formControlName="dimensions">
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Message</mat-label>
+      <textarea matInput formControlName="message" rows="5"></textarea>
+    </mat-form-field>
+
+    <button mat-raised-button color="primary" type="submit" [disabled]="quoteForm.invalid">Submit</button>
+  </form>
+</div>

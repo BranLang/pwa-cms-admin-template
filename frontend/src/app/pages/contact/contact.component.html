@@ -1,0 +1,43 @@
+<div class="contact-page">
+  <h1>{{ 'menu.contact' | translate }}</h1>
+  <div class="content">
+    <div class="contact-info">
+      <h3>JUST SK, s.r.o.</h3>
+      <p>Viničná 609</p>
+      <p>951 71 Sľažany</p>
+      <p>Slovensko</p>
+      <br>
+      <p>IČO: 36736449</p>
+      <p>DIČ: SK2022323160</p>
+      <br>
+      <p>Pavol Just, konateľ: 0905 431 240</p>
+    </div>
+
+    <div class="map-placeholder">
+      <!-- TODO: Add a real map here -->
+      <p>Map will be here</p>
+    </div>
+  </div>
+
+  <div class="contact-form">
+    <h2>{{ 'contact.form.title' | translate }}</h2>
+    <form [formGroup]="contactForm" (ngSubmit)="onSubmit()">
+      <mat-form-field>
+        <mat-label>Name</mat-label>
+        <input matInput formControlName="name">
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-label>Email</mat-label>
+        <input matInput formControlName="email" type="email">
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-label>Message</mat-label>
+        <textarea matInput formControlName="message" rows="5"></textarea>
+      </mat-form-field>
+
+      <button mat-raised-button color="primary" type="submit" [disabled]="contactForm.invalid">Submit</button>
+    </form>
+  </div>
+</div>

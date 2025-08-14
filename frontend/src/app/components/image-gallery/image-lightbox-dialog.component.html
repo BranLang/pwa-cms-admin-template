@@ -1,0 +1,33 @@
+<div class="lightbox-container">
+  <div class="lightbox-header">
+    <h2 mat-dialog-title class="image-title">{{ data.alt }}</h2>
+    <button mat-icon-button 
+            (click)="close()" 
+            class="close-button"
+            aria-label="Close lightbox">
+      <mat-icon>close</mat-icon>
+    </button>
+  </div>
+  
+  <div class="lightbox-content">
+    <img [ngSrc]="data.src" 
+         [width]="data.width" 
+         [height]="data.height" 
+         [alt]="data.alt"
+         priority />
+  </div>
+  
+  <div class="lightbox-footer">
+    <div class="image-info">
+      <span class="dimensions">{{ data.width }} × {{ data.height }}</span>
+    </div>
+    <div class="lightbox-actions">
+      <button mat-button 
+              (click)="downloadImage()"
+              class="download-button">
+        <mat-icon>download</mat-icon>
+        Download
+      </button>
+    </div>
+  </div>
+</div>

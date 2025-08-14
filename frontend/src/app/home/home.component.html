@@ -2,8 +2,20 @@
   <section class="hero">
     @if (homeData.carousel && homeData.carousel.length > 0) {
       <div class="hero-image-container">
-        <img [ngSrc]="homeData.carousel[0].src" [width]="homeData.carousel[0].width" [height]="homeData.carousel[0].height" [alt]="homeData.carousel[0].alt[lang()]" priority />
-        <div class="hero-caption">{{ homeData.carousel[0].caption[lang()] }}</div>
+        @for (item of homeData.carousel; track item.id; let i = $index) {
+          @if (i === currentImageIndex()) {
+            <img [ngSrc]="item.src" [width]="item.width" [height]="item.height" [alt]="item.alt[lang()]" priority />
+            <div class="hero-caption">{{ item.caption[lang()] }}</div>
+          }
+        }
+      </div>
+      <div class="hero-actions">
+        <button mat-icon-button (click)="selectImage(currentImageIndex() - 1, homeData.carousel.length)">
+          <mat-icon>chevron_left</mat-icon>
+        </button>
+        <button mat-icon-button (click)="selectImage(currentImageIndex() + 1, homeData.carousel.length)">
+          <mat-icon>chevron_right</mat-icon>
+        </button>
       </div>
     }
   </section>
@@ -11,13 +23,13 @@
   <section class="categories">
     <div class="container">
       @for (c of homeData.categories; track trackById($index, c)) {
-        <md-elevated-card class="card">
+        <mat-card class="card">
           <img [ngSrc]="c.image" [width]="c.width" [height]="c.height" [alt]="c.i18nKeyTitle | translate" />
           <div class="content">
             <h3>{{ c.i18nKeyTitle | translate }}</h3>
             <p>{{ c.i18nKeyDescription | translate }}</p>
           </div>
-        </md-elevated-card>
+        </mat-card>
       }
     </div>
   </section>
