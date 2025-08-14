@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, CUSTOM_ELEMENTS_SCHEMA, inject } from '@angular/core';
-import { CommonModule, NgOptimizedImage } from '@angular/common';
+import { CommonModule } from '@angular/common';
 import { TranslateModule } from '@ngx-translate/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
@@ -20,7 +20,7 @@ import { map } from 'rxjs/operators';
 @Component({
   selector: 'app-projects',
   standalone: true,
-  imports: [CommonModule, TranslateModule, NgOptimizedImage, ImageGalleryComponent],
+  imports: [CommonModule, TranslateModule, ImageGalleryComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   template: `
     <div class="projects-page">
