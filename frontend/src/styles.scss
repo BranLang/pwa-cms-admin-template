@@ -1,11 +1,8 @@
 @use 'app/custom-theme' as theming;
 @use '@angular/material' as mat;
-
+@include mat.core(); 
 // Apply the default theme to html element
-html {
-  @include mat.core();
-  @include mat.all-component-themes(theming.$magenta-violet-theme);
-}
+
 
 // Apply other themes when the theme class is present on html element
 html.rose-red {
@@ -23,4 +20,22 @@ html.cyan-orange {
 body {
   margin: 0;
   font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+
+/* default */
+html {
+  @include mat.all-component-themes(theming.$magenta-violet-theme);
+  @include mat.system-level-colors(theming.$magenta-violet-theme); // ← kľúčové
+  color-scheme: light; // uľahčí správny rendering v prehliadači
+}
+
+/* prepínané témy */
+html.rose-red {
+  @include mat.all-component-themes(theming.$rose-red-theme);
+  @include mat.system-level-colors(theming.$rose-red-theme);
+}
+html.azure-blue {
+  @include mat.all-component-themes(theming.$azure-blue-theme);
+  @include mat.system-level-colors(theming.$azure-blue-theme);
 }
